@@ -9,7 +9,7 @@
     height: 80px;
     // padding: 0.5rem;
     z-index: 10;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid $color-primary-dark;
 
     & > nav {
         display: flex;
@@ -30,6 +30,19 @@
             height: 60px;
             overflow: visible; 
             vertical-align: top; 
+        }
+        
+        a{
+            font-weight: 600;
+            border-radius: 10px;
+            
+            &:hover {
+                color: $color-primary-light;
+            }
+
+        }
+        .active {
+            color: $color-secondary;
         }
 
     }

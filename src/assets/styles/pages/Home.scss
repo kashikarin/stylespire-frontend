@@ -31,8 +31,13 @@
         padding: 10px;
         font-size: 1.5rem;
         line-height: 2rem;
-        background-image: linear-gradient(to right top, #ffa5ab, #e98a96, #d36f83, #bc5471, #a53860);
-        color: $color-text;
+        background-color: $color-primary-dark;
+        // background-image: linear-gradient(to right top, #ffa5ab, #e98a96, #d36f83, #bc5471, #a53860);
+        color: $color-pink-surface;
+
+        &:hover {
+            color: $color-surface;
+        }
     }
         
 }   

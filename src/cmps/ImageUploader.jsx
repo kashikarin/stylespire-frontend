@@ -21,7 +21,9 @@ export function ImageUploader({onClose}){
                         <i className="fa-solid fa-link"></i>
                     </button>
                 </div>
-                <button className='close-modal-btn' onClick={onClose}>x</button>
+                <button className='close-modal-btn' onClick={onClose}>
+                    <i className="fa-solid fa-xmark"></i>
+                </button>
                 {/* <p>Upload an image or paste a URL</p> */}
                 {mode === 'upload' && <button className="upload-btn">Upload Image</button>}
                 {mode === 'url' && <input type="text" placeholder="Paste image URL" />}

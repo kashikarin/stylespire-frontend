@@ -1,17 +1,17 @@
-import { Link } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { useViewport } from "../customHooks/useViewport"
 import { ReactSVG } from "react-svg"
 
 export function AppHeader(){
     const { isMobile, isTablet, isDesktop, layout } = useViewport()
-
+    
     return(
         <div className='app-header-container full'>
             <nav>            
-                <ReactSVG src='/svgs/logo.svg'/>
-                <Link to='/favorites'>
+                <Link to='/'><ReactSVG src='/svgs/logo.svg'/></Link>
+                <NavLink to='/favorites'>
                     Favorites
-                </Link>
+                </NavLink>
             </nav>
         </div>
     )
