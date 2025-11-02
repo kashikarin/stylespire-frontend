@@ -10,33 +10,34 @@
     h2 {
         padding-block-start: 3rem;
         align-self: center;
-        font-size: 3rem;
+        color: $color-primary-dark;
+        font-size: clamp(1.5rem, 4vh, 3rem);
         font-weight: 400;
-        margin-bottom: 1.5rem;
+        margin-bottom: clamp(1rem, 2vh, 1.5rem);
     }
 
     p{
-        font-size: 1.5rem;
+        font-size: clamp(1rem, 2vh, 1.5rem);
         max-width: 70%;
         text-align:start;
-        line-height: 1.6;
+        line-height: 1.6rem;
     }
 
     button {
         border-radius: 16px;
-        margin-block-start: 1rem;
+        margin-block-start: clamp(0.5rem, 1vh, 1rem);
         border: none;
         box-shadow: $shadow-soft;
         border-color: $color-secondary;
         padding: 10px;
-        font-size: 1.5rem;
+        font-size: clamp(1rem, 2vh, 1.5rem);
         line-height: 2rem;
         background-color: $color-primary-dark;
         // background-image: linear-gradient(to right top, #ffa5ab, #e98a96, #d36f83, #bc5471, #a53860);
-        color: $color-pink-surface;
+        color: $color-surface;
 
         &:hover {
-            color: $color-surface;
+            color: $color-pink-surface;
         }
     }
         
