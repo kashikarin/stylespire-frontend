@@ -61,17 +61,3 @@ pre {
     white-space: pre-wrap;
 }
 
-.background-waves {
-  position: fixed;        
-  bottom: 0;              
-  left: 0;
-  width: 100%;
-  z-index: -1;            
-  line-height: 0;
-}
-
-.background-waves svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}

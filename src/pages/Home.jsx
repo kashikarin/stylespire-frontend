@@ -1,49 +1,54 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
-import { ImageUploader } from "../cmps/ImageUploader"
 import { motion, AnimatePresence } from "framer-motion"
+import { StyleMeModal } from "../cmps/StyleMeModal"
 
 export function Home(){
     const [isModalOpen, setIsModalOpen] = useState(false)
     
-    function handleClose(ev) {
-        ev.preventDefault()
+    function handleClose() {
         setIsModalOpen(false)
     }
 
     return(
         <>
-            <div className="page-layout home-page-container">
-                <h2 className="home-page-subtitle">See it. Love it. Find it.</h2>
-                <p className="upload-instruction">
-                    Upload an image to uncover the outfit, colors, and style — and explore similar looks instantly.
+            <div className="flex flex-col items-center text-center gap-6 px-4 py-12 max-w-2xl mx-auto">
+                <h2 className="pt-10 text-4xl md:text-6xl font-semibold text-primary-dark">
+                    Your Perfect Outfit Starts Here.
+                </h2>               
+                <p className="text-lg md:text-xl text-primary-dark leading-relaxed max-w-xl">
+                    Tell us where you’re going and how you’re feeling — we’ll dress you up
                 </p>
-                <button onClick={() => setIsModalOpen(true)}>Follow your inspiration</button> 
+                <p className="text-lg md:text-xl text-primary-dark leading-relaxed max-w-xl">
+                    Your mood, the weather, and your style come together to inspire the perfect outfit.
+                </p>
+                
+                <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="
+                        mt-4 px-8 py-3
+                        bg-primary-dark 
+                        text-white 
+                        rounded-xl shadow-md 
+                        hover:bg-secondary
+                        transition
+                        text-lg md:text-xl
+                    "
+                >
+                    Style me!
+                </button>
             </div>
             <AnimatePresence>
                 {isModalOpen && 
-                    // <motion.div
-                    //     className="image-uploader-backdrop"
-                    //     initial={{ opacity: 0 }}
-                    //     animate={{ opacity: 1 }}
-                    //     exit={{ opacity: 0 }}
-                    //     transition={{ duration: 0.3 }}
-                    // >
                         <motion.div
-                            className="upload-section"
+                            className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50"
                             initial={{ opacity: 0 }}
                             animate={{opacity: 1 }}
                             exit={{  opacity: 0 }}
                             transition={{ duration: 0.3, ease: "easeOut" }}
                         >
-                            <ImageUploader onClose={handleClose}/>
-                        {/* </motion.div> */}
+                            <StyleMeModal onClose={handleClose}/>
                     </motion.div>}
-            </AnimatePresence>
-            
-            
-                
-                
+            </AnimatePresence>          
         </>
         
     )

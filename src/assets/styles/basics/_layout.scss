@@ -9,10 +9,9 @@
     
     & > main {
         grid-column: 2;
-        padding: 2rem;
         display: flex;
         flex-direction: column;
-        padding-block: 2rem;
+        padding-block: 8rem;
         min-height: calc(100dvh - $header-height);
 
         & > * {

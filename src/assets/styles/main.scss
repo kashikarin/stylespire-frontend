@@ -1,4 +1,5 @@
 // Setup
+@import '../../tailwind.css';
 @import 'setup/variables';
 @import 'setup/functions';
 @import 'setup/mixins';
@@ -16,4 +17,3 @@
 // Components
 @import 'cmps/AppHeader';
 @import 'cmps/AppFooter';
-@import 'cmps/ImageUploader';
