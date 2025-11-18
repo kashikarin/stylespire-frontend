@@ -3,6 +3,7 @@ import { CategoryBlock } from "./CategoryBlock"
 import { useNavigate } from "react-router-dom"
 import { setLoadingDone, setLoadingStart } from "../store/actions/system.actions"
 import { getWeatherData } from "../services/weather.service"
+import { composeQuery, searchUnsplash } from "../services/unsplash.service"
 
 export function StyleMeModal({onClose}){
     const navigate = useNavigate()
@@ -35,11 +36,12 @@ export function StyleMeModal({onClose}){
             location
         }
         console.log("🚀 ~ queryContext:", queryContext)
+        const query = composeQuery(formData, weather)
+        const results = await searchUnsplash(query)
         
-        const results = ['hi']
         onClose()
         navigate('/results', {
-            state: { formData, results }
+            state: { results }
         })
         
 
@@ -123,21 +125,21 @@ export function StyleMeModal({onClose}){
                     <CategoryBlock 
                         title='Mood'
                         field='mood'
-                        labels={['Casual', 'Playful', 'Comfi', 'Elegant', 'Sexy']}
+                        labels={['Playful', 'Comfi', 'chic', 'romantic', 'cool', 'confident', 'energetic', 'bold']}
                         formData={formData}
                         updateField={updateField}
                     />
                     <CategoryBlock 
                         title='Preferred Style'
                         field='style'
-                        labels={['Casual', 'Chic', 'Street', 'Minimal', 'Sporty', "Boho", "Trendy"]}
+                        labels={['Casual', 'Sporty', 'Elegant', 'Street', 'Minimal', "Boho", "Trendy"]}
                         formData={formData}
                         updateField={updateField}
                     />
                     <CategoryBlock 
                         title='Outfit purpose'
                         field='purpose'
-                        labels={['Office', 'Dinner', 'Errands', 'Date', 'Picking Up Kids', "Training"]}
+                        labels={['Office', 'Dinner', 'Errands', 'Date', 'night out', 'Picking Up Kids', "Training", 'Coffee stop', 'Friends meetup']}
                         formData={formData}
                         updateField={updateField}
                     />
