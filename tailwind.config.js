@@ -1,3 +1,5 @@
+import { transform } from 'framer-motion';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -33,9 +35,25 @@ export default {
         "shadow-soft": "0 4px 16px rgba(0, 0, 0, 0.08)",
         "shadow-strong": "0 8px 20px rgba(0, 0, 0, 0.12)"
       },
-      spacing: { header: "65px" }
+      spacing: { header: "65px" },
+      keyframes: {
+        modalSlideIn: {
+          '0%:': { opacity: '0', transform: 'translateY(-10px)' },
+          '100%': { opacity: '1', transform: 'scale(1)' }
+        },
+        dropdownSlideIn: {
+          '0%:': { opacity: '0', transform: 'scale(0.9)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' }
+        }
+      },
+      animation: {
+        modalSlideIn: 'modalSlideIn 0.3s ease-out',
+        dropdownSlideIn: 'dropdownSlideIn 0.2 ease-in-out'
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar')
+  ],
 }
 
