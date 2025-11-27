@@ -1,15 +1,20 @@
 import axios from "axios"
 
 const API_KEY = import.meta.env.VITE_UNSPLASH_KEY
-console.log("🚀 ~ API_KEY:", API_KEY)
 
-export async function searchUnsplash(query) {
+export const unsplashService = {
+    searchUnsplash,
+    composeQuery,
+    getLabels
+}
+
+async function searchUnsplash(query) {
   const url = "https://api.unsplash.com/search/photos";
 
   const res = await axios.get(url, {
     params: {
       query,
-      per_page: 20,
+      per_page: 7,
       orientation: "portrait",
       content_filter: "high",   
       client_id: API_KEY
@@ -19,7 +24,7 @@ export async function searchUnsplash(query) {
   return res.data.results
 }
 
-export function composeQuery(formData, weather){
+function composeQuery(formData, weather){
     const { gender, age, mood, purpose, style } = formData
     const tempCategory = _getTempCategory(weather.temp)
     const condition = _getWeatherCondition(weather.condition)
@@ -97,6 +102,40 @@ export function composeQuery(formData, weather){
     terms = [...new Set(terms)]
     terms.push('outfit')
     return terms.join(' ')
+}
+
+function getLabels(formData){
+    let keywords = []
+    let res = []
+    const labelMap = {
+        sporty: ['Active', 'Sporty', 'Athletic', 'Fitness'],
+        chic: ['Chic', 'Modern', 'Classy', 'Refined', 'Stylish'],
+        casual: ['Casual', 'Everyday', 'Relaxed', 'Laid-back'],
+        minimal: ["Minimal", "Clean", "Neutral"],
+        trendy: ['Trendy', 'On-trend', 'Hot now', 'Fresh'],
+        summer: ['Summer', 'Sunny', 'Breezy', 'Light'],
+        boho: ["Boho", "Free-Spirit", "Flowy"],
+        elegant: ["Elegant", "Classy", "Polished"],
+        street: ["Street", "Urban", "Hype"]
+    }
+
+    for (let key in formData) {
+        if (Array.isArray(formData[key])) {
+            formData[key].forEach(item => keywords.push(item.toLowerCase()))
+        }
+    }
+
+    keywords = keywords.filter(word => labelMap[word])
+    
+    keywords.forEach(word => {
+        let clone = [...labelMap[word]]
+        console.log("🚀 ~ clone:", clone)
+        let randomIdx = Math.round(Math.random() * clone.length - 1)
+        console.log("🚀 ~ randomIdx:", randomIdx)
+        res.push(clone[randomIdx])
+    })
+    
+    return res.filter(Boolean)
 }
 
 function _getTerms(map, field) {

@@ -2,8 +2,8 @@ import { useState } from "react"
 import { CategoryBlock } from "./CategoryBlock"
 import { useNavigate } from "react-router-dom"
 import { setLoadingDone, setLoadingStart } from "../store/actions/system.actions"
-import { getWeatherData } from "../services/weather.service"
-import { composeQuery, searchUnsplash } from "../services/unsplash.service"
+import { weatherService } from "../services/weather.service"
+import { unsplashService } from "../services/unsplash.service"
 
 export function StyleMeModal({onClose}){
     const navigate = useNavigate()
@@ -28,17 +28,15 @@ export function StyleMeModal({onClose}){
     e.preventDefault()
     setLoadingStart()
     try {
-        const weather = await getWeatherData()
+        const weather = await weatherService.getWeatherData()
         const location = weather.city
         const queryContext = {
             form: formData,
             weather,
             location
         }
-        console.log("🚀 ~ queryContext:", queryContext)
-        const query = composeQuery(formData, weather)
-        const results = await searchUnsplash(query)
-        
+        const query = unsplashService.composeQuery(formData, weather)
+        const results = await unsplashService.searchUnsplash(query)
         onClose()
         navigate('/results', {
             state: { results }

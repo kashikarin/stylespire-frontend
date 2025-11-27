@@ -1,20 +1,21 @@
-import { Link, NavLink } from "react-router-dom"
-import { useViewport } from "../customHooks/useViewport"
+import { Link, NavLink, useLocation } from "react-router-dom"
 import { ReactSVG } from "react-svg"
 import { UserLetterCircle } from "./UserLetterCircle"
 import { useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { login, logout, setAuthMode, signup } from "../store/actions/user.actions"
 import { useSelector } from "react-redux"
-import { isAuthenticated } from "../services/user.service"
 
 export function AppHeader(){
-    const { isMobile, isTablet, isDesktop, layout } = useViewport()
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)    
     const buttonRef = useRef()
     const dropdownRef = useRef()
+    const location = useLocation()
     const [coords, setCoords] = useState({ top: 0, right: 0 })
     const loggedInUser = useSelector(state => state.userModule.loggedInUser)
+    const isHomePage = location.pathname === '/'
+
+    console.log("🚀 ~ loggedInUser:", loggedInUser)
 
     useEffect(() => {
         let portalRoot = document.getElementById('portal-root')
@@ -38,6 +39,7 @@ export function AppHeader(){
     if (!isDropdownOpen) updateMenuPosition()
     setIsDropdownOpen((prev) => !prev)
   }
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && 
@@ -87,21 +89,11 @@ export function AppHeader(){
         ref={dropdownRef}
         style={{
             position: 'absolute',
-            top: coords.top,
+            top: coords.top + 10,
             right: coords.right,
         }}
         >
-            {/* <div 
-                className="
-                    absolute top-[-2px] right-[20px]
-                    w-0 h-0
-                    border-l-8 border-l-transparent
-                    border-r-8 border-r-transparent
-                    border-b-8 border-white
-                    z-[100]
-                "
-            ></div> */}
-            {(isAuthenticated && loggedInUser) ? (<div className="flex flex-col rounded-lg py-2">
+            {(loggedInUser) ? (<div className="flex flex-col rounded-lg py-2">
                 <div className="
                     px-5 pt-3 pb-3 m-0
                     text-primary-dark
@@ -140,102 +132,93 @@ export function AppHeader(){
                     Log out
                 </button>
                 </div>) : (
-                    <div className="flex flex-col rounded-lg py-2">
-                        <button
-                            className="
-                                block 
-                                text-primary-dark 
-                                px-5 pt-4 pb-3 m-0 
-                                text-base 
-                                font-normal 
-                                tracking-tighter 
-                                bg-transparent 
-                                cursor-pointer 
-                                text-left 
-                                w-full 
-                                relative
-                                before:content-['']
-                                before:absolute before:left-0 before:top-0
-                                before:h-full before:w-[4px]
-                                before:bg-primary-dark
-                                before:origin-left
-                                before:scale-x-0
-                                before:transition-transform before:duration-200 before:ease-in-out
+                <div className="flex flex-col rounded-lg py-2">
+                    <button
+                        className="
+                            block 
+                            text-primary-dark 
+                            px-5 pt-4 pb-3 m-0 
+                            text-base 
+                            font-normal 
+                            tracking-tighter 
+                            bg-transparent 
+                            cursor-pointer 
+                            text-left 
+                            w-full 
+                            relative
+                            before:content-['']
+                            before:absolute before:left-0 before:top-0
+                            before:h-full before:w-[4px]
+                            before:bg-primary-dark
+                            before:origin-left
+                            before:scale-x-0
+                            before:transition-transform before:duration-200 before:ease-in-out
 
-                                hover:before:scale-x-100
-                            "
-                            onClick={()=> onOpenAuthModal('login')}
-                        >
-                            
-                            Log in
-                        </button>
-                        <button
-                            className="
-                                block 
-                                text-primary-dark 
-                                px-5 pt-4 pb-3 m-0 
-                                text-base 
-                                font-normal 
-                                tracking-tighter 
-                                bg-transparent 
-                                cursor-pointer 
-                                text-left 
-                                relative
-                                w-full 
-                                before:content-['']
-                                before:absolute before:left-0 before:top-0
-                                before:h-full before:w-[4px]
-                                before:bg-primary-dark
-                                before:origin-left
-                                before:scale-x-0
-                                before:transition-transform before:duration-200 before:ease-in-out
+                            hover:before:scale-x-100
+                        "
+                        onClick={()=> onOpenAuthModal('login')}
+                    >
+                        
+                        Log in
+                    </button>
+                    <button
+                        className="
+                            block 
+                            text-primary-dark 
+                            px-5 pt-4 pb-3 m-0 
+                            text-base 
+                            font-normal 
+                            tracking-tighter 
+                            bg-transparent 
+                            cursor-pointer 
+                            text-left 
+                            relative
+                            w-full 
+                            before:content-['']
+                            before:absolute before:left-0 before:top-0
+                            before:h-full before:w-[4px]
+                            before:bg-primary-dark
+                            before:origin-left
+                            before:scale-x-0
+                            before:transition-transform before:duration-200 before:ease-in-out
 
-                                hover:before:scale-x-100
-                            "
-                            onClick={()=> onOpenAuthModal('signup')}
-                        >
-                            Sign up
-                        </button>
-                    </div>)}
-        {/* ) : (
-            <div className="user-menu-content">
-            <button
-                className="menu-item"
-                onClick={() => onOpenAuthModal('login')}
-            >
-                Log In
-            </button>
-            <button
-                className="menu-item"
-                onClick={() => onOpenAuthModal('signup')}
-            >
-                Sign Up
-            </button>
+                            hover:before:scale-x-100
+                        "
+                        onClick={()=> onOpenAuthModal('signup')}
+                    >
+                        Sign up
+                    </button>
+                </div>)}
             </div>
-        )} */}
-        </div>
   )
     return(
         <>
             <div className='app-header-container full sticky top-0 z-10 border-b border-primary-dark w-full min-w-[100dvw] h-[80px]'>
                 <nav className='flex justify-between items-center w-full min-h-[80px] py-2'>            
-                    <Link to='/' className='font-semibold rounded-[10px] text-primary-dark hover:text-secondary'>
-                        <span>StyleSpire</span>
+                    <Link to='/' className='m-0 p-0'>
+                        <img src="/imgs/sslogo.png" alt="stylespire logo" className='h-30 w-28'/>
                     </Link>
-                    <div className="flex justify-end items-center gap-8">
-                        <NavLink to='/favorites' className='font-semibold rounded-[10px] text-primary-dark hover:text-secondary'>
+                    {isHomePage && <div className="flex justify-end items-center gap-8">
+                        <NavLink to='/favorites' className='font-semibold p-0 m-0 rounded-[10px] text-primary-dark hover:text-secondary'>
                             Favorites
                         </NavLink>
-                        <div className="flex relative gap-2">
-                            <button className='bg-transparent rounded-2xl py-2 px-3 font-medium text-sm whitespace-nowrap' ref={buttonRef} onClick={toggleDropdown}>
-                                {(isAuthenticated && loggedInUser) ? 
-                                    <UserLetterCircle username='karin'/> :
-                                    <ReactSVG src='/svgs/hamburger-icon.svg'/>
-                                }
-                            </button>
-                        </div>
-                    </div>
-                    
+                        <button 
+                            className='
+                                bg-transparent 
+                                rounded-2xl 
+                                h-[40px]
+                                p-0 m-0
+                                px-3 
+                                font-medium text-sm 
+                                whitespace-nowrap
+                            ' 
+                            ref={buttonRef} onClick={toggleDropdown}>
+                            {(loggedInUser) ? 
+                                <UserLetterCircle username='karin'/> :
+                                <ReactSVG src='/svgs/hamburger-icon.svg'/>
+                            }
+                        </button>
+                    </div>}
                 </nav>
             </div>
             {isDropdownOpen && 

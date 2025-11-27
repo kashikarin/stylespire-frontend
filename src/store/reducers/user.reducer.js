@@ -20,6 +20,8 @@ export function UserReducer(state = initialState, action){
                 ...state, 
                 authMode: action.authMode
             }
+            break
+        default: 
     }
     return newState
 }

@@ -3,6 +3,7 @@ import { SET_AUTH_MODE, SET_LOGGEDINUSER } from "../reducers/user.reducer";
 import { store } from "../store";
 
 export async function login(credentials) {
+    console.log('user action runs')
   try {
     const user = await userService.login(credentials)
     store.dispatch({

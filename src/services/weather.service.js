@@ -3,18 +3,14 @@ import axios from "axios"
 const CACHE_KEY = "weather_cache_v1"
 const CACHE_TTL = 1000 * 60 * 15 // cache for 15 minutes
 
-// timeout wrapper (prevents app from hanging)
-function withTimeout(promise, ms = 8000) {
-  let timeout
-  const timeoutPromise = new Promise((_, reject) => {
-    timeout = setTimeout(() => reject(new Error("Timeout exceeded")), ms)
-  })
-  return Promise.race([promise, timeoutPromise]).finally(() => clearTimeout(timeout))
+export const weatherService = {
+    getWeatherData
 }
 
+
 // try browser geolocation first
-function getBrowserLocation() {
-  return withTimeout(
+async function _getBrowserLocation() {
+  return _withTimeout(
     new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
         pos => resolve({
@@ -29,16 +25,16 @@ function getBrowserLocation() {
 }
 
 // IP-based fallback 
-async function getIPLocation() {
+async function _getIPLocation() {
   try {
-    const res = await withTimeout(axios("https://ipapi.co/json/"), 5000)
+    const res = await _withTimeout(axios("https://ipapi.co/json/"), 5000)
     const data = res.data
     return {
       lat: data.latitude,
       lon: data.longitude,
       country: data.country_code,
       city: data.city
-    };
+    }
   } catch (err) {
     console.error("IP geolocation failed:", err);
     return null
@@ -46,11 +42,11 @@ async function getIPLocation() {
 }
 
 // Fetch actual weather from OpenWeatherMap
-async function getWeather(lat, lon) {
+async function _getWeather(lat, lon) {
   const API_KEY = import.meta.env.VITE_WEATHER_KEY
 
   try {
-     const res = await withTimeout(
+     const res = await _withTimeout(
         axios(
         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
         ),
@@ -84,10 +80,9 @@ export async function getWeatherData() {
 
   // --- 1. Browser geolocation (best accuracy) ---
   try {
-    const loc = await getBrowserLocation()
-    const weather = await getWeather(loc.lat, loc.lon)
-    saveToCache(weather)
-    console.log('first try')
+    const loc = await _getBrowserLocation()
+    const weather = await _getWeather(loc.lat, loc.lon)
+    _saveToCache(weather)
     return weather
   } catch (err) {
     console.error("Browser location failed:", err)
@@ -95,18 +90,16 @@ export async function getWeatherData() {
 
   // --- 2. IP fallback (good enough) ---
   try {
-    const ipLoc = await getIPLocation()
-    console.log('second try')
+    const ipLoc = await _getIPLocation()
     if (ipLoc) {
-      const weather = await getWeather(ipLoc.lat, ipLoc.lon)
-      saveToCache(weather)
+      const weather = await _getWeather(ipLoc.lat, ipLoc.lon)
+      _saveToCache(weather)
       return weather
     }
   } catch (err) {
     console.error("IP location weather failed:", err);
   }
-console.log('fallback')
-  // --- 3. Default fallback (never fail) ---
+  // --- 3. Default fallback ---
   const defaultWeather = {
     temp: 25,
     feelsLike: 26,
@@ -115,13 +108,13 @@ console.log('fallback')
     city: "Tel Aviv"
   };
 
-  saveToCache(defaultWeather)
+  _saveToCache(defaultWeather)
   return defaultWeather
 }
 
 
 // Save in cache
-function saveToCache(data) {
+function _saveToCache(data) {
   localStorage.setItem(
     CACHE_KEY,
     JSON.stringify({
@@ -129,4 +122,13 @@ function saveToCache(data) {
       timestamp: Date.now()
     })
   )
+}
+
+// timeout wrapper (prevents app from hanging)
+function _withTimeout(promise, ms = 8000) {
+  let timeout
+  const timeoutPromise = new Promise((_, reject) => {
+    timeout = setTimeout(() => reject(new Error("Timeout exceeded")), ms)
+  })
+  return Promise.race([promise, timeoutPromise]).finally(() => clearTimeout(timeout))
 }

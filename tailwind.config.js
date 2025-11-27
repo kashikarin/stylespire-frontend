@@ -35,6 +35,10 @@ export default {
         "shadow-soft": "0 4px 16px rgba(0, 0, 0, 0.08)",
         "shadow-strong": "0 8px 20px rgba(0, 0, 0, 0.12)"
       },
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"],
+        playfair: ["Playfair Display", "serif"],
+      }
       spacing: { header: "65px" },
       keyframes: {
         modalSlideIn: {
