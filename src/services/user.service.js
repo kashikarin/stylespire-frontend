@@ -39,15 +39,19 @@ async function signup(userCred) {
 }
 
 async function getCurrentUser() {
-  try {
-    const user = await httpService.get('auth/me')
-    if (user) {
-      _saveLocalUser(user)
+    const token =_getAccessToken()
+    console.log("🚀 ~ token:", token)
+    if (!token) return null
+    try {
+            const user = await httpService.get('auth/me')
+            console.log("🚀 ~ user:", user)
+            if (user) {
+                _saveLocalUser(user)
+            }
+            return user
+        } catch (err) {
+            throw err
     }
-    return user
-  } catch (err) {
-    throw err
-  }
 }
 
 function getLoggedinUser() {

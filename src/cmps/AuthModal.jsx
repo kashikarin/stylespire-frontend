@@ -3,7 +3,7 @@ import { LoginFields } from "./LoginFields"
 import { SignupFields } from "./SignupFields"
 import { login, setAuthMode, signup } from '../store/actions/user.actions.js'
 import { useSelector } from "react-redux"
-import { useMediaQuery } from "../customHooks/useMediaQuery.js"
+import { useMediaQuery } from "../hooks/useMediaQuery.js"
 import { breakpoints } from "../util/breakpoints.js"
 
 export function AuthModal(){

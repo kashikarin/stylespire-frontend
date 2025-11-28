@@ -10,7 +10,7 @@ export async function addFavorite(userId, userFullname, imageUrl, imageId, image
         console.log("🚀 ~ savedFavorite:", savedFavorite)
         store.dispatch(getCmdAddFavorite(savedFavorite))
         console.log("🚀 ~ savedFavorite:", savedFavorite)
-        await loadFavorites({})
+        await loadFavorites({userId})
         return savedFavorite
   } catch (err) {
         console.error('Cannot add favorite', err)

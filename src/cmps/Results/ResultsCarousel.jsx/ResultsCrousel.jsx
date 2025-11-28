@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import { CarouselArrows } from "./CarouselArrows"
-import { useMediaQuery } from "../../customHooks/useMediaQuery"
-import { breakpoints } from "../../util/breakpoints"
+import { useMediaQuery } from "../../../hooks/useMediaQuery"
+import { breakpoints } from "../../../util/breakpoints"
 import { ResultsSlide } from "./ResultsSlide"
 import { DotsIndicator } from "./DotsIndicator"
 
-export function ResultsCarousel({ images, onLike }){
+export function ResultsCarousel({ images, onLike, getIsLiked, isLoggedInUser }){
     const imgTrackRef = useRef()
     const frameRef = useRef()  
     const [current, setCurrent] = useState(0)
@@ -83,7 +83,7 @@ export function ResultsCarousel({ images, onLike }){
                     {images.map((image, i) => (
                         // slide wrapper
                         <div className={`flex-shrink-0 overflow-hidden ${isNarrow? "snap-start" : ''}`} key={i} style={{ width: slideWidth }}>
-                            <ResultsSlide image={image} onLike={onLike} />
+                            <ResultsSlide image={image} onLike={onLike} isLiked={getIsLiked(image.id)} isLoggedInUser={isLoggedInUser}/>
                         </div>))}
                 </div>
                 {/* Desktop's arrows */}

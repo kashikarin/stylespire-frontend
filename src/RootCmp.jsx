@@ -5,9 +5,16 @@ import { Routes, Route } from 'react-router'
 import { Results } from "./pages/Results"
 import { useSelector } from "react-redux"
 import { AuthModal } from "./cmps/AuthModal"
+import { useEffect } from "react"
+import { getUserOnRefresh } from "./store/actions/user.actions"
 
 export function RootCmp(){
     const authMode = useSelector(state => state.userModule.authMode)
+    
+    useEffect(()=>{
+        getUserOnRefresh()
+    }, [])
+
     return(
         <>
             <div className='main-container'>

@@ -32,13 +32,14 @@ export default {
         gray4: "#333",
       },
       boxShadow: { 
-        "shadow-soft": "0 4px 16px rgba(0, 0, 0, 0.08)",
-        "shadow-strong": "0 8px 20px rgba(0, 0, 0, 0.12)"
+        "shadow-soft": "0 2px 6px rgba(0, 0, 0, 0.10)",
+        "shadow-hover": "0 6px 14px rgba(0, 0, 0, 0.15)",
+        "shadow-strong": "0 10px 25px rgba(0, 0, 0, 0.18)"
       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
         playfair: ["Playfair Display", "serif"],
-      }
+      },
       spacing: { header: "65px" },
       keyframes: {
         modalSlideIn: {
@@ -48,11 +49,16 @@ export default {
         dropdownSlideIn: {
           '0%:': { opacity: '0', transform: 'scale(0.9)' },
           '100%': { opacity: '1', transform: 'translateY(0)' }
-        }
+        },
+        fadeIn: {
+          '0%': { opacity: 0, transform: 'translateY(4px)' },
+          '100%': { opacity: 1, transform: 'translateY(0)' },
+        },
       },
       animation: {
         modalSlideIn: 'modalSlideIn 0.3s ease-out',
-        dropdownSlideIn: 'dropdownSlideIn 0.2 ease-in-out'
+        dropdownSlideIn: 'dropdownSlideIn 0.2 ease-in-out',
+        fadeIn: 'fadeIn 0.4s ease-out'
       },
     },
   },

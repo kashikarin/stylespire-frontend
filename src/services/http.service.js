@@ -3,7 +3,9 @@ import Axios from 'axios'
 const BASE_URL =
   process.env.NODE_ENV === 'production' ? '/api/' : '//localhost:8000/api/'
 
-const axios = Axios.create({ withCredentials: true })
+const axios = Axios.create({ 
+    baseURL: BASE_URL,
+    withCredentials: true })
 
 axios.interceptors.request.use(config => {
   const token = localStorage.getItem('accessToken')
@@ -61,7 +63,7 @@ async function ajax(endpoint, method = 'GET', data = null) {
   const url = `${BASE_URL}${endpoint}`
   const params = method === 'GET' ? data : null
 
-  const options = { url, method, data, params }
+  const options = { url, method, ...(method === 'GET' ? { params: data || {} } : { data }) }
 
   try {
     const res = await axios(options)

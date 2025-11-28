@@ -3,13 +3,9 @@ import { SET_AUTH_MODE, SET_LOGGEDINUSER } from "../reducers/user.reducer";
 import { store } from "../store";
 
 export async function login(credentials) {
-    console.log('user action runs')
   try {
     const user = await userService.login(credentials)
-    store.dispatch({
-      type: SET_LOGGEDINUSER,
-      user,
-    })
+    store.dispatch(getCmdLogin(user))
     return user
   } catch (err) {
     console.error('Cannot login', err)
@@ -20,10 +16,7 @@ export async function login(credentials) {
 export async function signup(signingUpUser) {
   try {
     const user = await userService.signup(signingUpUser)
-    store.dispatch({
-      type: SET_LOGGEDINUSER,
-      user,
-    })
+    store.dispatch(getCmdSignup(user))
     return user
   } catch (err) {
     console.error('Cannot signup', err)
@@ -32,32 +25,63 @@ export async function signup(signingUpUser) {
 }
 
 export async function logout() {
-    console.log('LOG OUT ACTION RUNS')
   try {
     await userService.logout()
-    store.dispatch({
-      type: SET_LOGGEDINUSER,
-      user: null,
-    })
+    store.dispatch(getCmdLogout())
   } catch (err) {
     console.error('Cannot logout', err)
     throw err
   }
 }
 
-// export async function loadUser(userId) {
-//   try {
-//     const user = await userService.getById(userId)
-//     store.dispatch({ type: SET_WATCHED_USER, user })
-//   } catch (err) {
-//     console.error('Cannot load user', err)
-//     throw err
-//   }
-// }
-
 export function setAuthMode(authMode) {
-  store.dispatch({
-    type: SET_AUTH_MODE,
-    authMode
-  })
+  store.dispatch(getCmdSetAuthMode(authMode))
+}
+
+export async function getUserOnRefresh(){
+    try {
+        const user = await userService.getCurrentUser()
+        console.log("🚀 ~ user:", user)
+        if (user) store.dispatch(getCmdGetUserOnRefresh(user))
+    } catch(err) {
+        console.error('Cannot refresh loggedin user', err)
+        throw err
+    }
+    
+}
+
+
+//cmd creators
+function getCmdLogin(user){
+    return {
+        type: SET_LOGGEDINUSER,
+        user 
+    }
+}
+
+function getCmdSignup(user){
+    return {
+        type: SET_LOGGEDINUSER,
+        user 
+    }
+}
+
+function getCmdLogout(){
+    return {
+        type: SET_LOGGEDINUSER,
+        user: null
+    }
+}
+
+function getCmdSetAuthMode(authMode){
+    return {
+        type: SET_AUTH_MODE,
+        authMode
+    }
+}
+function getCmdGetUserOnRefresh(user){
+    return{
+        type: SET_LOGGEDINUSER,
+        user
+    }
 }

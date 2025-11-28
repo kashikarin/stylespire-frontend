@@ -85,7 +85,15 @@ export function AppHeader(){
 
     const dropdown = (
         <div 
-        className="bg-white rounded-xl shadow-shadow-strong min-w-[200px] py-2 z-100 mt-2 overflow-hidden" 
+            className="
+                bg-white 
+                rounded-xl 
+                shadow-shadow-strong 
+                min-w-[200px] 
+                py-2 mt-2 
+                z-100 
+                overflow-hidden
+            " 
         ref={dropdownRef}
         style={{
             position: 'absolute',
@@ -193,7 +201,7 @@ export function AppHeader(){
   )
     return(
         <>
-            <div className='app-header-container full sticky top-0 z-10 border-b border-primary-dark w-full min-w-[100dvw] h-[80px]'>
+            <div className='app-header-container full bg-primary-bg sticky top-0 z-10 border-b border-primary-dark w-full min-w-[100dvw] h-[80px]'>
                 <nav className='flex justify-between items-center w-full min-h-[80px] py-2'>            
                     <Link to='/' className='m-0 p-0'>
                         <img src="/imgs/sslogo.png" alt="stylespire logo" className='h-30 w-28'/>

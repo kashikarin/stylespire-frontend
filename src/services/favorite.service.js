@@ -66,9 +66,11 @@ function getDefaultFavoriteFilter() {
 function createFavorite(userId, userFullname, imageUrl, imageId, imageDescription){
   if (!userId) return
   return {
-    imageId,
-    imageDescription,
-    imageUrl,
+    image: {
+      id: imageId,
+      description: imageDescription,
+      url: imageUrl,
+    },
     user: {
       _id: userId,
       fullname: userFullname

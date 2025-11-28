@@ -1,9 +1,18 @@
-import { article } from "framer-motion/client";
+import { FavoriteItem } from "./FavoritesItem"
 
 export function FavoritesGrid({ favorites, onSelect }){
+    console.log("🚀 ~ favorites:", favorites)
     return(
-        <article className='grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-4'>
-            {favorites.map((fav, i) => <FavoriteItem key={photo.id} image={image} onClick={() => onSelect(image)} />)}
+        <article 
+            className='
+                columns-1 
+                narrow:columns-2 
+                normal:columns-3 
+                wide:columns-4 
+                gap-4 
+                py-4'
+            >
+            {favorites.map(fav => <FavoriteItem key={fav._id} favorite={fav} onSelect={()=> onSelect(fav)} />)}
         </article>
     )
 }
