@@ -1,15 +1,36 @@
-export function FavoriteItem({ favorite, onSelect }){
+import { LikeIcon } from "../LikeIcon"
+
+export function FavoriteItem({ 
+    favorite, 
+    onSelect,  
+    onLike,
+    isLiked,
+    isLoggedInUser
+}){
     console.log("🚀 ~ fav:", favorite)
     
     function handleSelectFav(ev, favorite) {
         ev.stopPropagation()
         onSelect(favorite)
     }
+
+    function onLikeFromIcon() {
+        onLike(
+            isLiked,
+            favorite.image.url,
+            favorite.image.id,
+            favorite.image.description
+        )
+    }
+
     return(
         <div 
             className="
+                relative
+                group
                 mb-4 
-                break-inside-avoid block 
+                break-inside-avoid 
+                block 
                 cursor-pointer 
                 rounded-xl 
                 overflow-hidden 
@@ -20,7 +41,27 @@ export function FavoriteItem({ favorite, onSelect }){
             " 
             onClick={(ev) =>handleSelectFav(ev, favorite)}
         >
-            <img src={favorite.image.url} className="w-full object-cover"/>
+            <div 
+                className="
+                    absolute
+                    w-full
+                    text-white
+                    p-2 rounded full
+                    top-0 right-3 
+                    flex justify-end 
+                    z-[100]
+                    opacity-0 
+                    transition-opacity duration-300
+                    group-hover:opacity-90
+                "
+            >
+                {isLoggedInUser && <LikeIcon 
+                    imageId={favorite.image.id}
+                    onLike={onLikeFromIcon} 
+                />}
+                
+            </div>
+            <img src={favorite.image.url} className="w-full object-cover" loading="lazy"/>
         </div>
     )
 }

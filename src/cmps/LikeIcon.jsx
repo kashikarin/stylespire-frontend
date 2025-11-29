@@ -1,7 +1,12 @@
 import { useLike } from "../hooks/useLike"
 
-export function LikeIcon({ imageId }){
+export function LikeIcon({ imageId, onLike }){
     const { toggleLike, getIsLiked } = useLike()
+
+    function handleLike(ev){
+        ev.stopPropagation()
+        onLike()
+    }
 
     return(
         <button 
@@ -20,7 +25,7 @@ export function LikeIcon({ imageId }){
                                 : "fa-regular fa-heart text-white drop-shadow-[0_0_2px_rgba(255,255,255,0.45)] transition-all duration-200"
                         }
                         style={{ fontSize: "24px" }}
-                        onClick={toggleLike}
+                        onClick={handleLike}
                     />
                 </button>
     )

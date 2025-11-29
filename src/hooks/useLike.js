@@ -5,13 +5,15 @@ import { useIsLoggedInUser } from "./useIsLoggedInUser"
 export function useLike(){
     const favorites = useSelector(state => state.favoriteModule.favorites)
     const { loggedInUser } = useIsLoggedInUser()
+    
     async function toggleLike(isLiked, imageUrl, imageId, imageDescription){
+        console.log("🚀 ~ toggleLike ~ isLiked:", isLiked)
         if (isLiked) {
             const fav = favorites.find(f => f.image.id === imageId)
-            await removeFavorite(fav._id)--
+            await removeFavorite(fav._id)
             await loadFavorites({userId: loggedInUser._id})
         } else addFavorite(
-                    loggedInUser._id, 
+                    loggedInUser._id, //later all user data in the backend
                     loggedInUser.fullname, 
                     imageUrl, 
                     imageId, 

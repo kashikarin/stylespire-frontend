@@ -1,17 +1,17 @@
 import { FavoritesGrid } from "../cmps/Favorites/FavoritesGrid"
 import { useFavorites } from "../hooks/useFavorites"
 import { ImageModal } from '../cmps/Favorites/ImageModal'  
+import { useLike } from "../hooks/useLike"
+import { useIsLoggedInUser } from "../hooks/useIsLoggedInUser"
 
 export function Favorites(){
     const { favorites, 
             handleSelect, 
             selectedFav, 
             resetSelectedFav 
-        } = useFavorites()    
-
-    function onClose(){
-
-    }
+        } = useFavorites()  
+    const { isLoggedInUser } = useIsLoggedInUser()  
+    const { getIsLiked, toggleLike } = useLike()
 
     return(
         <section 
@@ -39,7 +39,7 @@ export function Favorites(){
                     Your Inspiration Board
                 </h1>
                 <p 
-                    clasName='
+                    className='
                         text-gray3 
                         mt-1 
                         text-sm 
@@ -49,7 +49,7 @@ export function Favorites(){
                     items curated by you
                 </p>
             </header>
-            <FavoritesGrid favorites={favorites} onSelect={handleSelect}/>
+            <FavoritesGrid favorites={favorites} onSelect={handleSelect} onLike={toggleLike} getIsLiked={getIsLiked} isLoggedInUser={isLoggedInUser}/>
             <ImageModal selectedFav={selectedFav} onClose={resetSelectedFav}/>
         </section>
     )

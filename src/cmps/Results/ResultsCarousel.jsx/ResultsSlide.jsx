@@ -1,19 +1,18 @@
-import { flushKeyframeResolvers } from "framer-motion"
-import { small } from "framer-motion/client"
-import { addFavorite, loadFavorites, removeFavorite } from "../../../store/actions/favorite.actions"
-import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
 import { LikeIcon } from "../../LikeIcon"
 
 export function ResultsSlide({ image, onLike, isLiked, isLoggedInUser }){
-    console.log("🚀 ~ image:", image)
-    console.log("🚀 ~ isLiked:", isLiked)
-    
-    function toggleLike(ev){
-        ev.stopPropagation()
-        onLike(isLiked, image.urls.small, image.id, image.alt_description)
-    }
+console.log("🚀 ~ ResultsSlide ~ isLoggedInUser:", isLoggedInUser)
+console.log("🚀 ~ ResultsSlide ~ isLiked:", isLiked)
+console.log("🚀 ~ ResultsSlide ~ image:", image)
 
+function onLikeFromIcon() {
+    onLike(
+        isLiked,
+        image.urls.small,
+        image.id,
+        image.alt_description
+    )
+}
     return(
         <div className="relative w-full aspect-[4/3]">
             {/* top overlay bar */}
@@ -31,7 +30,10 @@ export function ResultsSlide({ image, onLike, isLiked, isLoggedInUser }){
                     group-hover:opacity-90
                 "
             >
-                {isLoggedInUser && <LikeIcon imageId={image.id} />}
+                {isLoggedInUser && <LikeIcon 
+                    imageId={image.id}
+                    onLike={onLikeFromIcon} 
+                />}
                 
             </div>
             <img 

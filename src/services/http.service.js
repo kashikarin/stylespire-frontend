@@ -3,9 +3,14 @@ import Axios from 'axios'
 const BASE_URL =
   process.env.NODE_ENV === 'production' ? '/api/' : '//localhost:8000/api/'
 
-const axios = Axios.create({ 
+  const axios = Axios.create({ 
     baseURL: BASE_URL,
     withCredentials: true })
+
+  const refreshAxios = Axios.create({
+    baseURL: BASE_URL,
+    withCredentials: true
+  })
 
 axios.interceptors.request.use(config => {
   const token = localStorage.getItem('accessToken')
@@ -24,20 +29,24 @@ axios.interceptors.response.use(
       originalRequest._retry = true
 
       try {
-        const refreshRes = await axios.get(`${BASE_URL}auth/refresh`, {
-          withCredentials: true,
-        })
-
+        const refreshRes = await refreshAxios.get('/auth/refresh')
         const { accessToken } = refreshRes.data
+
+        if (!accessToken) throw new Error('No access token returned from refresh')
+
         localStorage.setItem('accessToken', accessToken)
 
-        originalRequest.headers.Authorization = `Bearer ${accessToken}`
+        originalRequest.headers = {
+          ...originalRequest.headers,
+          Authorization: `Bearer ${accessToken}`
+        }
 
         return axios(originalRequest)
 
-      } catch (err) {
-        sessionStorage.clear()
-        localStorage.removeItem('accessToken')
+      } catch (refreshError) {
+          sessionStorage.clear()
+          localStorage.removeItem('accessToken')
+        return Promise.reject(refreshError)
       }
     }
     return Promise.reject(err)
@@ -60,10 +69,14 @@ export const httpService = {
 }
 
 async function ajax(endpoint, method = 'GET', data = null) {
-  const url = `${BASE_URL}${endpoint}`
-  const params = method === 'GET' ? data : null
-
-  const options = { url, method, ...(method === 'GET' ? { params: data || {} } : { data }) }
+  const options = {
+    url: endpoint,
+    method,
+    ...(method === 'GET' ? 
+      { params: data || {} } :
+      { data }
+    )
+}
 
   try {
     const res = await axios(options)
@@ -74,9 +87,6 @@ async function ajax(endpoint, method = 'GET', data = null) {
       data
     )
     console.dir(err)
-    if (err.response && err.response.status === 401) {
-      sessionStorage.clear()
-    }
     throw err
   }
 }
