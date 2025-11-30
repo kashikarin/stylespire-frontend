@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { login, logout, setAuthMode, signup } from "../store/actions/user.actions"
 import { useSelector } from "react-redux"
+import { useIsLoggedInUser } from "../hooks/useIsLoggedInUser"
 
 export function AppHeader(){
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)    
@@ -12,7 +13,7 @@ export function AppHeader(){
     const dropdownRef = useRef()
     const location = useLocation()
     const [coords, setCoords] = useState({ top: 0, right: 0 })
-    const loggedInUser = useSelector(state => state.userModule.loggedInUser)
+    const { loggedInUser } = useIsLoggedInUser()
     const isHomePage = location.pathname === '/'
 
     console.log("🚀 ~ loggedInUser:", loggedInUser)
@@ -207,9 +208,9 @@ export function AppHeader(){
                         <img src="/imgs/sslogo.png" alt="stylespire logo" className='h-30 w-28'/>
                     </Link>
                     {isHomePage && <div className="flex justify-end items-center gap-8">
-                        <NavLink to='/favorites' className='font-semibold p-0 m-0 rounded-[10px] text-primary-dark hover:text-secondary'>
+                        {loggedInUser && <NavLink to='/favorites' className='font-semibold p-0 m-0 rounded-[10px] text-primary-dark hover:text-secondary'>
                             Favorites
-                        </NavLink>
+                        </NavLink>}
                         <button 
                             className='
                                 bg-transparent 
@@ -222,7 +223,7 @@ export function AppHeader(){
                             ' 
                             ref={buttonRef} onClick={toggleDropdown}>
                             {(loggedInUser) ? 
-                                <UserLetterCircle username='karin'/> :
+                                <UserLetterCircle username={loggedInUser.fullname}/> :
                                 <ReactSVG src='/svgs/hamburger-icon.svg'/>
                             }
                         </button>

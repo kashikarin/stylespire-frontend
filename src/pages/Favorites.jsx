@@ -13,6 +13,7 @@ export function Favorites(){
     const { isLoggedInUser } = useIsLoggedInUser()  
     const { getIsLiked, toggleLike } = useLike()
 
+    console.log('condition', (favorites || favorites.length))
     return(
         <section 
             className='
@@ -23,21 +24,32 @@ export function Favorites(){
         >
             <header 
                 className='
-                    mb-8 px-2 
-                    animate-fadeIn
+                mb-8 px-2 
+                animate-fadeIn
                 '
-            >
+                >
                 <h1 
                     className="
-                        text-2xl 
-                        narrow:text-3xl 
-                        font-bold 
-                        text-primary-dark
-                        tracking-tight
+                    text-2xl 
+                    narrow:text-3xl 
+                    font-bold 
+                    text-primary-dark
+                    tracking-tight
                     "
-                >
+                    >
                     Your Inspiration Board
                 </h1>
+                    
+                {favorites.length ? <p 
+                    className='
+                        text-gray3 
+                        mt-1 
+                        text-sm 
+                        narrow:text-base
+                    '
+                >
+                    Items curated by you
+                </p> :
                 <p 
                     className='
                         text-gray3 
@@ -46,10 +58,17 @@ export function Favorites(){
                         narrow:text-base
                     '
                 >
-                    items curated by you
+                    Save looks you love, and they’ll show up here — ready to inspire you anytime
                 </p>
+                } 
             </header>
-            <FavoritesGrid favorites={favorites} onSelect={handleSelect} onLike={toggleLike} getIsLiked={getIsLiked} isLoggedInUser={isLoggedInUser}/>
+                <FavoritesGrid 
+                    favorites={favorites} 
+                    onSelect={handleSelect} 
+                    onLike={toggleLike} 
+                    getIsLiked={getIsLiked} 
+                    isLoggedInUser={isLoggedInUser}
+                />
             <ImageModal selectedFav={selectedFav} onClose={resetSelectedFav}/>
         </section>
     )
