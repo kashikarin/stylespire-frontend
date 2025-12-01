@@ -2,19 +2,19 @@ import { useState } from "react"
 import { CategoryBlock } from "./CategoryBlock"
 import { useNavigate } from "react-router-dom"
 import { setLoadingDone, setLoadingStart } from "../store/actions/system.actions"
-import { weatherService } from "../services/weather.service"
-import { unsplashService } from "../services/unsplash.service"
+import { useUnsplash } from "../hooks/useUnsplash"
 
 export function StyleMeModal({onClose}){
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
-    gender: "",
-    age: "",
-    mood: [],
-    style: [],
-    purpose: []
-  })
-    console.log("🚀 ~ formData:", formData)
+        gender: "",
+        age: "",
+        mood: [],
+        style: [],
+        purpose: []
+    })
+
+    const { getUnsplashResults } = useUnsplash()
 
   function updateField(field, label) {
     if ((field === 'gender') || (field === 'age')) setFormData(prev => ({...prev, [field]: label}))
@@ -28,15 +28,7 @@ export function StyleMeModal({onClose}){
     e.preventDefault()
     setLoadingStart()
     try {
-        const weather = await weatherService.getWeatherData()
-        const location = weather.city
-        const queryContext = {
-            form: formData,
-            weather,
-            location
-        }
-        const query = unsplashService.composeQuery(formData, weather)
-        const results = await unsplashService.searchUnsplash(query)
+        const results = await getUnsplashResults(formData)
         onClose()
         navigate('/results', {
             state: { results }
@@ -44,7 +36,7 @@ export function StyleMeModal({onClose}){
         
 
     } catch(err){
-        console.error("Error fetching outfits:", err);
+        console.error("Error fetching outfits:", err)
     }
     finally {
        setLoadingDone() 

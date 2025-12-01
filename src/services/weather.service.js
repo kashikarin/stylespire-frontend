@@ -62,7 +62,7 @@ async function _getWeather(lat, lon) {
         city: data.name
     }
   } catch(err){
-        throw new Error("Weather API error")
+        throw new Error("Weather API error", err)
   }
 }
 
@@ -97,7 +97,7 @@ export async function getWeatherData() {
       return weather
     }
   } catch (err) {
-    console.error("IP location weather failed:", err);
+    console.error("IP location weather failed:", err)
   }
   // --- 3. Default fallback ---
   const defaultWeather = {
