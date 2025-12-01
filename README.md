@@ -149,3 +149,20 @@ VITE_UNSPLASH_KEY=
 
 > ⚠️ **Do not include actual API keys in your repository.**  
 > Make sure `.env` is added to `.gitignore`.
+
+
+## 🚀 Coming Next (V2)
+
+The next major feature on the frontend is the **Stylespiration Board** — an interactive mood-board style workspace where users can create personalized outfit inspiration layouts.
+
+Planned capabilities include:
+
+- Selectable backgrounds (textures, themes, colors)  
+- A favorites sidebar showing saved images  
+- Drag & drop images from favorites onto the board  
+- Automatic background removal for placed images  
+- Positioning, resizing, and arranging elements on the board  
+- Saving the board for later editing  
+- Exporting or sharing the final board layout  
+
+This feature will serve as the creative core of Stylespire and is currently in development.
