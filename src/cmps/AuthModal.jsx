@@ -212,7 +212,7 @@ export function AuthModal(){
                                     disabled:cursor-not-allowed
                                     disabled:transform-none
                                 "
-                                disabled={isLoading || isUploadingImage}
+                                disabled={isLoading}
                             >
                                {isLoading ? 'Loading...' : authMode === 'signup' ? 'Sign Up' : 'Log In'}
                             </button>

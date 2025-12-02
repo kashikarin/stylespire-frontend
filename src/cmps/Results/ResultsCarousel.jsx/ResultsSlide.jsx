@@ -1,9 +1,6 @@
 import { LikeIcon } from "../../LikeIcon"
 
 export function ResultsSlide({ image, onLike, isLiked, isLoggedInUser }){
-console.log("🚀 ~ ResultsSlide ~ isLoggedInUser:", isLoggedInUser)
-console.log("🚀 ~ ResultsSlide ~ isLiked:", isLiked)
-console.log("🚀 ~ ResultsSlide ~ image:", image)
 
 function onLikeFromIcon() {
     onLike(

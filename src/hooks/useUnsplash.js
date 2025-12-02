@@ -9,7 +9,10 @@ export function useUnsplash(){
             const weather = await getWeather()
             const query = unsplashService.composeQuery(formData, weather) 
             const res = await unsplashService.searchUnsplash(query)
-            return res
+
+            if (!res || !Array.isArray(res)) return []
+            return res.filter(img => img && img.urls)
+            
         } catch(err){
             console.error("Error fetching outfits:", err)
             throw err

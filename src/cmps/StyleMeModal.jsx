@@ -2,10 +2,11 @@ import { useState } from "react"
 import { CategoryBlock } from "./CategoryBlock"
 import { useNavigate } from "react-router-dom"
 import { setLoadingDone, setLoadingStart } from "../store/actions/system.actions"
-import { useUnsplash } from "../hooks/useUnsplash"
+import { useStyleSearchParams } from "../hooks/useStyleSearchParams"
 
 export function StyleMeModal({onClose}){
     const navigate = useNavigate()
+    const { updateSearchParamsFromFormData  } = useStyleSearchParams(()=>{})
     const [formData, setFormData] = useState({
         gender: "",
         age: "",
@@ -14,8 +15,6 @@ export function StyleMeModal({onClose}){
         purpose: []
     })
     console.log("🚀 ~ StyleMeModal ~ formData:", formData)
-
-    const { getUnsplashResults } = useUnsplash()
 
   function updateField(field, label) {
     if ((field === 'gender') || (field === 'age')) setFormData(prev => ({...prev, [field]: label}))
@@ -29,12 +28,8 @@ export function StyleMeModal({onClose}){
     e.preventDefault()
     setLoadingStart()
     try {
-        const results = await getUnsplashResults(formData)
         onClose()
-        navigate('/results', {
-            state: { results, formData }
-        })
-        
+        navigate('/results', { state: { formData } })
 
     } catch(err){
         console.error("Error fetching outfits:", err)
@@ -62,18 +57,18 @@ export function StyleMeModal({onClose}){
             </div>
             <div className="
                     fixed 
-                    inset-0 
+                    inset-0 z-30 
+                    bg-surface 
+                    flex flex-col
+                    p-4 gap-3 
                     h-[100dvh] 
                     w-full 
-                    bg-surface 
-                    p-8 
-                    flex 
-                    flex-col 
+                    overflow-y-auto               
+                     
                     justify-center 
-                    gap-4 
-                    z-30
-                    narrow:relative 
                     narrow:gap-4 
+                    narrow:p-8
+                    narrow:relative 
                     narrow:h-auto 
                     narrow:rounded-xl 
                     narrow:shadow-soft 
@@ -83,22 +78,26 @@ export function StyleMeModal({onClose}){
                 onClick={(e) => e.stopPropagation()}
             >
                 <span className='
+                    pt-6
                     text-left 
                     text-xl
                     font-medium
                     narrow:text-center
+                    narrow:pt-0
+
 
                 '>
                     Style Input Needed
                 </span>
                 <p className="
                     text-left 
-                    text-ltext-primary-dark 
+                    mb-0
+                    text-text-primary-dark 
                     text-m
                     narrow:text-center
                 ">A few quick picks and we'll craft outfits that match your vibe</p>
                 
-                <form onSubmit={handleSubmit} className="space-y-8">
+                <form onSubmit={handleSubmit} className="space-y-6 narrow:space-y-8">
                     <CategoryBlock 
                         title='Gender'
                         field='gender'

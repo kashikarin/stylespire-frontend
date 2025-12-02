@@ -139,8 +139,6 @@ npm run dev
 Create a `.env` file in the project root and include the following variables:
 
 ```
-VITE_CLOUDINARY_CLOUD_NAME=
-VITE_CLOUDINARY_UPLOAD_PRESET=
 VITE_WEATHER_KEY=
 VITE_UNSPLASH_KEY=
 ```

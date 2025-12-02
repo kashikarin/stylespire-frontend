@@ -1,30 +1,27 @@
-import { useState } from "react"
 import { ResultsCarousel } from "../cmps/Results/ResultsCarousel.jsx/ResultsCrousel"
 import { ResultsTags } from "../cmps/Results/ResultsTags"
 import { useIsLoggedInUser } from "../hooks/useIsLoggedInUser"
 import { useLike } from "../hooks/useLike"
 import { useResults } from "../hooks/useResults"
-import { useUnsplash } from "../hooks/useUnsplash"
 import { ReactSVG } from "react-svg"
 
 export function Results() {
     const { isLoggedInUser } = useIsLoggedInUser()
-    const { images, formData } = useResults()
+    const { formData, results, loading, refresh } = useResults()
     const { getIsLiked, toggleLike } = useLike()
-    const { getUnsplashResults } = useUnsplash()
-    const [results, setResults] = useState(images)
 
-    async function handleRefresh(){
-        try {
-            const newImages = await getUnsplashResults(formData)
-            setResults(newImages)
-
-        } catch(err) {
-            console.error("Error fetching outfits:", err)
-        }
-    }
-
-    if (!images) return <h3>Sorry, no result...</h3>
+    if (!results || results.length === 0)
+        return (
+        <h3 className="text-center mt-12 text-primary-dark">
+            No looks found for your style.
+        </h3>
+        )
+    if (loading || !formData)
+        return (
+        <h3 className="text-center mt-12 text-primary-dark">
+            Loading your looks...
+        </h3>
+        )
     return(
         <section className="w-full mx-auto flex flex-col gap-2 narrow:w-2/3 ">
             <div className="flex justify-between">
@@ -52,7 +49,7 @@ export function Results() {
                         normal:transition-colors normal:duration-200
                        normal:hover:bg-primary-dark-10/20                        
                     "
-                    onClick={handleRefresh}
+                    onClick={refresh}
                 >
                     ✨ Refresh Looks
                 </button>
@@ -67,7 +64,7 @@ export function Results() {
                         shadow-[0_0_2px_theme(colors.primary-dark-40)]
                         normal:hidden                     
                     "
-                    onClick={handleRefresh}
+                    onClick={refresh}
                 >
                     <ReactSVG src='/svgs/refresh.svg' />
                 </button>
