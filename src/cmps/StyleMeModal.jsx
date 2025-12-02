@@ -2,11 +2,9 @@ import { useState } from "react"
 import { CategoryBlock } from "./CategoryBlock"
 import { useNavigate } from "react-router-dom"
 import { setLoadingDone, setLoadingStart } from "../store/actions/system.actions"
-import { useStyleSearchParams } from "../hooks/useStyleSearchParams"
 
 export function StyleMeModal({onClose}){
     const navigate = useNavigate()
-    const { updateSearchParamsFromFormData  } = useStyleSearchParams(()=>{})
     const [formData, setFormData] = useState({
         gender: "",
         age: "",
@@ -14,7 +12,6 @@ export function StyleMeModal({onClose}){
         style: [],
         purpose: []
     })
-    console.log("🚀 ~ StyleMeModal ~ formData:", formData)
 
   function updateField(field, label) {
     if ((field === 'gender') || (field === 'age')) setFormData(prev => ({...prev, [field]: label}))

@@ -70,11 +70,22 @@ export default {
           '0%': { opacity: 0, transform: 'translateY(4px)' },
           '100%': { opacity: 1, transform: 'translateY(0)' },
         },
+        logoGlow: {
+          '0%, 100%': {
+            opacity: '0.6',
+            filter: 'drop-shadow(0 0 2px #40707640)'
+          },
+          '50%': {
+            opacity: '1',
+            filter: 'drop-shadow(0 0 12px #40707680)'
+          }
+        }
       },
       animation: {
         modalSlideIn: 'modalSlideIn 0.3s ease-out',
         dropdownSlideIn: 'dropdownSlideIn 0.2 ease-in-out',
-        fadeIn: 'fadeIn 0.4s ease-out'
+        fadeIn: 'fadeIn 0.4s ease-out',
+        logoGlow: 'logoGlow 1.8s ease-in-out infinite',
       },
     },
   },

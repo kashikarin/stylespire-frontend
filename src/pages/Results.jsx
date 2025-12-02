@@ -1,3 +1,4 @@
+import { Loader } from "../cmps/Loader"
 import { ResultsCarousel } from "../cmps/Results/ResultsCarousel.jsx/ResultsCrousel"
 import { ResultsTags } from "../cmps/Results/ResultsTags"
 import { useIsLoggedInUser } from "../hooks/useIsLoggedInUser"
@@ -18,9 +19,8 @@ export function Results() {
         )
     if (loading || !formData)
         return (
-        <h3 className="text-center mt-12 text-primary-dark">
-            Loading your looks...
-        </h3>
+
+        <Loader />
         )
     return(
         <section className="w-full mx-auto flex flex-col gap-2 narrow:w-2/3 ">

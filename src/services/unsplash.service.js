@@ -8,12 +8,13 @@ export const unsplashService = {
     getLabels
 }
 
-async function searchUnsplash(query) {
+async function searchUnsplash(query, page) {
   const url = "https://api.unsplash.com/search/photos";
 
   const res = await axios.get(url, {
     params: {
       query,
+      page,
       per_page: 7,
       orientation: "portrait",
       content_filter: "high",   
@@ -101,7 +102,10 @@ function composeQuery(formData, weather){
     terms = _cleanTerms(terms)
     terms = [...new Set(terms)]
     terms.push('outfit')
-    return terms.join(' ')
+    const query = terms.join(' ')
+    const page = Math.floor(Math.random() * 5) + 1
+
+    return { query, page }
 }
 
 function getLabels(formData){
