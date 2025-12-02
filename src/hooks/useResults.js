@@ -5,7 +5,7 @@ import { useIsLoggedInUser } from "./useIsLoggedInUser"
 
 export function useResults() {
     const location = useLocation()
-    const { results: images } = location.state
+    const { results: images, formData } = location.state
     const { loggedInUser } = useIsLoggedInUser()
     
     useEffect(()=>{
@@ -16,6 +16,7 @@ export function useResults() {
 
     return {
         images,
+        formData,
         loggedInUser,
     }
 }

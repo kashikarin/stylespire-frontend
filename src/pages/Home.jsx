@@ -1,9 +1,13 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { StyleMeModal } from "../cmps/StyleMeModal"
+import { useMediaQuery } from "../hooks/useMediaQuery.js"
+import { breakpoints } from "../util/breakpoints.js"
 
 export function Home(){
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const isNarrow = useMediaQuery(breakpoints.tablet)
+    console.log("🚀 ~ Home ~ isNarrow:", isNarrow)
     
     function handleClose() {
         setIsModalOpen(false)
@@ -11,16 +15,22 @@ export function Home(){
 
     return(
         <>
-            <div className="flex flex-col items-center text-center gap-6 px-4 py-12 max-w-2xl mx-auto">
+            <div 
+                className="
+                    flex flex-col items-center 
+                    text-center 
+                    gap-6 px-4 narrow:py-12 
+                    max-w-2xl mx-auto
+                ">
                 <h2 className="pt-10 text-4xl md:text-6xl font-semibold text-primary-dark">
                     Your Perfect Outfit Starts Here.
                 </h2>               
                 <p className="text-lg md:text-xl text-primary-dark leading-relaxed max-w-xl">
                     Tell us where you’re going and how you’re feeling — we’ll dress you up
                 </p>
-                <p className="text-lg md:text-xl text-primary-dark leading-relaxed max-w-xl">
+                {!isNarrow && <p className="text-lg md:text-xl text-primary-dark leading-relaxed max-w-xl">
                     Your mood, the weather, and your style come together to inspire the perfect outfit.
-                </p>
+                </p>}
                 
                 <button
                     onClick={() => setIsModalOpen(true)}

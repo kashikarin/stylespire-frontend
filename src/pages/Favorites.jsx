@@ -30,11 +30,11 @@ export function Favorites(){
                 >
                 <h1 
                     className="
-                    text-2xl 
-                    narrow:text-3xl 
-                    font-bold 
-                    text-primary-dark
-                    tracking-tight
+                        text-2xl 
+                        narrow:text-3xl 
+                        font-bold 
+                        text-primary-dark
+                        tracking-tight
                     "
                     >
                     Your Inspiration Board

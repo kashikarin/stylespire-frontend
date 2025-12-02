@@ -13,6 +13,7 @@ export function StyleMeModal({onClose}){
         style: [],
         purpose: []
     })
+    console.log("🚀 ~ StyleMeModal ~ formData:", formData)
 
     const { getUnsplashResults } = useUnsplash()
 
@@ -31,7 +32,7 @@ export function StyleMeModal({onClose}){
         const results = await getUnsplashResults(formData)
         onClose()
         navigate('/results', {
-            state: { results }
+            state: { results, formData }
         })
         
 

@@ -3,20 +3,15 @@ import { LoginFields } from "./LoginFields"
 import { SignupFields } from "./SignupFields"
 import { login, setAuthMode, signup } from '../store/actions/user.actions.js'
 import { useSelector } from "react-redux"
-import { useMediaQuery } from "../hooks/useMediaQuery.js"
-import { breakpoints } from "../util/breakpoints.js"
 
 export function AuthModal(){
-    console.log('auth modallll')
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    const [isUploadingImage, setIsUploadingImage] = useState(false)
     const [credentials, setCredentials] = useState({
         email: '',
         password: '',
         fullname: '',
     })
-    const isNarrow = useMediaQuery(breakpoints.tablet)
     const authMode = useSelector(state => state.userModule.authMode)
 
     useEffect(() => {
