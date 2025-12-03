@@ -203,15 +203,38 @@ export function AppHeader(){
   )
     return(
         <>
-            <div className='app-header-container full bg-primary-bg sticky top-0 z-10 border-b border-primary-dark w-full min-w-[100dvw] h-[80px]'>
+            <div 
+                className='
+                    app-header-container full 
+                    bg-primary-bg 
+                    sticky top-0 
+                    z-10 
+                    border-b border-primary-dark 
+                    w-full min-w-[100dvw] h-[80px]
+                '>
                 <nav className='flex justify-between items-center w-full min-h-[80px] py-2'>            
                     <Link to='/' className='m-0 p-0'>
                         <img src="/imgs/sslogo.png" alt="stylespire logo" className='h-12 w-14'/>
                     </Link>
-                    {(isHomePage && !isMobile) && <div className="flex justify-end items-center gap-8">
-                        {loggedInUser && <NavLink to='/favorites' className='font-semibold p-0 m-0 rounded-[10px] text-primary-dark hover:text-secondary'>
-                            Favorites
-                        </NavLink>}
+                    {(isHomePage && !isMobile) && <div 
+                        className="
+                            flex justify-end items-center gap-8
+                        "
+                    >
+                        {loggedInUser && 
+                            <NavLink 
+                                to='/favorites' 
+                                className='
+                                    font-semibold 
+                                    p-0 m-0 
+                                    rounded-[10px] 
+                                    text-primary-dark 
+                                    hover:text-secondary
+                                '
+                            >
+                                Favorites
+                            </NavLink>
+                        }
                         <button 
                             className='
                                 bg-transparent 

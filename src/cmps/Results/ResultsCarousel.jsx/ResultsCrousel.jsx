@@ -18,7 +18,7 @@ export function ResultsCarousel({ images, onLike, getIsLiked, isLoggedInUser }){
 
         const observer = new ResizeObserver(entries => {
             const width = entries[0].contentRect.width
-            setSlideWidth(width)
+            setSlideWidth(Math.min(width, window.innerWidth))
         })
 
         observer.observe(frameRef.current)
@@ -65,7 +65,7 @@ export function ResultsCarousel({ images, onLike, getIsLiked, isLoggedInUser }){
     if (!images || !images.length) return null
 
     return(
-        <article className="w-[90vw] max-w-none narrow:w-full group relative">
+        <article className="w-[90vw] max-w-none narrow:w-[70%] group relative mx-auto">
             <div 
                 ref={frameRef}
                 className="w-full overflow-hidden rounded-lg"  
@@ -82,7 +82,7 @@ export function ResultsCarousel({ images, onLike, getIsLiked, isLoggedInUser }){
                 >
                     {images.map((image, i) => (
                         // slide wrapper
-                        <div className={`flex-shrink-0 overflow-hidden ${isNarrow? "snap-start" : ''}`} key={i} style={{ width: slideWidth }}>
+                        <div className={`w-full flex-shrink-0 overflow-hidden ${isNarrow? "snap-start" : ''}`} key={i}>
                             <ResultsSlide image={image} onLike={onLike} isLiked={getIsLiked(image.id)} isLoggedInUser={isLoggedInUser}/>
                         </div>))}
                 </div>

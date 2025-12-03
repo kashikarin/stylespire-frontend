@@ -16,7 +16,7 @@ export function ResultsSlide({ image, onLike, isLiked, isLoggedInUser }){
     }
 
     return(
-        <div className="relative w-full aspect-[4/3]">
+        <div className="relative w-full aspect-[4/3] max-h-[90vh]">
             {/* top overlay bar */}
             <div 
                 className={`
