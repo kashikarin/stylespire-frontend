@@ -3,9 +3,10 @@ import { ReactSVG } from "react-svg"
 import { UserLetterCircle } from "./UserLetterCircle"
 import { useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
-import { login, logout, setAuthMode, signup } from "../store/actions/user.actions"
-import { useSelector } from "react-redux"
+import { logout, setAuthMode } from "../store/actions/user.actions"
 import { useIsLoggedInUser } from "../hooks/useIsLoggedInUser"
+import { breakpoints } from "../util/breakpoints"
+import { useMediaQuery } from "../hooks/useMediaQuery"
 
 export function AppHeader(){
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)    
@@ -15,9 +16,9 @@ export function AppHeader(){
     const [coords, setCoords] = useState({ top: 0, right: 0 })
     const { loggedInUser } = useIsLoggedInUser()
     const isHomePage = location.pathname === '/'
-
-    console.log("🚀 ~ loggedInUser:", loggedInUser)
-
+    const isMobile = useMediaQuery(breakpoints.mobile)
+    console.log("🚀 ~ AppHeader ~ isMobile:", isMobile)
+    
     useEffect(() => {
         let portalRoot = document.getElementById('portal-root')
         if (!portalRoot) {
@@ -205,9 +206,9 @@ export function AppHeader(){
             <div className='app-header-container full bg-primary-bg sticky top-0 z-10 border-b border-primary-dark w-full min-w-[100dvw] h-[80px]'>
                 <nav className='flex justify-between items-center w-full min-h-[80px] py-2'>            
                     <Link to='/' className='m-0 p-0'>
-                        <img src="/imgs/sslogo.png" alt="stylespire logo" className='h-30 w-28'/>
+                        <img src="/imgs/sslogo.png" alt="stylespire logo" className='h-12 w-14'/>
                     </Link>
-                    {isHomePage && <div className="flex justify-end items-center gap-8">
+                    {(isHomePage && !isMobile) && <div className="flex justify-end items-center gap-8">
                         {loggedInUser && <NavLink to='/favorites' className='font-semibold p-0 m-0 rounded-[10px] text-primary-dark hover:text-secondary'>
                             Favorites
                         </NavLink>}

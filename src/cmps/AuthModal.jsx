@@ -86,7 +86,7 @@ export function AuthModal(){
                 className="
                     narrow:fixed narrow:inset-0 
                     narrow:bg-black/50
-                    narrow:z-50 
+                    narrow:z-40 
                     narrow:backdrop-blur-sm
                     narrow:block hidden
                 " 
@@ -99,7 +99,7 @@ export function AuthModal(){
                     bg-white 
                     max-w-none max-h-none w-full h-full 
                     flex flex-col justify-start items-stretch 
-                    z-50
+                    z-10
                     p-6
                     narrow:inset-auto
                     narrow:top-1/2 narrow:left-1/2
