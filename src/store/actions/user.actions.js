@@ -1,4 +1,5 @@
 import { userService } from "../../services/user.service";
+import { CLOSE_STYLEME_MODAL, OPEN_STYLEME_MODAL } from "../reducers/system.reducer";
 import { SET_AUTH_MODE, SET_LOGGEDINUSER } from "../reducers/user.reducer";
 import { store } from "../store";
 
@@ -50,6 +51,13 @@ export async function getUserOnRefresh(){
     
 }
 
+export function openStyleMeModal(){
+  store.dispatch(getCmdOpenStyleMeModal())
+}
+
+export function closeStyleMeModal(){
+  store.dispatch(getCmdCloseStyleMeModal())
+}
 
 //cmd creators
 function getCmdLogin(user){
@@ -83,5 +91,17 @@ function getCmdGetUserOnRefresh(user){
     return{
         type: SET_LOGGEDINUSER,
         user
+    }
+}
+
+function getCmdOpenStyleMeModal(){
+    return{
+        type: OPEN_STYLEME_MODAL
+    }
+}
+
+function getCmdCloseStyleMeModal(){
+    return{
+        type: CLOSE_STYLEME_MODAL
     }
 }

@@ -2,8 +2,9 @@ import { useState } from "react"
 import { CategoryBlock } from "./CategoryBlock"
 import { useNavigate } from "react-router-dom"
 import { setLoadingDone, setLoadingStart } from "../store/actions/system.actions"
+import { closeStyleMeModal } from "../store/actions/user.actions"
 
-export function StyleMeModal({onClose}){
+export function StyleMeModal(){
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
         gender: "",
@@ -25,7 +26,7 @@ export function StyleMeModal({onClose}){
     e.preventDefault()
     setLoadingStart()
     try {
-        onClose()
+        closeStyleMeModal()
         navigate('/results', { state: { formData } })
 
     } catch(err){
@@ -49,12 +50,12 @@ export function StyleMeModal({onClose}){
                     narrow:items-center 
                     narrow:justify-center
                 " 
-                onClick={onClose}>
+                onClick={closeStyleMeModal}>
             
             </div>
             <div className="
                     fixed 
-                    inset-0 z-30 
+                    inset-0 z-[100] 
                     bg-surface 
                     flex flex-col
                     p-4 gap-3 
@@ -144,7 +145,7 @@ export function StyleMeModal({onClose}){
                     </button>
                 </form>
                 <button className='absolute top-0 right-0 text-l bg-transparent text-primary-dark hover:text-secondary' 
-                        onClick={onClose}
+                        onClick={closeStyleMeModal}
                 >
                     <i className="fa-solid fa-xmark"></i>
                 </button>

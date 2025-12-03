@@ -20,10 +20,10 @@ export function Results() {
     if (loading || !formData)
         return (
 
-        <Loader />
+            <Loader />
         )
     return(
-        <section className="w-full mx-auto flex flex-col gap-2 narrow:w-2/3 ">
+        <section className="w-full flex flex-col gap-2">
             <div className="flex justify-between">
                 <h3 
                     className="

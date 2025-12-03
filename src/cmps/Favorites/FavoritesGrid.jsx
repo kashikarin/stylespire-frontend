@@ -5,9 +5,9 @@ export function FavoritesGrid({ favorites, onSelect, onLike, getIsLiked, isLogge
     return(
         <article 
             className='
-                columns-1 
-                narrow:columns-2 
-                normal:columns-3 
+                columns-2 
+                narrow:columns-3 
+                normal:columns-4 
                 wide:columns-6 
                 gap-4 
                 py-4'

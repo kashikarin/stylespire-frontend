@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { useIsLoggedInUser } from "../hooks/useIsLoggedInUser"
 import { ReactSVG } from "react-svg"
-import { logout, setAuthMode } from "../store/actions/user.actions"
+import { closeStyleMeModal, logout, setAuthMode } from "../store/actions/user.actions"
 
 export function AppFooter(){
     const { loggedInUser } = useIsLoggedInUser()
@@ -34,6 +34,7 @@ export function AppFooter(){
                             flex flex-col items-center 
                             text-xs 
                         '
+                        onClick={()=> setAuthMode(null)}
                     >
                     <ReactSVG 
                         src='/svgs/home-icon.svg' 
@@ -46,6 +47,7 @@ export function AppFooter(){
                         flex flex-col items-center 
                         text-xs
                     '
+                    onClick={()=> setAuthMode(null)}
                 >
                     <ReactSVG src='/svgs/heart-icon-footer.svg'/>
                     Favorites

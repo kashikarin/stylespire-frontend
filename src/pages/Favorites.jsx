@@ -17,14 +17,13 @@ export function Favorites(){
     return(
         <section 
             className='
-                py-5 px-6 
                 bg-primary-bg 
                 min-h-[100dvh]
             '
         >
             <header 
                 className='
-                mb-8 px-2 
+                mb-8
                 animate-fadeIn
                 '
                 >

@@ -31,6 +31,10 @@
             padding-block: 3rem;
             width: 100%;
         }
+
+        @include for-mobile-layout {
+            padding-block: 6rem;
+        }
     }
 
     

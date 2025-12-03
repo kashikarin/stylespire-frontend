@@ -4,7 +4,7 @@ export function ResultsTags({ formData }){
     const tags = buildGlowyTags(formData)
 
     return(
-        <div className="flex flex-wrap gap-2 my-4">
+        <div className="flex flex-wrap gap-2 my-2 narrow:my-4">
             {tags.map(tag => (
                 <span 
                     key={tag} 
@@ -17,6 +17,7 @@ export function ResultsTags({ formData }){
                         backdrop-blur-[2px]
                         shadow-[0_0_6px_#40707640]
                         py-1 px-2
+
                     "
                 >
                     {tag}
