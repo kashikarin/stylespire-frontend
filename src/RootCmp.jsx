@@ -1,7 +1,7 @@
 import { AppHeader } from "./cmps/AppHeader"
 import { Favorites } from "./pages/Favorites"
 import { Home } from "./pages/Home"
-import { Routes, Route } from 'react-router'
+import { Routes, Route, useLocation } from 'react-router'
 import { Results } from "./pages/Results"
 import { useSelector } from "react-redux"
 import { AuthModal } from "./cmps/AuthModal"
@@ -12,11 +12,15 @@ import { useMediaQuery } from "./hooks/useMediaQuery"
 import { AppFooter } from "./cmps/AppFooter"
 import { StyleMeModal } from "./cmps/StyleMeModal"
 import { motion, AnimatePresence } from "framer-motion"
+import { StyleBoard } from "./pages/StyleBoard"
+
 
 export function RootCmp(){
+    const location = useLocation()
     const authMode = useSelector(state => state.userModule.authMode)
     const isStyleMeModalOpen = useSelector(state => state.systemModule.isStyleMeModalOpen)
     const isMobile = useMediaQuery(breakpoints.mobile)
+    const isStyleBoard = location.pathname.includes('board')
     useEffect(()=>{
         getUserOnRefresh()
     }, [])
@@ -25,11 +29,12 @@ export function RootCmp(){
         <>
             <div className='main-container'>
                 <AppHeader />
-                <main>
+                <main className={isStyleBoard ? 'no-header-padding' : ''}>
                     <Routes>
                         <Route path="" element={<Home />}/>
                         <Route path='favorites' element={<Favorites /> }/>
                         <Route path='results' element={<Results />}/>
+                        <Route path='board' element={<StyleBoard />}/>
                     </Routes>
                 </main>     
                 
