@@ -21,23 +21,31 @@ export function RootCmp(){
     const isStyleMeModalOpen = useSelector(state => state.systemModule.isStyleMeModalOpen)
     const isMobile = useMediaQuery(breakpoints.mobile)
     const isStyleBoard = location.pathname.includes('board')
+    
     useEffect(()=>{
         getUserOnRefresh()
     }, [])
 
+    
     return(
         <>
-            <div className='main-container'>
+            <div className={`main-container ${isStyleBoard ? 'no-main-layout' : ''}`}>
                 <AppHeader />
-                <main className={isStyleBoard ? 'no-header-padding' : ''}>
+                {isStyleBoard ? (
                     <Routes>
-                        <Route path="" element={<Home />}/>
-                        <Route path='favorites' element={<Favorites /> }/>
-                        <Route path='results' element={<Results />}/>
-                        <Route path='board' element={<StyleBoard />}/>
+                        <Route path="board" element={<StyleBoard />}/>
                     </Routes>
-                </main>     
-                
+                ) :
+                (
+                    <main>
+                        <Routes>
+                            <Route path="" element={<Home />}/>
+                            <Route path='favorites' element={<Favorites /> }/>
+                            <Route path='results' element={<Results />}/>
+                            
+                        </Routes>
+                    </main>
+                )}
             </div>
             {isMobile && <AppFooter />}
             {authMode && <AuthModal />}

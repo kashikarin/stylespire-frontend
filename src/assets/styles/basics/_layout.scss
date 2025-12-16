@@ -17,18 +17,14 @@
             padding-block-start: 0;
         } 
 
-        & > * {
-            
-
-            &.full {
-                grid-column: 1 / -1;
-            }
-        }
-        
         @include for-mobile-layout {
             // min-height: calc(100dvh - $header-height - $footer-height);
             padding-block-end: calc($footer-height + 1rem);
         }
+    }
+
+    & > .full {
+        grid-column: 1 / -1;
     }
 
     
@@ -51,6 +47,22 @@
             minmax(20px, 1fr)
             minmax(auto, $normal-breakpoint)
             minmax(20px, 1fr);
+    }
+}
+
+.main-container.no-main-layout {
+    padding: 0;
+    margin: 0;
+    display: block;
+
+    > .full {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        grid-column: 1 / -1;
+    }
+
+    @include for-mobile-layout {
+        padding-top: 0 !important;
     }
 }
 

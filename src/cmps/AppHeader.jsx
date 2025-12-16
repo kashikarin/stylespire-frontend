@@ -2,11 +2,11 @@ import { Link, NavLink, useLocation } from "react-router-dom"
 import { ReactSVG } from "react-svg"
 import { UserLetterCircle } from "./UserLetterCircle"
 import { useEffect, useRef, useState } from "react"
-import { createPortal } from "react-dom"
 import { logout, setAuthMode } from "../store/actions/user.actions"
 import { useIsLoggedInUser } from "../hooks/useIsLoggedInUser"
 import { breakpoints } from "../util/breakpoints"
 import { useMediaQuery } from "../hooks/useMediaQuery"
+import { Portal } from "./Portal"
 
 export function AppHeader(){
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)    
@@ -17,16 +17,8 @@ export function AppHeader(){
     const { loggedInUser } = useIsLoggedInUser()
     const isHomePage = location.pathname === '/'
     const isMobile = useMediaQuery(breakpoints.mobile)
+    const isStyleBoardPage = location.pathname === '/board'
     console.log("🚀 ~ AppHeader ~ isMobile:", isMobile)
-    
-    useEffect(() => {
-        let portalRoot = document.getElementById('portal-root')
-        if (!portalRoot) {
-            portalRoot = document.createElement('div')
-            portalRoot.id = 'portal-root'
-            document.body.appendChild(portalRoot)
-        }
-    }, [])
 
   function updateMenuPosition() {
     if (!buttonRef.current) return
@@ -216,24 +208,38 @@ export function AppHeader(){
                     <Link to='/' className='m-0 p-0'>
                         <img src="/imgs/sslogo.png" alt="stylespire logo" className='h-12 w-14'/>
                     </Link>
-                    {(isHomePage && !isMobile) && <div 
+                    {(!isMobile) && <div 
                         className="
                             flex justify-end items-center gap-8
                         "
                     >
                         {loggedInUser && 
-                            <NavLink 
-                                to='/favorites' 
-                                className='
-                                    font-semibold 
-                                    p-0 m-0 
-                                    rounded-[10px] 
-                                    text-primary-dark 
-                                    hover:text-secondary
-                                '
-                            >
-                                Favorites
-                            </NavLink>
+                            <>
+                                <NavLink
+                                    to='/board'
+                                    className='
+                                        font-semibold
+                                        p-0 m-0 
+                                        rounded-[10px] 
+                                        text-primary-dark 
+                                        hover:text-secondary
+                                    '
+                                >
+                                    StyleBoard
+                                </NavLink>
+                                <NavLink 
+                                    to='/favorites' 
+                                    className='
+                                        font-semibold 
+                                        p-0 m-0 
+                                        rounded-[10px] 
+                                        text-primary-dark 
+                                        hover:text-secondary
+                                    '
+                                >
+                                    Favorites
+                                </NavLink>
+                            </>
                         }
                         <button 
                             className='
@@ -254,12 +260,11 @@ export function AppHeader(){
                     </div>}
                 </nav>
             </div>
-            {isDropdownOpen && 
-                createPortal(
-                    dropdown,
-                    document.getElementById('portal-root') || document.body
-                )
-            }
+            {isDropdownOpen && (
+                <Portal>
+                    {dropdown}
+                </Portal>
+            )}
         </>
     )
 }

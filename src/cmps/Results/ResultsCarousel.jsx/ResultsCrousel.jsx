@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react"
 import { CarouselArrows } from "./CarouselArrows"
 import { useMediaQuery } from "../../../hooks/useMediaQuery"
 import { breakpoints } from "../../../util/breakpoints"

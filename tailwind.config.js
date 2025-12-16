@@ -28,6 +28,7 @@ export default {
 
         // Backgrounds & Surfaces
         "primary-bg": "#fdf9fb",
+        
         surface: "#C9C5BA",
         "green-surface": "#97B1A6",
 
