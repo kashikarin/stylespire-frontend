@@ -2,7 +2,7 @@ import { useRef } from "react"
 import { useOnClickOutside } from "../../hooks/useOnClickOutside"
 import { useDragToScroll } from "../../hooks/useDragToScroll"
 
-export function BackgroundBar({ backgrounds, onSelect, onLoadMore, loading, onClose }){
+export function BackgroundBar({ backgrounds, selectBackground, onLoadMore, loading, onClose }){
     const barRef = useRef()
     const dragRef = useDragToScroll()
     useOnClickOutside(barRef, onClose)
@@ -57,7 +57,11 @@ export function BackgroundBar({ backgrounds, onSelect, onLoadMore, loading, onCl
                             hover:border-white/70
                             transition-all duration-200
                         "
-                        onClick={()=> onSelect(bg)}
+                        onClick={()=> {
+                            console.log('bg', bg)
+                            selectBackground(bg)
+                        }}
+                            
                         style={{backgroundImage: `url(${bg})`}}
                     >
                     </button>

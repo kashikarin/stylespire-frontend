@@ -13,9 +13,7 @@ export function Results() {
 
     if (!results || results.length === 0)
         return (
-        <h3 className="text-center mt-12 text-primary-dark">
-            No looks found for your style.
-        </h3>
+        <Loader />
         )
     if (loading || !formData)
         return (

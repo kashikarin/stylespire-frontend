@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react"
 
-export function useCanvasBackgrounds(initialQuery = "soft background style inspiration", perPage = 10) {
+export function useCanvasBackgrounds({
+    initialQuery = "soft background style inspiration", 
+    perPage = 10,
+    selectedBackground,
+    onBackgroundChange
+}
+) {
     
     const PEXELS_API_KEY = import.meta.env.VITE_PEXELS_KEY
 
@@ -16,8 +22,8 @@ export function useCanvasBackgrounds(initialQuery = "soft background style inspi
         '/imgs/bgs/nybricks.jpg',
         '/imgs/bgs/graffity2.jpg'
     ]
-     
-    const [backgrounds, setBackgrounds] = useState(initialBgs)
+
+    const [backgrounds, setBackgrounds] = useState(initialBgs)    
     const [query, setQuery] = useState(initialQuery)
     const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(false)
@@ -64,10 +70,16 @@ export function useCanvasBackgrounds(initialQuery = "soft background style inspi
         fetchBackgrounds(nextPage)
     }
 
+    function selectBackground(bg) {              
+        onBackgroundChange(bg)
+    }
+
     return {
         backgrounds,
         loading,
         error,
-        loadMoreBackgrounds
+        loadMoreBackgrounds,
+        selectedBackground,
+        selectBackground
     }   
 }

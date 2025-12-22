@@ -1,3 +1,4 @@
+// import { authService } from "../../services/auth.service";
 import { userService } from "../../services/user.service";
 import { CLOSE_STYLEME_MODAL, OPEN_STYLEME_MODAL } from "../reducers/system.reducer";
 import { SET_AUTH_MODE, SET_LOGGEDINUSER } from "../reducers/user.reducer";
@@ -39,16 +40,37 @@ export function setAuthMode(authMode) {
   store.dispatch(getCmdSetAuthMode(authMode))
 }
 
-export async function getUserOnRefresh(){
-    try {
-        const user = await userService.getCurrentUser()
-        console.log("🚀 ~ user:", user)
-        if (user) store.dispatch(getCmdGetUserOnRefresh(user))
-    } catch(err) {
-        console.error('Cannot refresh loggedin user', err)
-        throw err
-    }
-    
+
+// export async function getUserOnRefresh(){
+//     try {
+//         const user = await userService.getCurrentUser()
+//         console.log("🚀 ~ user:", user)
+//         if (user) store.dispatch(getCmdGetUserOnRefresh(user))
+//     } catch(err) {
+//         console.error('Cannot refresh loggedin user', err)
+//     }
+// }
+
+// let authInitPromise = null
+
+// export async function initAuth() {
+//   if (!authInitPromise){
+//     authInitPromise = (async () => {
+//       try {
+//         await authService.refresh()
+//         await getUserOnRefresh()
+//       } catch (err){
+//         console.warn('Auth init skipped:', err?.message)
+//       }
+//     })()
+//   }
+//   return authInitPromise
+// }
+
+export async function loadCurrentUser(){
+  const user = await userService.getCurrentUser()
+  console.log("🚀 ~ loadCurrentUser ~ user:", user)
+  store.dispatch(getCmdLoadCurrentUser(user))
 }
 
 export function openStyleMeModal(){
@@ -87,12 +109,12 @@ function getCmdSetAuthMode(authMode){
         authMode
     }
 }
-function getCmdGetUserOnRefresh(user){
-    return{
-        type: SET_LOGGEDINUSER,
-        user
-    }
-}
+// function getCmdGetUserOnRefresh(user){
+//     return{
+//         type: SET_LOGGEDINUSER,
+//         user
+//     }
+// }
 
 function getCmdOpenStyleMeModal(){
     return{
@@ -104,4 +126,11 @@ function getCmdCloseStyleMeModal(){
     return{
         type: CLOSE_STYLEME_MODAL
     }
+}
+
+function getCmdLoadCurrentUser(user) {
+  return {
+    type: SET_LOGGEDINUSER,
+    user
+  }
 }

@@ -5,15 +5,13 @@ import { Routes, Route, useLocation } from 'react-router'
 import { Results } from "./pages/Results"
 import { useSelector } from "react-redux"
 import { AuthModal } from "./cmps/AuthModal"
-import { useEffect } from "react"
-import { getUserOnRefresh } from "./store/actions/user.actions"
 import { breakpoints } from "./util/breakpoints"
 import { useMediaQuery } from "./hooks/useMediaQuery"
 import { AppFooter } from "./cmps/AppFooter"
 import { StyleMeModal } from "./cmps/StyleMeModal"
 import { motion, AnimatePresence } from "framer-motion"
 import { StyleBoard } from "./pages/StyleBoard"
-
+import { useCurrentUser } from "./hooks/useCurrentUser"
 
 export function RootCmp(){
     const location = useLocation()
@@ -22,11 +20,8 @@ export function RootCmp(){
     const isMobile = useMediaQuery(breakpoints.mobile)
     const isStyleBoard = location.pathname.includes('board')
     
-    useEffect(()=>{
-        getUserOnRefresh()
-    }, [])
+    useCurrentUser()
 
-    
     return(
         <>
             <div className={`main-container ${isStyleBoard ? 'no-main-layout' : ''}`}>

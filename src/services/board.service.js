@@ -5,15 +5,17 @@ export const boardService = {
     save,
     remove,
     getEmptyBoard,
-    getById,
+    getByUserId,
+    loadOrCreateSelectedBoard,
     createBoard
 }
 
-async function query(filterBoardsBy = {}) {
-    return httpService.get(`board`, filterBoardsBy)
+async function query() {
+    return httpService.get('board')
 }
 
 async function save(board) {
+    console.log("🚀 ~ save ~ board:", board)
     try {
         if (board._id) {
             return await httpService.put(`board/${board._id}`, board)
@@ -30,26 +32,36 @@ async function remove(boardId) {
     await httpService.delete(`board/${boardId}`)
 }
 
-function getById(boardId) {
-    return httpService.get(`board/${boardId}`)
+function getByUserId() {
+    return httpService.get('board/active')
 }
 
 function getEmptyBoard() {
     return {
-        title: '',
-        selectedBackground: '',
+        title: null,
+        selectedBackground: null,
         items: [],
-        userId: ''
     }
 }
 
-function createBoard(userId, selectedBackground, items = [], title = ''){
-    if (!userId) return
+async function loadOrCreateSelectedBoard(){    
+    let boards = await query()
+    console.log("🚀 ~ loadOrCreateSelectedBoard ~ boards:", boards)
+    
+    if (boards.length > 0) {
+        boards.sort((a, b) => a.updatedAt-b.updatedAt)
+        return boards[0]
+    } 
+
+    let newBoard = getEmptyBoard()
+    return await save(newBoard)
+}
+
+function createBoard(selectedBackground, items = [], title = ''){
     return {
         title,
         selectedBackground,
         items,
-        userId,
         createdAt: Date.now(),
         updatedAt: Date.now()  
     }

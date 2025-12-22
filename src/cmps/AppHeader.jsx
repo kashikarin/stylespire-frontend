@@ -18,7 +18,9 @@ export function AppHeader(){
     const isHomePage = location.pathname === '/'
     const isMobile = useMediaQuery(breakpoints.mobile)
     const isStyleBoardPage = location.pathname === '/board'
-    console.log("🚀 ~ AppHeader ~ isMobile:", isMobile)
+
+    const fullName = loggedInUser?.fullname
+    const firstName = fullName ? fullName.split(' ')[0] : ''
 
   function updateMenuPosition() {
     if (!buttonRef.current) return
@@ -102,7 +104,7 @@ export function AppHeader(){
                     text-base
                     font-semibold
                 ">
-                    {`Hi ${loggedInUser?.fullname.split(' ')[0]}`} 
+                    {`Hi ${firstName}`} 
                 </div>
                 <div className="h-[1px] bg-gray2 my-2"></div>
                 {/* <div className="menu-divider"></div> */}
@@ -193,6 +195,7 @@ export function AppHeader(){
                 </div>)}
             </div>
   )
+
     return(
         <>
             <div 

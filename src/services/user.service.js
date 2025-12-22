@@ -5,7 +5,6 @@ export const userService = {
   signup,
   logout,
   getCurrentUser,
-  getLoggedinUser,
   getById,
   update,
 }
@@ -15,8 +14,7 @@ async function login(userCred) {
   try {
     const { user, accessToken } = await httpService.post('auth/login', userCred)
     console.log("🚀 ~ user:", user)
-    if (user && accessToken) {
-      _saveLocalUser(user)
+    if (accessToken) {
       _saveAccessToken(accessToken)
     }
     return user
@@ -28,8 +26,7 @@ async function login(userCred) {
 async function signup(userCred) {
   try {
     const { user, accessToken } = await httpService.post('auth/signup', userCred)
-    if (user && accessToken) {
-      _saveLocalUser(user)
+    if (accessToken) {
       _saveAccessToken(accessToken)
     }
     return user
@@ -39,23 +36,9 @@ async function signup(userCred) {
 }
 
 async function getCurrentUser() {
-    const token =_getAccessToken()
-    console.log("🚀 ~ token:", token)
-    if (!token) return null
-    try {
-            const user = await httpService.get('auth/me')
-            console.log("🚀 ~ user:", user)
-            if (user) {
-                _saveLocalUser(user)
-            }
-            return user
-        } catch (err) {
-            throw err
-    }
-}
-
-function getLoggedinUser() {
-  return JSON.parse(sessionStorage.getItem('loggedInUser') || 'null')
+    // const token =_getAccessToken()
+    // if (!token) return null
+    return await httpService.get('auth/me')
 }
 
 async function logout() {
@@ -74,14 +57,14 @@ async function getById(userId) {
 
 async function update(user) {
   const updatedUser = await httpService.put(`users/${user._id}`, user)
-  if (updatedUser) {
-    _saveLocalUser(updatedUser)
-  }
   return updatedUser
 }
 
 
 function _saveLocalUser(user) {
+  
+  if (!user?._id || !user?.fullname) return
+
   user = {
     _id: user._id,
     fullname: user.fullname,
@@ -108,8 +91,3 @@ function _clearAccessToken(){
     return localStorage.removeItem('accessToken')
 }
 
-export function isAuthenticated() {
-  const user = getLoggedinUser()
-  const token = _getAccessToken()
-  return !!user && !!token
-}

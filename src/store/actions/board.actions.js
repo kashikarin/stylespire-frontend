@@ -1,61 +1,88 @@
 import { boardService } from "../../services/board.service";
-import { ADD_BOARD, REMOVE_BOARD, SET_BOARD, SET_BOARDS, UPDATE_BOARD } from "../reducers/board.reducer";
+import { ADD_BOARD, REMOVE_BOARD, SET_BOARD, SET_BOARDS, SET_ERROR, SET_LOADING, UPDATE_BOARD } from "../reducers/board.reducer";
 import { store } from "../store"
 
-export async function loadBoards(filterBoardsBy) {
-    const { userId } = filterBoardsBy
+export async function loadBoards() {
+    store.dispatch(getCmdSetLoading(true))
+    store.dispatch(getCmdSetError(null))
     try {
-        const boards = await boardService.query({ userId })
+        const boards = await boardService.query()
         store.dispatch(getCmdLoadBoards(boards))    
     } catch (err) { 
+        store.dispatch(getCmdSetError(err.message))
         console.error('Cannot load boards', err)
         throw err
+    } finally {
+        store.dispatch(getCmdSetLoading(false))
     }
 }
 
-export async function loadBoard(boardId) {
+export async function loadBoard() {
+    store.dispatch(getCmdSetLoading(true))
+    store.dispatch(getCmdSetError(null))
+    
     try {
-        const board = await boardService.getById(boardId)   
+        const board = await boardService.loadOrCreateSelectedBoard()
+        console.log("🚀 ~ loadBoard ~ board:", board)
         store.dispatch(getCmdLoadBoard(board)) 
+        return board
     } catch (err) { 
+        store.dispatch(getCmdSetError(err.message))
         console.error('Cannot load board', err)
         throw err
-    }      
+    }  finally {
+        store.dispatch(getCmdSetLoading(false))
+    }    
 }
 
 export async function addBoard(board) {
+    store.dispatch(getCmdSetLoading(true))
+    store.dispatch(getCmdSetError(null))
     try {
         const savedBoard = await boardService.save(board)       
         store.dispatch(getCmdAddBoard(savedBoard))
-        await loadBoards({userId: board.userId})
+        await loadBoards()
         return savedBoard
     } catch (err) { 
+        store.dispatch(getCmdSetError(err.message))
         console.error('Cannot add board', err)
         throw err
-    }   
+    }  finally {
+        store.dispatch(getCmdSetLoading(false))
+    }
 }
 
 export async function updateBoard(board) {
+    store.dispatch(getCmdSetLoading(true))
+    store.dispatch(getCmdSetError(null))
     try {
         const savedBoard = await boardService.save(board)       
         store.dispatch(getCmdUpdateBoard(savedBoard))
-        loadBoards({userId: board.userId})
+        loadBoards()
         return savedBoard
     } catch (err) { 
+        store.dispatch(getCmdSetError(err.message))
         console.error('Cannot update board', err)
         throw err
-    }   
+    } finally { 
+        store.dispatch(getCmdSetLoading(false))
+    }
 }
 
-export async function removeBoard(boardId, userId) {
+export async function removeBoard(boardId) {
+    store.dispatch(getCmdSetLoading(true))
+    store.dispatch(getCmdSetError(null))    
     try {
         await boardService.remove(boardId)      
         store.dispatch(getCmdRemoveBoard(boardId))
-        await loadBoards({userId})
+        await loadBoards()
     } catch (err) { 
+        store.dispatch(getCmdSetError(err.message))
         console.error('Cannot remove board', err)
         throw err
-    }       
+    } finally {
+        store.dispatch(getCmdSetLoading(false))
+    }         
 }
 
 //command creators
@@ -94,3 +121,16 @@ function getCmdRemoveBoard(boardId) {
     }
 }
 
+function getCmdSetLoading(isLoading) {
+    return {
+        type: SET_LOADING,
+        isLoading
+    }
+}   
+
+function getCmdSetError(error) {
+    return {
+        type: SET_ERROR,
+        error
+    }
+}   

@@ -3,6 +3,7 @@ import { useMediaQuery } from "../../../hooks/useMediaQuery"
 import { breakpoints } from "../../../util/breakpoints"
 import { ResultsSlide } from "./ResultsSlide"
 import { DotsIndicator } from "./DotsIndicator"
+import { useEffect, useRef, useState } from "react"
 
 export function ResultsCarousel({ images, onLike, getIsLiked, isLoggedInUser }){
     const imgTrackRef = useRef()

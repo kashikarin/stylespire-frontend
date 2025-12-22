@@ -42,7 +42,6 @@ function getEmptyFavorite() {
     imageId: '',
     description: '',
     url: '',
-    user: { _id: '', fullname: ''}
   }
 }
 
@@ -63,17 +62,12 @@ function getDefaultFavoriteFilter() {
   }
 }
 
-function createFavorite(userId, userFullname, imageUrl, imageId, imageDescription){
-  if (!userId) return
+function createFavorite(imageUrl, imageId, imageDescription){
   return {
     image: {
       id: imageId,
       description: imageDescription,
       url: imageUrl,
-    },
-    user: {
-      _id: userId,
-      fullname: userFullname
     },
     createdAt: Date.now()
   }

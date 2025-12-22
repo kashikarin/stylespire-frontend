@@ -3,13 +3,14 @@ export const SET_AUTH_MODE = 'SET_AUTH_MODE'
 
 const initialState = {
   loggedInUser: null,
-  authMode: null
+  authMode: null,
 }
 
 export function UserReducer(state = initialState, action){
     let newState = state
     switch (action.type) {
         case SET_LOGGEDINUSER:
+            console.log('setlogedinuser payload', action.user)
             newState = {
                 ...state,
                 loggedInUser: action.user

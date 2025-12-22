@@ -2,11 +2,18 @@ import { useState } from "react"
 import { BackgroundIconBtn } from "./BackgroundIconBtn"
 import { BackgroundBar } from "./BackgroundBar"
 
-export function StyleBoardCanvas({ backgrounds, loadMore, loadingBgs }){
+export function StyleBoardCanvas({ 
+    backgrounds, 
+    loadMore, 
+    loadingBgs, 
+    background, 
+    selectBackground 
+}){
     const [isBgBarOpen, setIsBgBarOpen] = useState(false)
-    const background = backgrounds[Math.floor(Math.random() * backgrounds.length)] || '/imgs/bgs/unique.jpg'
-    const [bg, setBg] = useState(background)    
-    
+    const DEFAULT_CANVAS_BACKGROUND = '/imgs/bgs/studio.jpg'
+    const displayBackground =
+        background || DEFAULT_CANVAS_BACKGROUND
+        console.log("🚀 ~ StyleBoardCanvas ~ background:", background)
     return(
         <main 
             className="
@@ -16,7 +23,7 @@ export function StyleBoardCanvas({ backgrounds, loadMore, loadingBgs }){
                 p-4
             "
             style={{
-                    backgroundImage: `url(${bg})`,
+                    backgroundImage: `url(${displayBackground})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
             }}
@@ -25,7 +32,7 @@ export function StyleBoardCanvas({ backgrounds, loadMore, loadingBgs }){
                 <BackgroundIconBtn handleMouseEnter={() => setIsBgBarOpen(true)} />
                 {isBgBarOpen && <BackgroundBar 
                     backgrounds={backgrounds}
-                    onSelect={setBg}
+                    selectBackground={selectBackground}
                     onLoadMore={loadMore}
                     loading={loadingBgs}
                     onClose={() => setIsBgBarOpen(false)}
