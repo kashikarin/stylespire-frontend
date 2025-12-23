@@ -10,10 +10,8 @@ export const userService = {
 }
 
 async function login(userCred) {
-    console.log('user service runs')
   try {
     const { user, accessToken } = await httpService.post('auth/login', userCred)
-    console.log("🚀 ~ user:", user)
     if (accessToken) {
       _saveAccessToken(accessToken)
     }

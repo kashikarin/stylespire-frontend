@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { loadBoard, updateBoard } from "../store/actions/board.actions"
+import { loadBoard, updateBoard, addBoard } from "../store/actions/board.actions"
 import { useIsLoggedInUser } from "./useIsLoggedInUser"
 import { useSelector } from "react-redux"
 
@@ -27,6 +27,11 @@ useEffect(() => {
 }, [board])
 
     async function updateBoardField(field, value){
+        console.log('board object to update: ', {
+            ...board,
+            [field]: value,
+            updatedAt: Date.now()
+        })
         await updateBoard({
             ...board,
             [field]: value,

@@ -53,6 +53,7 @@ export async function addBoard(board) {
 }
 
 export async function updateBoard(board) {
+    console.log("🚀 ~ updateBoard ~ board:", board)
     store.dispatch(getCmdSetLoading(true))
     store.dispatch(getCmdSetError(null))
     try {

@@ -1,7 +1,5 @@
-import { ReactSVG } from "react-svg"
-
-export function BackgroundIconBtn({ handleMouseEnter }){
-    return (
+export function StyleBoardMenu(){
+    return(
         <button 
             className="
                 absolute top-2 left-2
@@ -13,7 +11,8 @@ export function BackgroundIconBtn({ handleMouseEnter }){
                 flex items-center justify-center
                 cursor-pointer
             "
-            onMouseEnter={handleMouseEnter}            
+            onMouseEnter={handleMouseEnter}
+            
         >
             <ReactSVG src='/svgs/colorPalette.svg' />
         </button>

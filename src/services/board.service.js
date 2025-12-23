@@ -45,15 +45,10 @@ function getEmptyBoard() {
 }
 
 async function loadOrCreateSelectedBoard(){    
-    let boards = await query()
-    console.log("🚀 ~ loadOrCreateSelectedBoard ~ boards:", boards)
-    
-    if (boards.length > 0) {
-        boards.sort((a, b) => a.updatedAt-b.updatedAt)
-        return boards[0]
-    } 
-
-    let newBoard = getEmptyBoard()
+    const board = await httpService.get('board/active')
+    console.log("🚀 ~ loadOrCreateSelectedBoard ~ board:", board)
+    if (board) return board
+    const newBoard = getEmptyBoard()
     return await save(newBoard)
 }
 

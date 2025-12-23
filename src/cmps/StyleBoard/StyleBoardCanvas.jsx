@@ -29,7 +29,10 @@ export function StyleBoardCanvas({
             }}
         >
             <div className="relative">
-                <BackgroundIconBtn handleMouseEnter={() => setIsBgBarOpen(true)} />
+                <BackgroundIconBtn 
+                    handleMouseEnter={() => setIsBgBarOpen(true)} 
+                    handleMouseLeave={()=> setIsBgBarOpen(false)}
+                />
                 {isBgBarOpen && <BackgroundBar 
                     backgrounds={backgrounds}
                     selectBackground={selectBackground}
