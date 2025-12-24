@@ -1,19 +1,21 @@
 import { useState } from "react"
 import { BackgroundIconBtn } from "./BackgroundIconBtn"
 import { BackgroundBar } from "./BackgroundBar"
+import { StyleBoardMenu } from "./StyleBoardMenu"
 
 export function StyleBoardCanvas({ 
     backgrounds, 
     loadMore, 
     loadingBgs, 
     background, 
-    selectBackground 
+    selectBackground,
+    openModal
 }){
     const [isBgBarOpen, setIsBgBarOpen] = useState(false)
+    const [isSBMenuOpen, setIsSBMenuOpen] = useState(false)
     const DEFAULT_CANVAS_BACKGROUND = '/imgs/bgs/studio.jpg'
     const displayBackground =
         background || DEFAULT_CANVAS_BACKGROUND
-        console.log("🚀 ~ StyleBoardCanvas ~ background:", background)
     return(
         <main 
             className="
@@ -29,17 +31,22 @@ export function StyleBoardCanvas({
             }}
         >
             <div className="relative">
+                {/* background part */}
                 <BackgroundIconBtn 
                     handleMouseEnter={() => setIsBgBarOpen(true)} 
-                    handleMouseLeave={()=> setIsBgBarOpen(false)}
                 />
                 {isBgBarOpen && <BackgroundBar 
                     backgrounds={backgrounds}
-                    selectBackground={selectBackground}
+                    selectBackground={(bg) =>{
+                        selectBackground(bg)
+                        setIsBgBarOpen(false)
+                    }}
                     onLoadMore={loadMore}
                     loading={loadingBgs}
                     onClose={() => setIsBgBarOpen(false)}
                 />}
+                {/* SB menu part */}
+                <StyleBoardMenu openModal={openModal} />
             </div>
             
         </main>

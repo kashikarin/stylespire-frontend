@@ -2,30 +2,25 @@ import { httpService } from "./http.service"
 
 export const boardService = {
     query,
-    save,
+    update,
     remove,
     getEmptyBoard,
     getByUserId,
     loadOrCreateSelectedBoard,
-    createBoard
+    createEmptyBoard
 }
 
 async function query() {
     return httpService.get('board')
 }
 
-async function save(board) {
-    console.log("🚀 ~ save ~ board:", board)
-    try {
-        if (board._id) {
-            return await httpService.put(`board/${board._id}`, board)
-        } else {
-            return await httpService.post(`board`, board)
-        }
-    } catch (err) {
-        console.error('Cannot save board', err)
-        throw err
-    }
+async function update(board) {
+    if (!board._id) throw new Error ('Board not found')
+    return await httpService.put(`board/${board._id}`, board)
+}
+
+async function createEmptyBoard(){
+    return await httpService.post('board', getEmptyBoard())
 }
 
 async function remove(boardId) {
@@ -44,20 +39,12 @@ function getEmptyBoard() {
     }
 }
 
-async function loadOrCreateSelectedBoard(){    
+async function loadOrCreateSelectedBoard(currentBoardId){  
+    if (currentBoardId) return null 
     const board = await httpService.get('board/active')
     console.log("🚀 ~ loadOrCreateSelectedBoard ~ board:", board)
     if (board) return board
-    const newBoard = getEmptyBoard()
-    return await save(newBoard)
+    console.log('a new board is being created')
+    return await createEmptyBoard()
 }
 
-function createBoard(selectedBackground, items = [], title = ''){
-    return {
-        title,
-        selectedBackground,
-        items,
-        createdAt: Date.now(),
-        updatedAt: Date.now()  
-    }
-}

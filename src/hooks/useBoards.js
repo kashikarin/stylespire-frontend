@@ -1,5 +1,5 @@
-import { useEffect } from "react"
-import { loadBoard, updateBoard, addBoard } from "../store/actions/board.actions"
+import { useEffect, useRef } from "react"
+import { loadBoard, updateBoard, saveCurrentAndCreateNewBoard } from "../store/actions/board.actions"
 import { useIsLoggedInUser } from "./useIsLoggedInUser"
 import { useSelector } from "react-redux"
 
@@ -7,31 +7,29 @@ export function useBoards(){
     const { loggedInUser } = useIsLoggedInUser()    
     const board = useSelector(state => state.boardModule.board)
     console.log('use boards -> board', board)
+    const hasInitializedRef = useRef(false)
     
     useEffect(()=>{
         if (!loggedInUser?._id) return
+        if (hasInitializedRef.current) return
+        hasInitializedRef.current = true
         initBoard()
     }, [loggedInUser?._id])
 
     async function initBoard(){
         try {
             await loadBoard()
-
         } catch (err) {
             console.error('Cannot load a board', err)
         }   
     }
 
-useEffect(() => {
-  console.log('🔥 StyleBoard re-render, board ref:', board)
-}, [board])
+    async function saveAndCreateNewBoard(titleFromModal){
+        await saveCurrentAndCreateNewBoard(board, titleFromModal)
+    }
 
     async function updateBoardField(field, value){
-        console.log('board object to update: ', {
-            ...board,
-            [field]: value,
-            updatedAt: Date.now()
-        })
+        console.log('updateBoardField runs with', field, value)
         await updateBoard({
             ...board,
             [field]: value,
@@ -41,6 +39,7 @@ useEffect(() => {
 
     return {
         board,
-        updateBoardField
+        updateBoardField,
+        saveAndCreateNewBoard
     }
 }

@@ -28,7 +28,6 @@ export function AuthModal(){
     }
 
     function handleClose() {
-        console.log("modal is closing!")
         resetState()
         setAuthMode(null)
     }

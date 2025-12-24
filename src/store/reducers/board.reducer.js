@@ -20,7 +20,7 @@ export function boardReducer(state = initialState, action = {}) {
             newState = { 
                     ...state, 
                     boards: [...state.boards, action.board] 
-                }
+            }
             break
         case UPDATE_BOARD:
             newState = {

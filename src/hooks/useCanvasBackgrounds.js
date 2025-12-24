@@ -70,7 +70,8 @@ export function useCanvasBackgrounds({
         fetchBackgrounds(nextPage)
     }
 
-    function selectBackground(bg) {              
+    function selectBackground(bg) { 
+        console.log('selectBackground runs')             
         onBackgroundChange(bg)
     }
 

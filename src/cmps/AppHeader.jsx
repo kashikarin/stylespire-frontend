@@ -7,13 +7,18 @@ import { useIsLoggedInUser } from "../hooks/useIsLoggedInUser"
 import { breakpoints } from "../util/breakpoints"
 import { useMediaQuery } from "../hooks/useMediaQuery"
 import { Portal } from "./Portal"
+import { useDropdownController } from "../hooks/useDropdownController"
 
 export function AppHeader(){
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false)    
-    const buttonRef = useRef()
-    const dropdownRef = useRef()
+    const { 
+        isDropdownOpen, 
+        close,
+        toggle, 
+        buttonRef,
+        dropdownRef,
+        coords
+        } = useDropdownController( { withPosition: true } )
     const location = useLocation()
-    const [coords, setCoords] = useState({ top: 0, right: 0 })
     const { loggedInUser } = useIsLoggedInUser()
     const isHomePage = location.pathname === '/'
     const isMobile = useMediaQuery(breakpoints.mobile)
@@ -22,58 +27,15 @@ export function AppHeader(){
     const fullName = loggedInUser?.fullname
     const firstName = fullName ? fullName.split(' ')[0] : ''
 
-  function updateMenuPosition() {
-    if (!buttonRef.current) return
-    const rect = buttonRef.current.getBoundingClientRect()
-    setCoords({
-      top: rect.bottom + window.scrollY + 8,
-      right: window.innerWidth - rect.right - window.scrollX - 8,
-    })
-  }
-
-  function toggleDropdown() {
-    if (!isDropdownOpen) updateMenuPosition()
-    setIsDropdownOpen((prev) => !prev)
-  }
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && 
-          !dropdownRef.current.contains(event.target) &&
-          !buttonRef.current.contains(event.target)
-         ) {
-        setIsDropdownOpen(false)
-      }
-    }
-
-    function handleEsc(e) {
-      if (e.key === 'Escape') setIsDropdownOpen(false)
-    }
-
-    if (isDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-      document.addEventListener('keydown', handleEsc)
-      window.addEventListener('resize', updateMenuPosition)
-      window.addEventListener('scroll', updateMenuPosition)
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-      document.removeEventListener('keydown', handleEsc)
-      window.removeEventListener('resize', updateMenuPosition)
-      window.removeEventListener('scroll', updateMenuPosition)
-    }
-  }, [isDropdownOpen])
-
     function onOpenAuthModal(mode = 'login') {
         setAuthMode(mode)
-        setIsDropdownOpen(false)
+        close()
     }
 
     async function handleLogout() {
         try {
             await logout()
-            setIsDropdownOpen(false)
+            close()
         } catch (err) {
             console.error('Logout failed:', err)
         }
@@ -254,7 +216,7 @@ export function AppHeader(){
                                 font-medium text-sm 
                                 whitespace-nowrap
                             ' 
-                            ref={buttonRef} onClick={toggleDropdown}>
+                            ref={buttonRef} onClick={toggle}>
                             {(loggedInUser) ? 
                                 <UserLetterCircle username={loggedInUser.fullname}/> :
                                 <ReactSVG src='/svgs/hamburger-icon.svg'/>

@@ -18,6 +18,7 @@ export async function loadBoards() {
 }
 
 export async function loadBoard() {
+    console.log('LOAD BOARD CALLED', Date.now())
     store.dispatch(getCmdSetLoading(true))
     store.dispatch(getCmdSetError(null))
     
@@ -35,17 +36,46 @@ export async function loadBoard() {
     }    
 }
 
-export async function addBoard(board) {
+export async function saveCurrentAndCreateNewBoard(
+    currentBoard,
+    title
+) {
     store.dispatch(getCmdSetLoading(true))
     store.dispatch(getCmdSetError(null))
     try {
-        const savedBoard = await boardService.save(board)       
-        store.dispatch(getCmdAddBoard(savedBoard))
-        await loadBoards()
-        return savedBoard
+         const boardToUpdate = {
+            ...currentBoard,
+            title,
+            updatedAt: Date.now()
+         } 
+         const updatedboard = await boardService.update(boardToUpdate)
+         store.dispatch(getCmdUpdateBoard(updatedboard))
+
+         const newBoard = await boardService.createEmptyBoard()
+         store.dispatch(getCmdCreateBoard(newBoard))
+
+         store.dispatch(getCmdLoadBoard(newBoard))
+
+         return newBoard
+    } catch(err) {
+        store.dispatch(getCmdSetError(err.message))
+        throw err
+    } finally{
+        store.dispatch(getCmdSetLoading(false))
+    }
+}
+
+export async function createBoard() {
+    store.dispatch(getCmdSetLoading(true))
+    store.dispatch(getCmdSetError(null))
+    console.log('CREATE BOARD CALLED', Date.now())
+    try {
+        const newBoard = await boardService.createEmptyBoard()       
+        store.dispatch(getCmdCreateBoard(newBoard))
+        return newBoard
     } catch (err) { 
         store.dispatch(getCmdSetError(err.message))
-        console.error('Cannot add board', err)
+        console.error('Cannot create board', err)
         throw err
     }  finally {
         store.dispatch(getCmdSetLoading(false))
@@ -57,10 +87,9 @@ export async function updateBoard(board) {
     store.dispatch(getCmdSetLoading(true))
     store.dispatch(getCmdSetError(null))
     try {
-        const savedBoard = await boardService.save(board)       
-        store.dispatch(getCmdUpdateBoard(savedBoard))
-        loadBoards()
-        return savedBoard
+        const updatedBoard = await boardService.update(board)       
+        store.dispatch(getCmdUpdateBoard(updatedBoard))
+        return updatedBoard
     } catch (err) { 
         store.dispatch(getCmdSetError(err.message))
         console.error('Cannot update board', err)
@@ -101,7 +130,7 @@ function getCmdLoadBoard(board) {
     }
 }   
 
-function getCmdAddBoard(board) {
+function getCmdCreateBoard(board) {
     return { 
         type: ADD_BOARD, 
         board 

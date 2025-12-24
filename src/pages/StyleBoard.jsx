@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Portal } from "../cmps/Portal"
 import { FavsSidebar } from "../cmps/StyleBoard/FavsSidebar"
 import { MobileFavBar } from "../cmps/StyleBoard/MobileFavBar"
@@ -9,11 +9,13 @@ import { useFavorites } from "../hooks/useFavorites"
 import { useLockBodyScroll } from "../hooks/useLockBodyScroll"
 import { useMediaQuery } from "../hooks/useMediaQuery"
 import { breakpoints } from "../util/breakpoints"
+import { SaveBoardModal } from "../cmps/StyleBoard/SaveBoardModal"
 
 export function StyleBoard(){
     const isMobile = useMediaQuery(breakpoints.mobile)
+    const [isModalOpen, setIsModalOpen] = useState(false)
     const { favorites } = useFavorites()
-    const { board, updateBoardField } = useBoards()
+    const { board, updateBoardField, saveAndCreateNewBoard } = useBoards()
     const { 
         backgrounds, 
         loadMoreBackgrounds, 
@@ -26,6 +28,10 @@ export function StyleBoard(){
     )
     
     useLockBodyScroll(true)
+
+    async function handleSaveBoard(title) {
+        await saveAndCreateNewBoard(title)
+    }
 
     if (!board) return null
 
@@ -60,6 +66,7 @@ export function StyleBoard(){
                             loadingBgs={loading} 
                             background={board.selectedBackground} 
                             selectBackground={selectBackground}
+                            openModal={()=>setIsModalOpen(true)}
                         />
                     </main>
                     {!isMobile && <aside 
@@ -77,14 +84,20 @@ export function StyleBoard(){
                             narrow:order-none
                             narrow:overflow-y-auto
                         ">
-                            <FavsSidebar favorites={favorites}/>
+                            <FavsSidebar favorites={favorites || []}/>
                     </aside>}
                 </div>
                 
             </div>
             <Portal>
-                {isMobile && <MobileFavBar favorites={favorites}/>}
+                {isMobile && <MobileFavBar favorites={favorites || []}/>}
             </Portal>
+            <SaveBoardModal 
+                board={board}
+                isOpen={isModalOpen}
+                onClose={()=>setIsModalOpen(false)}
+                onConfirm={(title) => handleSaveBoard(title)}
+            />
         </>
     )
 }

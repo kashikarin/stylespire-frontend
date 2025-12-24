@@ -1,18 +1,20 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
 import { loadFavorites } from "../store/actions/favorite.actions"
 import { useIsLoggedInUser } from "./useIsLoggedInUser"
 
-
 export function useFavorites(){
     const favorites = useSelector(state => state.favoriteModule.favorites)  
     const [selectedFav, setSelectedFav] = useState(null)
-    const { loggedInUser} = useIsLoggedInUser()
-    
+    const { loggedInUser } = useIsLoggedInUser()
+    const hasLoadedFavorites = useRef(false)
+
     useEffect(()=>{
-        if (!loggedInUser) return
+        if (!loggedInUser?._id) return
+        if (hasLoadedFavorites.current) return
+        hasLoadedFavorites.current = true
         loadFavorites({ userId: loggedInUser._id })
-    }, [loggedInUser])
+    }, [loggedInUser._id])
 
     function resetSelectedFav() {
         setSelectedFav(null)
