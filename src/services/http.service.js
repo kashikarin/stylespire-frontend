@@ -32,6 +32,10 @@ export const httpService = {
 }
 
 async function ajax(endpoint, method = 'GET', data = null) {
+  console.log(
+  `[HTTP] ${method} ${endpoint}`,
+  JSON.stringify(data)
+)
   const options = {
     url: endpoint,
     method,

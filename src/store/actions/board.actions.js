@@ -18,13 +18,11 @@ export async function loadBoards() {
 }
 
 export async function loadBoard() {
-    console.log('LOAD BOARD CALLED', Date.now())
     store.dispatch(getCmdSetLoading(true))
     store.dispatch(getCmdSetError(null))
     
     try {
         const board = await boardService.loadOrCreateSelectedBoard()
-        console.log("🚀 ~ loadBoard ~ board:", board)
         store.dispatch(getCmdLoadBoard(board)) 
         return board
     } catch (err) { 
@@ -34,6 +32,10 @@ export async function loadBoard() {
     }  finally {
         store.dispatch(getCmdSetLoading(false))
     }    
+}
+
+export function selectBoard(board) {
+    store.dispatch(getCmdLoadBoard(board))
 }
 
 export async function saveCurrentAndCreateNewBoard(

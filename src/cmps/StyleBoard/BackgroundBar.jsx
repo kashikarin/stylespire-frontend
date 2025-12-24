@@ -1,6 +1,7 @@
 import { useRef } from "react"
 import { useOnClickOutside } from "../../hooks/useOnClickOutside"
 import { useDragToScroll } from "../../hooks/useDragToScroll"
+import { HorizontalCarousel } from "../HorizontalCarousel"
 
 export function BackgroundBar({ backgrounds, selectBackground, onLoadMore, loading, onClose }){
     const barRef = useRef()
@@ -40,32 +41,34 @@ export function BackgroundBar({ backgrounds, selectBackground, onLoadMore, loadi
 
                 "
             >
-                {backgrounds.map(bg => (
-                    <button 
-                        key={bg}
-                        className="
-                            border border-white/40
-                            flex-shrink-0
-                            w-10 h-10
-                            rounded-lg
-                            cursor-pointer
-                            overflow-hidden
-                            p-0
-                            bg-cover bg-center bg-no-repeat
-                            focus:outline-none focus:ring-2 focus:ring-primary
-                            narrow:hover:scale-105
-                            hover:border-white/70
-                            transition-all duration-200
-                        "
-                        onClick={()=> {
-                            console.log('bg', bg)
-                            selectBackground(bg)
-                        }}
-                            
-                        style={{backgroundImage: `url(${bg})`}}
-                    >
-                    </button>
-                ))}
+                <HorizontalCarousel>
+                    {backgrounds.map(bg => (
+                        <button 
+                            key={bg}
+                            className="
+                                border border-white/40
+                                flex-shrink-0
+                                w-10 h-10
+                                rounded-lg
+                                cursor-pointer
+                                overflow-hidden
+                                p-0
+                                bg-cover bg-center bg-no-repeat
+                                focus:outline-none focus:ring-2 focus:ring-primary
+                                narrow:hover:scale-105
+                                hover:border-white/70
+                                transition-all duration-200
+                            "
+                            onClick={()=> {
+                                console.log('bg', bg)
+                                selectBackground(bg)
+                            }}
+                                
+                            style={{backgroundImage: `url(${bg})`}}
+                        >
+                        </button>
+                    ))}
+                </HorizontalCarousel>
             </div>
             {!loading && (
                 <button

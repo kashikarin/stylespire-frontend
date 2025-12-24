@@ -10,12 +10,15 @@ import { useLockBodyScroll } from "../hooks/useLockBodyScroll"
 import { useMediaQuery } from "../hooks/useMediaQuery"
 import { breakpoints } from "../util/breakpoints"
 import { SaveBoardModal } from "../cmps/StyleBoard/SaveBoardModal"
+import { SwitchBoardModal } from "../cmps/StyleBoard/SwitchBoardModal"
 
 export function StyleBoard(){
     const isMobile = useMediaQuery(breakpoints.mobile)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isSwitchModalOpen, setIsSwitchModalOpen] = useState(false)
+    const [modalMode, setModalMode] = useState(null)
     const { favorites } = useFavorites()
-    const { board, updateBoardField, saveAndCreateNewBoard } = useBoards()
+    const { boards, board, updateBoardField, saveAndCreateNewBoard, onSelectBoard } = useBoards()
     const { 
         backgrounds, 
         loadMoreBackgrounds, 
@@ -29,8 +32,27 @@ export function StyleBoard(){
     
     useLockBodyScroll(true)
 
-    async function handleSaveBoard(title) {
-        await saveAndCreateNewBoard(title)
+    async function handleSaveBoardAction(action) {
+        const titleToSave = (action.title && action.title.length) ?
+            action.title :
+            board.title || 'Untitled board'
+        
+        switch(action.type){
+            case 'save':
+                await saveAndCreateNewBoard(titleToSave)
+                break
+            case 'switch':
+                await updateBoardField('title', titleToSave)
+                setIsSwitchModalOpen(true)
+                break
+            default: return 
+        }
+
+    }
+
+    function handleMenuAction(mode) {
+        setModalMode(mode)
+        setIsModalOpen(true)
     }
 
     if (!board) return null
@@ -66,7 +88,7 @@ export function StyleBoard(){
                             loadingBgs={loading} 
                             background={board.selectedBackground} 
                             selectBackground={selectBackground}
-                            openModal={()=>setIsModalOpen(true)}
+                            openModal={(mode) => handleMenuAction(mode)}
                         />
                     </main>
                     {!isMobile && <aside 
@@ -93,10 +115,19 @@ export function StyleBoard(){
                 {isMobile && <MobileFavBar favorites={favorites || []}/>}
             </Portal>
             <SaveBoardModal 
+                mode={modalMode}
                 board={board}
                 isOpen={isModalOpen}
                 onClose={()=>setIsModalOpen(false)}
-                onConfirm={(title) => handleSaveBoard(title)}
+                onAction={(action) => handleSaveBoardAction(action)}
+            />
+            <SwitchBoardModal 
+                onClose={()=>setIsSwitchModalOpen(false)}
+                boards={boards}
+                isOpen={isSwitchModalOpen}
+                selectedBoardId={board._id}
+                onSelectBoard={onSelectBoard}
+
             />
         </>
     )

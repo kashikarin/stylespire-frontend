@@ -2,14 +2,19 @@ import { useEffect, useState } from "react"
 import { Portal } from "../Portal"
 
 export function SaveBoardModal({ 
+    mode,
     board,
     isOpen,
     onClose,
-    onConfirm
+    onAction
 }){
     const [title, setTitle] = useState('')    
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(()=>{
+        reset()
+    }, [])
 
     useEffect(()=>{
         if (isOpen){
@@ -22,15 +27,24 @@ export function SaveBoardModal({
         e.preventDefault()
         setIsLoading(true)
         setError('')
-
         try {
-            await onConfirm(title)
-            onClose()
+            await onAction({ type: mode, title: title.trim() })
+            close()
         } catch(err) {
-            setError('Failed to save board')
+            setError('Failed to save board', err)
         } finally {
             setIsLoading(false) 
         }        
+    }
+
+    function close(){
+        reset()
+        onClose()
+    }
+
+    function reset(){
+        setError('')
+        setTitle('')
     }
 
     if (!isOpen) return null
@@ -39,12 +53,12 @@ export function SaveBoardModal({
         <Portal>
             <div 
                 className="
-                        fixed inset-0 z-40 
-                        bg-black/40 backdrop-blur-sm
-                        flex justify-center items-stretch
-                        narrow:items-center
-                    " 
-                onClick={onClose}
+                    fixed inset-0 z-40 
+                    bg-black/40 backdrop-blur-sm
+                    flex justify-center items-stretch
+                    narrow:items-center
+                " 
+                onClick={close}
             >
                 <div 
                     className="
@@ -53,7 +67,7 @@ export function SaveBoardModal({
                         flex flex-col 
                         p-5
                     
-                        narrow:w-[300px] narrow:h-auto 
+                        narrow:w-[400px] narrow:h-auto 
                         narrow:max-h-[60svh]
                         narrow:rounded-xl
                         narrow:shadow-lg
@@ -64,7 +78,14 @@ export function SaveBoardModal({
                         className="
                             flex justify-between items-center                           
                          ">
-                            <h2 className="text-lg font-semibold mx-auto">Save board</h2>
+                            <h2 
+                                className="
+                                    text-lg font-semibold 
+                                    mx-auto
+                                "
+                            >
+                                {mode === 'save' ? 'Save board' : 'Save board before switching?'}
+                            </h2>
                     </header>
                     <div className="flex-1">
                         <form onSubmit={handleSubmit}>
@@ -105,26 +126,10 @@ export function SaveBoardModal({
                             </span>
                             {error && (
                                 <p className="text-sm text-red-600 mt-2">
-                                {error}
+                                    {error}
                                 </p>
                             )}
                             <footer className="mt-6 flex justify-between gap-3">
-                                <button 
-                                    className='
-                                        rounded-md
-                                        bg-primary-dark
-                                        py-2 px-4
-                                        text-text-on-primary
-                                        text-sm font-medium
-
-                                        hover:bg-primary-dark-80
-                                        transition
-                                        disabled:opacity-60
-                                    '
-                                    type="button" 
-                                >
-                                    Cancel
-                                </button>
                                 <button
                                      className='
                                         rounded-md
@@ -140,17 +145,32 @@ export function SaveBoardModal({
                                     type="submit" 
                                     disabled={isLoading}
                                 >
-                                    {isLoading ? 'Saving...' : 'Save'}
+                                    {isLoading ? 'Saving...' : 
+                                        mode === 'save' ? 'Save' : 'Save and Continue'
+                                    }
+                                </button>
+                                <button 
+                                    className='
+                                        rounded-md
+                                        bg-primary-dark
+                                        py-2 px-4
+                                        text-text-on-primary
+                                        text-sm font-medium
+
+                                        hover:bg-primary-dark-80
+                                        transition
+                                        disabled:opacity-60
+                                    '
+                                    type="button" 
+                                    onClick={close}
+                                >
+                                    Cancel
                                 </button>
                             </footer>
                         </form>
-                        
-                        
                     </div>
-
                 </div>
             </div>
         </Portal>
-        
     )
 }

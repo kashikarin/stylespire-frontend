@@ -11,9 +11,9 @@ export function StyleBoardMenu({ openModal }){
         dropdownRef
     } = useDropdownController()
 
-    function handleSaveBoardClick(e){
+    function handleMenuClick(e, mode){
         e.stopPropagation()
-        openModal()
+        openModal(mode)
         close()
     }
 
@@ -69,7 +69,7 @@ export function StyleBoardMenu({ openModal }){
                              hover:bg-slate-200
 
                         "
-                        onClick={handleSaveBoardClick}
+                        onClick={(e)=> handleMenuClick(e, 'save')}
                     >
                         Save Board
                     </button>
@@ -89,7 +89,7 @@ export function StyleBoardMenu({ openModal }){
                             relative
                             hover:bg-slate-200
                         "
-                        onClick={close}
+                        onClick={(e)=> handleMenuClick(e, 'switch')}
                     >
                         Switch Board
                     </button>
