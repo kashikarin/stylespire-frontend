@@ -10,6 +10,10 @@ export function FavsSidebar({favorites}){
                         src={fav.image.url} 
                         alt={fav.image.description} 
                         className="w-full h-full object-cover"
+                        draggable
+                        onDragStart={e => {
+                            e.dataTransfer.setData('image-src', fav.image.url)
+                        }}
                     />
                 </div>
             ))}

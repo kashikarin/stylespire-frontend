@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Portal } from "../cmps/Portal"
 import { FavsSidebar } from "../cmps/StyleBoard/FavsSidebar"
 import { MobileFavBar } from "../cmps/StyleBoard/MobileFavBar"
@@ -11,14 +11,20 @@ import { useMediaQuery } from "../hooks/useMediaQuery"
 import { breakpoints } from "../util/breakpoints"
 import { SaveBoardModal } from "../cmps/StyleBoard/SaveBoardModal"
 import { SwitchBoardModal } from "../cmps/StyleBoard/SwitchBoardModal"
-
+import { useBoardHistory } from "../hooks/useBoardHistory"
+import { useIsLoggedInUser } from "../hooks/useIsLoggedInUser"
+ 
 export function StyleBoard(){
     const isMobile = useMediaQuery(breakpoints.mobile)
+    const canvasRef = useRef(null)
+    const { loggedInUser } = useIsLoggedInUser()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isSwitchModalOpen, setIsSwitchModalOpen] = useState(false)
     const [modalMode, setModalMode] = useState(null)
+    
     const { favorites } = useFavorites()
     const { boards, board, updateBoardField, saveAndCreateNewBoard, onSelectBoard } = useBoards()
+    const { atomicChange } = useBoardHistory(board, updateBoardField)
     const { 
         backgrounds, 
         loadMoreBackgrounds, 
@@ -26,12 +32,15 @@ export function StyleBoard(){
         selectBackground
     } = useCanvasBackgrounds({
             selectedBackground: board?.selectedBackground, 
-            onBackgroundChange: (bg)=> updateBoardField('selectedBackground', bg)
+            onBackgroundChange: onBackgroundChangeWithHistory
         }
     )
     
     useLockBodyScroll(true)
 
+    function onBackgroundChangeWithHistory(bg) {
+        atomicChange(()=>updateBoardField('selectedBackground', bg))
+    }
     async function handleSaveBoardAction(action) {
         const titleToSave = (action.title && action.title.length) ?
             action.title :
@@ -55,7 +64,7 @@ export function StyleBoard(){
         setIsModalOpen(true)
     }
 
-    if (!board) return null
+    if (!loggedInUser || !board) return null
 
     return(
         <>
@@ -83,6 +92,7 @@ export function StyleBoard(){
                         "
                     >
                         <StyleBoardCanvas 
+                            ref={canvasRef}
                             backgrounds={backgrounds} 
                             loadMore={loadMoreBackgrounds} 
                             loadingBgs={loading} 

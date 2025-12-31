@@ -5,16 +5,15 @@ import { useIsLoggedInUser } from "./useIsLoggedInUser"
 
 export function useFavorites(){
     const favorites = useSelector(state => state.favoriteModule.favorites)  
+    const isLoading = useSelector(state => state.favoriteModule.isLoading)
     const [selectedFav, setSelectedFav] = useState(null)
     const { loggedInUser } = useIsLoggedInUser()
-    const hasLoadedFavorites = useRef(false)
 
     useEffect(()=>{
         if (!loggedInUser?._id) return
-        if (hasLoadedFavorites.current) return
-        hasLoadedFavorites.current = true
+        if (favorites.length > 0 || isLoading) return
         loadFavorites({ userId: loggedInUser._id })
-    }, [loggedInUser._id])
+    }, [loggedInUser?._id, favorites.length, isLoading])
 
     function resetSelectedFav() {
         setSelectedFav(null)
@@ -26,10 +25,11 @@ export function useFavorites(){
     } 
     
     return {
-        favorites,
+        favorites: favorites || [],
         selectedFav,
         handleSelect,
-        resetSelectedFav
+        resetSelectedFav,
+        isLoading
 
     }
 }

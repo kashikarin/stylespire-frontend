@@ -23,11 +23,9 @@ export function StyleBoardMenu({ openModal }){
         >
             <button 
                 className="
-                    absolute top-2 right-2
                     text-primary-dark
                     rounded-full
                     bg-transparent
-                    p-2
                     hover:rotate-90
                     transition
                     flex items-center justify-center

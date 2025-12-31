@@ -1,21 +1,21 @@
 import { ReactSVG } from "react-svg"
+import { BackgroundBar } from "./BackgroundBar"
 
-export function BackgroundIconBtn({ handleMouseEnter }){
+export function BackgroundIconBtn({ handleClick }){
     return (
         <button 
             className="
-                absolute top-2 left-2
-                w-50 h-50
-                bg-transparent
-                opacity-60
-                hover:opacity-100
-                transition-all  duration-200
+                relative
                 flex items-center justify-center
+                h-10 w-10 z-20
                 cursor-pointer
+                bg-white/40
+                rounded-lg
+                hover:bg-white/60
             "
-            onMouseEnter={handleMouseEnter}            
+            onClick={handleClick}            
         >
-            <ReactSVG src='/svgs/colorPalette.svg' />
-        </button>
+            <ReactSVG src='/svgs/background-icon.svg'/>
+        </button>        
     )
 }

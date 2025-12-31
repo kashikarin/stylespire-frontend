@@ -1,3 +1,4 @@
+import { th } from 'framer-motion/client'
 import { httpService } from './http.service'
 
 export const userService = {
@@ -34,18 +35,27 @@ async function signup(userCred) {
 }
 
 async function getCurrentUser() {
-    // const token =_getAccessToken()
-    // if (!token) return null
-    return await httpService.get('auth/me')
+  try {
+    const user = await httpService.get('auth/me')
+    return user
+  }
+  catch (err) {
+    if (err.response && err.response.status === 401) {
+      _clearAccessToken()
+      throw new Error('Session expired')
+    }
+    throw err
+  } 
 }
 
 async function logout() {
   try {
     await httpService.post('auth/logout')
-    _clearLocalUser()
-    _clearAccessToken()
   } catch (err) {
     throw err
+  } finally {
+    _clearLocalUser()
+    _clearAccessToken()
   }
 }
 

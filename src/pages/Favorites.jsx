@@ -12,8 +12,9 @@ export function Favorites(){
         } = useFavorites()  
     const { isLoggedInUser } = useIsLoggedInUser()  
     const { getIsLiked, toggleLike } = useLike()
-
-    console.log('condition', (favorites || favorites.length))
+    
+    if (!isLoggedInUser) return null
+    
     return(
         <section 
             className='

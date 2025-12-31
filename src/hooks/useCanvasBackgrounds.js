@@ -31,7 +31,7 @@ export function useCanvasBackgrounds({
 
     useEffect(()=>{
         setPage(1)
-        fetchBackgrounds()
+        fetchBackgrounds(1)
     }, [query])
 
     async function fetchBackgrounds(pageToFetch = 1){
@@ -65,9 +65,7 @@ export function useCanvasBackgrounds({
     }
     
     function loadMoreBackgrounds(){
-        const nextPage = page + 1
-        setPage(nextPage)
-        fetchBackgrounds(nextPage)
+        fetchBackgrounds(page + 1)
     }
 
     function selectBackground(bg) { 

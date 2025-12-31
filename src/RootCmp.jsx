@@ -12,13 +12,16 @@ import { StyleMeModal } from "./cmps/StyleMeModal"
 import { motion, AnimatePresence } from "framer-motion"
 import { StyleBoard } from "./pages/StyleBoard"
 import { useCurrentUser } from "./hooks/useCurrentUser"
+import { ProtectedRoute } from "./cmps/ProtectedRoute"
+import { useIsLoggedInUser } from "./hooks/useIsLoggedInUser"
 
 export function RootCmp(){
     const location = useLocation()
+    const { loggedInUser } = useIsLoggedInUser()
     const authMode = useSelector(state => state.userModule.authMode)
     const isStyleMeModalOpen = useSelector(state => state.systemModule.isStyleMeModalOpen)
     const isMobile = useMediaQuery(breakpoints.mobile)
-    const isStyleBoard = location.pathname.includes('board')
+    const isStyleBoard = location.pathname === '/board' && loggedInUser
     
     useCurrentUser()
 
@@ -28,16 +31,21 @@ export function RootCmp(){
                 <AppHeader />
                 {isStyleBoard ? (
                     <Routes>
-                        <Route path="board" element={<StyleBoard />}/>
+                        <Route element={<ProtectedRoute />}>
+                            <Route path='board' element={<StyleBoard />} />
+                        </Route>
                     </Routes>
                 ) :
                 (
                     <main>
                         <Routes>
                             <Route path="" element={<Home />}/>
-                            <Route path='favorites' element={<Favorites /> }/>
+                            {/* <Route path='favorites' element={<Favorites /> }/> */}
                             <Route path='results' element={<Results />}/>
-                            
+                            <Route element={<ProtectedRoute />}>
+                                <Route path='board' element={<StyleBoard />} />
+                                <Route path='favorites' element={<Favorites />} />
+                            </Route>
                         </Routes>
                     </main>
                 )}
@@ -67,3 +75,10 @@ export function RootCmp(){
         
     )
 }
+
+// In your router
+{/* <Route path="/styleboard" element={
+  <ProtectedRoute>
+    <StyleBoard />
+  </ProtectedRoute>
+} /> */}

@@ -12,33 +12,50 @@ export function BackgroundBar({ backgrounds, selectBackground, onLoadMore, loadi
         <div 
             ref={barRef}
             className="
-                absolute top-16 left-2
-                w-full 
-                p-2 
-                bg-white/20 
+                absolute left-full ml-3 top-1/2 -translate-y-1/2
+                w-[320px]
+                max-h-[45px]
+0                bg-white/40
                 backdrop-blur-md
                 rounded-xl
-                border border-white/30 
-                shadow-lg shadow-black/5
-                overflow-hidden
-                narrow:w-1/3
-                
-                flex flex-col 
-                space-y-3
-                max-h-[200px]
+                shadow-md
             "
         >
+            {/* caret */}
+            <div
+                className="
+                    absolute
+                    -left-[11px]
+                    top-1/2
+                    -translate-y-1/2
+                    pointer-events-none
+                "
+            >
+                <div
+                    className="
+                    absolute
+                    w-0 h-0
+                    border-y-[12px] border-y-transparent
+                    border-r-[12px] border-r-white/60
+                    "
+                />
+                <div
+                    className="
+                    relative
+                    w-0 h-0
+                    border-y-[10px] border-y-transparent
+                    border-r-[10px] border-r-white/60
+                    "
+                />
+            </div>
+            {/* background bar */}
             <div 
                 ref={dragRef}
                 className="
-                    pb-1
                     flex gap-2 
-                    overflow-x-auto
                     overflow-y-hidden
-                    snap-x snap-mandatory
+                    overflow-x-auto 
                     no-scrollbar
-                    overscroll-bounce
-
                 "
             >
                 <HorizontalCarousel>
@@ -46,18 +63,14 @@ export function BackgroundBar({ backgrounds, selectBackground, onLoadMore, loadi
                         <button 
                             key={bg}
                             className="
-                                border border-white/40
-                                flex-shrink-0
-                                w-10 h-10
+                                w-8 h-8
                                 rounded-lg
-                                cursor-pointer
-                                overflow-hidden
-                                p-0
-                                bg-cover bg-center bg-no-repeat
-                                focus:outline-none focus:ring-2 focus:ring-primary
-                                narrow:hover:scale-105
+                                flex-shrink-0
+                                bg-cover bg-center
+                                border border-white/40
                                 hover:border-white/70
-                                transition-all duration-200
+                                hover:scale-105
+                                transition-none duration-200
                             "
                             onClick={()=> {
                                 console.log('bg', bg)
@@ -67,28 +80,30 @@ export function BackgroundBar({ backgrounds, selectBackground, onLoadMore, loadi
                             style={{backgroundImage: `url(${bg})`}}
                         >
                         </button>
+                        
                     ))}
+                    {!loading && (
+                        <button
+                            className="
+                                bg-white/60
+                                backdrop-blur-sm
+                                border border-white/20
+                                text-sm
+                                shadow-sm
+                                rounded-md
+                                py-1
+                                text-black
+                                hover:bg-white/80
+                                transition-all
+                            "
+                            onClick={onLoadMore}
+                        >
+                            +
+                        </button>
+                    )}
                 </HorizontalCarousel>
             </div>
-            {!loading && (
-                <button
-                    className="
-                        bg-white/60
-                        backdrop-blur-sm
-                        border border-white/20
-                        text-sm
-                        shadow-sm
-                        rounded-md
-                        py-1
-                        text-black
-                        hover:bg-white/80
-                        transition-all
-                    "
-                    onClick={onLoadMore}
-                >
-                    Show More
-                </button>
-            )}
+            
        </div>
     )
 }

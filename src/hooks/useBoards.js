@@ -32,6 +32,7 @@ export function useBoards(){
     }
 
     async function updateBoardField(field, value){
+        console.log("🚀 ~ updateBoardField ~ value:", value)
         await updateBoard({
             ...board,
             [field]: value,
