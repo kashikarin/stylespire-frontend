@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Portal } from "../cmps/Portal"
 import { FavsSidebar } from "../cmps/StyleBoard/FavsSidebar"
 import { MobileFavBar } from "../cmps/StyleBoard/MobileFavBar"
@@ -11,20 +11,19 @@ import { useMediaQuery } from "../hooks/useMediaQuery"
 import { breakpoints } from "../util/breakpoints"
 import { SaveBoardModal } from "../cmps/StyleBoard/SaveBoardModal"
 import { SwitchBoardModal } from "../cmps/StyleBoard/SwitchBoardModal"
-import { useBoardHistory } from "../hooks/useBoardHistory"
 import { useIsLoggedInUser } from "../hooks/useIsLoggedInUser"
- 
+
 export function StyleBoard(){
     const isMobile = useMediaQuery(breakpoints.mobile)
     const canvasRef = useRef(null)
+    
     const { loggedInUser } = useIsLoggedInUser()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isSwitchModalOpen, setIsSwitchModalOpen] = useState(false)
     const [modalMode, setModalMode] = useState(null)
     
     const { favorites } = useFavorites()
-    const { boards, board, updateBoardField, saveAndCreateNewBoard, onSelectBoard } = useBoards()
-    const { atomicChange } = useBoardHistory(board, updateBoardField)
+    const { boards, board, updateCurrentBoard, saveAndCreateNewBoard, onSelectBoard } = useBoards()
     const { 
         backgrounds, 
         loadMoreBackgrounds, 
@@ -32,31 +31,48 @@ export function StyleBoard(){
         selectBackground
     } = useCanvasBackgrounds({
             selectedBackground: board?.selectedBackground, 
-            onBackgroundChange: onBackgroundChangeWithHistory
+            onBackgroundChange: onBackgroundChange
         }
     )
     
     useLockBodyScroll(true)
 
-    function onBackgroundChangeWithHistory(bg) {
-        atomicChange(()=>updateBoardField('selectedBackground', bg))
+    useEffect(() => {
+        const canvas = canvasRef.current
+        return () => {
+            console.log("🚀 ~ StyleBoard ~ canvasRef.current?.isDirty():", canvasRef.current?.isDirty())
+            if (canvas?.isDirty()){
+                const canvasState = canvas.getCanvasState()
+                updateCurrentBoard(canvasState) //save any unsaved changes
+        }
+      }
+    }, [updateCurrentBoard])
+
+    function onBackgroundChange(bg) {
+        canvasRef.current.setBackground(bg)
     }
     async function handleSaveBoardAction(action) {
         const titleToSave = (action.title && action.title.length) ?
             action.title :
-            board.title || 'Untitled board'
-        
+            board.title || 'Untitled board'  
+
+        const canvasState = canvasRef.current.getCanvasState()
+
+        if (canvasRef.current?.isDirty()){
+            await updateCurrentBoard({ ...canvasState, title: titleToSave })
+            canvasRef.current?.marksClean()
+        }
+
         switch(action.type){
             case 'save':
-                await saveAndCreateNewBoard(titleToSave)
+                await saveAndCreateNewBoard({ title: titleToSave })
                 break
             case 'switch':
-                await updateBoardField('title', titleToSave)
+                if (titleToSave !== board.title) await updateCurrentBoard({ title: titleToSave })
                 setIsSwitchModalOpen(true)
                 break
             default: return 
         }
-
     }
 
     function handleMenuAction(mode) {

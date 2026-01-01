@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react"
 import { loadBoard, updateBoard, saveCurrentAndCreateNewBoard, loadBoards, selectBoard } from "../store/actions/board.actions"
 import { useIsLoggedInUser } from "./useIsLoggedInUser"
 import { useSelector } from "react-redux"
+import { b } from "framer-motion/client"
 
 export function useBoards(){
     const { loggedInUser } = useIsLoggedInUser()    
@@ -27,27 +28,37 @@ export function useBoards(){
         }   
     }
 
-    async function saveAndCreateNewBoard(titleFromModal){
-        await saveCurrentAndCreateNewBoard(board, titleFromModal)
-    }
-
-    async function updateBoardField(field, value){
-        console.log("🚀 ~ updateBoardField ~ value:", value)
-        await updateBoard({
-            ...board,
-            [field]: value,
+    //save current board and create new empty board
+    async function saveAndCreateNewBoard(updatedBoard){
+        const boardToSave = {
+            ...board, 
+            ...updatedBoard,  
             updatedAt: Date.now()
-        })
+        }
+        await saveCurrentAndCreateNewBoard(boardToSave)
     }
 
-    function onSelectBoard(board){
-        selectBoard(board)
+    //update current board without creating a new one
+    async function updateCurrentBoard(updatedFields = {}){
+        const boardToUpdate = {
+            ...board,
+            ...updatedFields,   
+            updatedAt: Date.now()
+        }
+        await updateBoard(boardToUpdate)
+    }
+        
+    async function onSelectBoard(boardToSelect, canvasState = {}){
+        if (Object.keys(canvasState).length > 0){
+            await updateBoard(canvasState) //ensure any unsaved changes are saved
+        }
+        selectBoard(boardToSelect)
     }
 
     return {
         boards,
         board,
-        updateBoardField,
+        updateCurrentBoard,
         saveAndCreateNewBoard,
         onSelectBoard
     }

@@ -8,9 +8,13 @@ import { useBoards } from '../../hooks/useBoards'
 function CanvasBoard({ background }, ref){
     const containerRef = useRef()
     const canvasStateRef = useRef()
+    console.log("🚀 ~ CanvasBoard ~ canvasStateRef:", canvasStateRef.current)
     const stageRef = useRef()
     const transformerRef = useRef()
+
+    //on mount - set to signal - no changes to canvasState yet
     const isDirtyRef = useRef(false) 
+    
     const [canvasState, setCanvasState] = useState({
         items: [],
         selectedBackground: null
@@ -18,11 +22,11 @@ function CanvasBoard({ background }, ref){
     const [size, setSize] = useState({ width: 0, height: 0 })
     const [selectedId, setSelectedId] = useState(null)
     const imageRefs = useRef({})
-    const { board, updateBoardField } = useBoards()
+    const { board } = useBoards()
 
     useEffect(() => {
         if (!board._id) return
-        setCanvasState({ items: board.items || [], selectedBackground: board.selectedBackground })
+        setCanvasState({ items: board.items || [], selectedBackground: background })
     }, [board?._id]) 
 
     useEffect(() => {
@@ -88,17 +92,26 @@ function CanvasBoard({ background }, ref){
 
         const rect = containerRef.current.getBoundingClientRect()
 
-        const x = e.clientX - rect.left 
-        const y = e.clientY - rect.top 
+        
+
+        const x = e.clientX - rect.left
+        const y = e.clientY - rect.top
+        
+        console.log('Drop position:', { x, y })
+        console.log('Client position:', { x: e.clientX, y: e.clientY })
+        console.log('Container rect:', rect)
+        
+        const itemWidth = 200
+        const itemHeight = 200
 
         atomicChange(()=>{
             const newItem = {
                 id: crypto.randomUUID(),
                 src,
-                x,
-                y,
-                width: 200,
-                height: 200,
+                x: x,
+                y: y,
+                width: itemWidth,
+                height: itemHeight,
                 rotation: 0
             }
             setCanvasState(prev => ({
@@ -110,30 +123,35 @@ function CanvasBoard({ background }, ref){
         isDirtyRef.current = true
     }
 
-    //update board in redux + server in save events
-    async function persist() {
-        if (!isDirtyRef.current) return
+    function setBackground(bg) {
+        atomicChange(()=>{
+            setCanvasState(prev => ({
+                ...prev,
+                selectedBackground: bg
+            }))
+        })
+        isDirtyRef.current = true
+    }
 
-        const { items, selectedBackground } = canvasStateRef.current
+    function getCanvasState(){
+        return canvasStateRef.current
+    }
 
-        await updateBoardField('items', items)
-        await updateBoardField('selectedBackground', selectedBackground)
+    function isDirty(){
+        return isDirtyRef.current
+    }
 
+    function marksClean(){
         isDirtyRef.current = false
     }
 
-    function setBackground(bg) {
-        setCanvasState(prev => ({
-            ...prev,
-            selectedBackground: bg
-        }))
-        isDirtyRef.current = true
-    }
     useImperativeHandle(ref, () => ({
-        persist,
         undo,
         redo,
-        setBackground
+        setBackground,
+        getCanvasState,
+        isDirty,
+        marksClean
     }))
 
     return(

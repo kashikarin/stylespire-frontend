@@ -1,4 +1,4 @@
-import { pre } from "framer-motion/client"
+import { current } from "@reduxjs/toolkit"
 import { useRef } from "react"
 
 export function useBoardHistory(canvasState, setCanvasState){
@@ -46,20 +46,22 @@ export function useBoardHistory(canvasState, setCanvasState){
         const history = historyRef.current
         if (!history.past.length) return
         
+        const current = snapshot()
         const prev = history.past.pop()
-        history.future.push(snapshot())
 
-        setCanvasState(prev) 
+        setCanvasState(prev)
+        history.future.push(current)
     }
 
     function redo(){
         const history = historyRef.current
         if (!history.future.length) return
 
+        const current = snapshot()
         const next = history.future.pop()
-        history.past.push(snapshot())
-
+        
         setCanvasState(next)
+        history.past.push(current)
     }
     
     return{

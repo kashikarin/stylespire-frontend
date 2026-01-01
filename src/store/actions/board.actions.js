@@ -38,25 +38,20 @@ export function selectBoard(board) {
     store.dispatch(getCmdLoadBoard(board))
 }
 
-export async function saveCurrentAndCreateNewBoard(
-    currentBoard,
-    title
-) {
+export async function saveCurrentAndCreateNewBoard(boardToSave) {
     store.dispatch(getCmdSetLoading(true))
     store.dispatch(getCmdSetError(null))
     try {
-         const boardToUpdate = {
-            ...currentBoard,
-            title,
-            updatedAt: Date.now()
-         } 
-         const updatedboard = await boardService.update(boardToUpdate)
-         store.dispatch(getCmdUpdateBoard(updatedboard))
+        //save new board with all the data
+        const savedBoard = await boardService.update(boardToSave)
+        store.dispatch(getCmdUpdateBoard(savedBoard))
 
-         const newBoard = await boardService.createEmptyBoard()
-         store.dispatch(getCmdCreateBoard(newBoard))
+        //create new empty board
+        const newBoard = await boardService.createEmptyBoard()
+        store.dispatch(getCmdCreateBoard(newBoard))
 
-         store.dispatch(getCmdLoadBoard(newBoard))
+        //set new board as active board
+        store.dispatch(getCmdLoadBoard(newBoard))
 
          return newBoard
     } catch(err) {

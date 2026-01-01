@@ -19,6 +19,7 @@ export function StyleBoardCanvas({
     const DEFAULT_CANVAS_BACKGROUND = '/imgs/bgs/studio.jpg'
     const displayBackground =
         background || DEFAULT_CANVAS_BACKGROUND
+    console.log("🚀 ~ StyleBoardCanvas ~ displayBackground:", displayBackground)
     return(
 
         <main 
@@ -56,7 +57,7 @@ export function StyleBoardCanvas({
                                 rounded-lg
                                 hover:bg-white/60
                             "
-                            onClick={ref.current?.undo}
+                            onClick={() => ref.current?.undo()}
                         >
                             <ReactSVG src='/svgs/undo-icon.svg' />
                         </button>
@@ -69,9 +70,9 @@ export function StyleBoardCanvas({
                                 rounded-lg
                                 hover:bg-white/60
                             "
-                            onClick={ref.current?.redo}
+                            onClick={() => ref.current?.redo()}
                         >
-                            <ReactSVG src='/svgs/redo-icon.svg' className='scale-x-[-1]'/>
+                            <ReactSVG src='/svgs/undo-icon.svg' className='scale-x-[-1]'/>
                         </button>
                         <button 
                             className="
