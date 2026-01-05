@@ -24,7 +24,7 @@ export function StyleBoardCanvas({
 
         <div className="relative w-full h-full">
             <div className={`absolute z-20 flex flex-row justify-between items-start ${isMobile ? 'top-2 left-2 right-2' : 'top-4 left-4 right-4'}`} style={{ pointerEvents: 'none' }}>
-                    <div className={`flex gap-2 ${isMobile ? 'flex-row items-center' : 'flex-col'}`}>
+                    <div className={`flex gap-1 ${isMobile ? 'flex-row items-center' : 'flex-col'}`}>
                         <div className="relative" style={{ pointerEvents: 'auto' }}>
                             <BackgroundIconBtn 
                                 handleClick={() => setIsBgBarOpen(true)} 

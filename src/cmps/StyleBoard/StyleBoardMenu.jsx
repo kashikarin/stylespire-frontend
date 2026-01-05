@@ -32,8 +32,11 @@ export function StyleBoardMenu({ openModal, isMobile }){
                     transition
                     flex items-center justify-center
                     cursor-pointer
-                    // ${isDropdownOpen ? 'rotate-90' : 'hover:rotate-90'}
+                    z-20
+                    narrow:px-2
+                    ${isDropdownOpen ? 'rotate-90' : 'hover:rotate-90'}
                 `}
+                style={{ pointerEvents: 'auto' }}
                 onClick={toggle}
                 ref={buttonRef}
                 
@@ -48,8 +51,9 @@ export function StyleBoardMenu({ openModal, isMobile }){
             </button>
             {isDropdownOpen && (
                 <div
-                    className="
-                        absolute right-2 top-10
+                    className={`     
+                        absolute 
+                        ${isMobile ? 'top-8 right-0' : 'top-10 right-2'}
                         text-sm
                         z-20
                         mt-2 py-1
@@ -58,7 +62,7 @@ export function StyleBoardMenu({ openModal, isMobile }){
                         rounded-lg
                         overflow-hidden
                         min-w-[120px]
-                    " 
+                    `}
                     ref={dropdownRef}
                 >
                     <button 

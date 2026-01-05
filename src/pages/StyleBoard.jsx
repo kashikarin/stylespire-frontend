@@ -131,7 +131,7 @@ export function StyleBoard(){
                             p-4 
                             bg-primary-bg
                             order-2
-                            narrow:w-[260px] 
+                            narrow:w-[200px] 
                             narrow:border-t-0 narrow:border-l narrow:border-primary-dark
                             narrow:h-full
                             narrow:order-none

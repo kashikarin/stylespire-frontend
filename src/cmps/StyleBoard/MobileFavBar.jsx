@@ -14,7 +14,6 @@ export function MobileFavBar({ favorites, onItemSelect }){
                     overflow-y-auto
                     snap-x snap-mandatory
                     scrollbar-none
-
                 '
             >
                 {favorites.map(fav => (
@@ -23,7 +22,7 @@ export function MobileFavBar({ favorites, onItemSelect }){
                         className="
                             shrink-0
                             snap-start
-                            w-[100px] h-[130px]
+                            w-[100px] h-[100px]
                             rounded-md
                             overflow-hidden
                             
