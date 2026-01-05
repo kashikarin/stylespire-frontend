@@ -6,7 +6,8 @@ export function useCanvasShortcuts({
     selectedId, 
     setSelectedId, 
     redo,
-    undo 
+    undo,
+    atomicChange
 }){
     
     useEffect(() => {
@@ -24,10 +25,12 @@ export function useCanvasShortcuts({
             //delete case
             if ((e.key === 'Backspace' || e.key === 'Delete') && selectedId) {
                 e.preventDefault()
-                setCanvasState(prev => ({
-                    ...prev,
-                    items: prev.items.filter(i => i.id !== selectedId)
-                }))
+                atomicChange(() => {
+                    setCanvasState(prev => ({
+                        ...prev,
+                        items: prev.items.filter(i => i.id !== selectedId)
+                    }))
+                })
                 setSelectedId(null)
             }
 
@@ -36,10 +39,12 @@ export function useCanvasShortcuts({
                 e.preventDefault()
                 const item = canvasState.items.find(i => i.id === selectedId)
                 if (!item) return
-                setCanvasState(prev => ({
-                    ...prev,
-                    items: [...prev.items.filter(i => i.id !== selectedId), item]
-                }))
+                atomicChange(() => {
+                    setCanvasState(prev => ({
+                        ...prev,
+                        items: [...prev.items.filter(i => i.id !== selectedId), item]
+                    }))
+                })
             }
 
             //bring to back case
@@ -47,10 +52,12 @@ export function useCanvasShortcuts({
                 e.preventDefault()
                 const item = canvasState.items.find(i => i.id === selectedId)
                 if (!item) return
-                setCanvasState(prev => ({
-                    ...prev, 
-                    items: [ item, ...prev.items.filter(i => i.id !== selectedId)]
-                }))
+                atomicChange(() => {
+                    setCanvasState(prev => ({
+                        ...prev, 
+                        items: [ item, ...prev.items.filter(i => i.id !== selectedId)]
+                    }))
+                })
             }
 
             //undo case
@@ -76,6 +83,7 @@ export function useCanvasShortcuts({
         canvasState,
         setCanvasState,
         undo,
-        redo
+        redo,
+        atomicChange
     ])
 }

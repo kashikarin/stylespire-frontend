@@ -13,6 +13,9 @@ export function FavsSidebar({favorites}){
                         draggable
                         onDragStart={e => {
                             e.dataTransfer.setData('image-src', fav.image.url)
+
+                            const img = e.target
+                            e.dataTransfer.setDragImage(img, img.width / 2, img.height / 2)
                         }}
                     />
                 </div>

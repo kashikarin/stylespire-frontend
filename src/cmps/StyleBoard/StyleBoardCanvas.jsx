@@ -13,29 +13,22 @@ export function StyleBoardCanvas({
     background, 
     selectBackground,
     openModal,
+    isMobile
 }){
     const [isBgBarOpen, setIsBgBarOpen] = useState(false)
     const [isSBMenuOpen, setIsSBMenuOpen] = useState(false)
     const DEFAULT_CANVAS_BACKGROUND = '/imgs/bgs/studio.jpg'
     const displayBackground =
         background || DEFAULT_CANVAS_BACKGROUND
-    console.log("🚀 ~ StyleBoardCanvas ~ displayBackground:", displayBackground)
     return(
 
-        <main 
-            className="
-                relative 
-                w-full 
-                h-full 
-                p-4
-            "
-        >
-            <CanvasBoard ref={ref} background={displayBackground} />
-                <div className="flex justify-between w-full z-20">
-                    <div className="flex flex-col gap-1 z-20 items-center">
-                        <div className="relative">
+        <div className="relative w-full h-full">
+            <div className={`absolute z-20 flex flex-row justify-between items-start ${isMobile ? 'top-2 left-2 right-2' : 'top-4 left-4 right-4'}`} style={{ pointerEvents: 'none' }}>
+                    <div className={`flex gap-2 ${isMobile ? 'flex-row items-center' : 'flex-col'}`}>
+                        <div className="relative" style={{ pointerEvents: 'auto' }}>
                             <BackgroundIconBtn 
                                 handleClick={() => setIsBgBarOpen(true)} 
+                                isMobile={isMobile}
                             />
                             {isBgBarOpen && <BackgroundBar 
                                 backgrounds={backgrounds}
@@ -46,55 +39,113 @@ export function StyleBoardCanvas({
                                 onLoadMore={loadMore}
                                 loading={loadingBgs}
                                 onClose={() => setIsBgBarOpen(false)}
+                                isMobile={isMobile}
                             />}
                         </div>
                         <button 
-                            className="
-                                flex items-center justify-center
-                                h-10 w-10 z-20
-                                cursor-pointer
-                                bg-white/40
-                                rounded-lg
-                                hover:bg-white/60
-                            "
-                            onClick={() => ref.current?.undo()}
-                        >
-                            <ReactSVG src='/svgs/undo-icon.svg' />
-                        </button>
-                        <button 
-                            className="
-                                flex items-center justify-center
-                                h-10 w-10 z-20
-                                cursor-pointer
-                                bg-white/40
-                                rounded-lg
-                                hover:bg-white/60
-                            "
-                            onClick={() => ref.current?.redo()}
-                        >
-                            <ReactSVG src='/svgs/undo-icon.svg' className='scale-x-[-1]'/>
-                        </button>
-                        <button 
-                            className="
-                                flex items-center justify-center 
-                                h-10 w-10
-                                cursor-pointer
-                                bg-white/40
-                                rounded-lg
-                                hover:bg-white/60
-                            "
-                            
-                        >
-
-                        </button>
-
-                    </div>
+                            title="Undo (Ctrl+Z)"
+                            className={`
+                                flex items-center justify-center cursor-pointer rounded-lg
+                                ${isMobile 
+                                    ? 'h-8 w-8 bg-white border border-gray-200 hover:border-gray-300 shadow-md'  
+                                    : 'h-10 w-10 bg-white/80 hover:bg-white shadow-sm'
+                                }
+                            `}
+                            style={{ pointerEvents: 'auto' }}
+                        onClick={() => ref.current?.undo()}
+                    >
+                        <ReactSVG 
+                            src='/svgs/undo-icon.svg'
+                            beforeInjection={(svg) => {
+                                svg.setAttribute('width', isMobile ? '20' : '24')
+                                svg.setAttribute('height', isMobile ? '20' : '24')
+                            }}
+                        />
+                    </button>
                     
-            {/* SB menu part */}
-                <StyleBoardMenu openModal={openModal} />
-                {/* background part */}
-            </div> 
-        </main>
+                    {/* Redo button */}
+                    <button 
+                        title="Redo (Ctrl+Shift+Z)"
+                        className={`
+                            flex items-center justify-center cursor-pointer rounded-lg
+                            ${isMobile 
+                                ? 'h-8 w-8 bg-white border border-gray-200 hover:border-gray-300 shadow-md'  
+                                : 'h-10 w-10 bg-white/80 hover:bg-white shadow-sm'
+                            }
+                        `}
+                        style={{ pointerEvents: 'auto' }}
+                        onClick={() => ref.current?.redo()}
+                    >
+                        <div className="scale-x-[-1]">
+                            <ReactSVG 
+                                src='/svgs/undo-icon.svg'
+                                beforeInjection={(svg) => {
+                                    svg.setAttribute('width', isMobile ? '20' : '24')
+                                    svg.setAttribute('height', isMobile ? '20' : '24')
+                                }}
+                            />
+                        </div>
+                    </button>
+                    <button
+                        title="Delete selected item (Del)"
+                        className={`
+                            flex items-center justify-center cursor-pointer rounded-lg
+                            ${isMobile  ? 'h-8 w-8 bg-white border border-gray-200 hover:border-gray-300 shadow-md'  
+                                : 'h-10 w-10 bg-white/80 hover:bg-white shadow-sm'
+                            }
+                        `}
+                        style={{ pointerEvents: 'auto' }}
+                        onClick={() => ref.current?.deleteSelected()}
+                    >
+                         <ReactSVG src='/svgs/trash-icon.svg'
+                            beforeInjection={(svg) => {
+                                svg.setAttribute('width', isMobile ? '20' : '24')
+                                svg.setAttribute('height', isMobile ? '20' : '24')
+                            }}
+                         />
+                    </button>
+                    <button
+                        title="Bring to front (Ctrl+])"
+                        className={`
+                            flex items-center justify-center cursor-pointer rounded-lg
+                            ${isMobile  ? 'h-8 w-8 bg-white border border-gray-200 hover:border-gray-300 shadow-md'  
+                                : 'h-10 w-10 bg-white/80 hover:bg-white shadow-sm'
+                            }
+                        `}
+                        style={{ pointerEvents: 'auto' }}
+                        onClick={() => ref.current?.bringSelectedToFront()}
+                    >
+                         <ReactSVG src='/svgs/bring-front-icon.svg'
+                            beforeInjection={(svg) => {
+                                svg.setAttribute('width', isMobile ? '20' : '24')
+                                svg.setAttribute('height', isMobile ? '20' : '24')
+                            }}
+                         />
+                    </button>    
+                    <button
+                        title="Send to back (Ctrl+[)"
+                        className={`
+                            flex items-center justify-center cursor-pointer rounded-lg
+                            ${isMobile  ? 'h-8 w-8 bg-white border border-gray-200 hover:border-gray-300 shadow-md'  
+                                : 'h-10 w-10 bg-white/80 hover:bg-white shadow-sm'
+                            }
+                        `}
+                        style={{ pointerEvents: 'auto' }}
+                        onClick={() => ref.current?.bringSelectedBack()}
+                    >
+                         <ReactSVG src='/svgs/bring-back-icon.svg'
+                            beforeInjection={(svg) => {
+                                svg.setAttribute('width', isMobile ? '20' : '24')
+                                svg.setAttribute('height', isMobile ? '20' : '24')
+                            }}
+                         />
+                    </button>    
+                    </div>
+                    <StyleBoardMenu openModal={openModal} isMobile={isMobile}/>
+            </div>
+            <CanvasBoard ref={ref} background={displayBackground} isMobile={isMobile}/>
+                
+        </div>
 
     )
 }

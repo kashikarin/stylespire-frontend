@@ -1,4 +1,4 @@
-export function MobileFavBar({favorites}){
+export function MobileFavBar({ favorites, onItemSelect }){
     return(
         <div 
             className="
@@ -28,7 +28,8 @@ export function MobileFavBar({favorites}){
                             overflow-hidden
                             
                         "
-                        >
+                        onClick={() => onItemSelect(fav.image.url)}
+                    >
                             <img 
                                 src={fav.image.url} 
                                 alt={fav.image.description} 

@@ -40,13 +40,12 @@ export function StyleBoard(){
     useEffect(() => {
         const canvas = canvasRef.current
         return () => {
-            console.log("🚀 ~ StyleBoard ~ canvasRef.current?.isDirty():", canvasRef.current?.isDirty())
             if (canvas?.isDirty()){
                 const canvasState = canvas.getCanvasState()
                 updateCurrentBoard(canvasState) //save any unsaved changes
         }
       }
-    }, [updateCurrentBoard])
+    }, [])
 
     function onBackgroundChange(bg) {
         canvasRef.current.setBackground(bg)
@@ -80,6 +79,10 @@ export function StyleBoard(){
         setIsModalOpen(true)
     }
 
+    function handleItemSelect(imageUrl) {
+        canvasRef.current?.addItemToCenter(imageUrl)
+    }
+
     if (!loggedInUser || !board) return null
 
     return(
@@ -97,15 +100,16 @@ export function StyleBoard(){
                 >
                     <main 
                         className="
-                            flex-1
                             relative
                             overflow-hidden
                             bg-primary-bg
-                            order-1
-                            h-[60dvh]
-                            narrow:order-none
-                            narrow:h-[100dvh]
+                            w-full
+                            h-screen  // ✅ Simple: use full screen height
+                            narrow:flex-1
+                            narrow:h-auto
                         "
+                        style={isMobile ? { height: 'calc(100vh - 120px)' } : undefined}  // ✅ Inline style for mobile
+
                     >
                         <StyleBoardCanvas 
                             ref={canvasRef}
@@ -115,6 +119,7 @@ export function StyleBoard(){
                             background={board.selectedBackground} 
                             selectBackground={selectBackground}
                             openModal={(mode) => handleMenuAction(mode)}
+                            isMobile={isMobile}
                         />
                     </main>
                     {!isMobile && <aside 
@@ -138,7 +143,7 @@ export function StyleBoard(){
                 
             </div>
             <Portal>
-                {isMobile && <MobileFavBar favorites={favorites || []}/>}
+                {isMobile && <MobileFavBar favorites={favorites || []} onItemSelect={handleItemSelect}/>}
             </Portal>
             <SaveBoardModal 
                 mode={modalMode}

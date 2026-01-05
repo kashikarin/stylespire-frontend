@@ -2,7 +2,8 @@ import { ReactSVG } from "react-svg"
 import { useDropdownController } from "../../hooks/useDropdownController"
 
 
-export function StyleBoardMenu({ openModal }){
+export function StyleBoardMenu({ openModal, isMobile }){
+    
     const {
         close,
         toggle,
@@ -19,29 +20,38 @@ export function StyleBoardMenu({ openModal }){
 
     return(
         <div 
-            className="relative"
+            className="relative" 
         >
             <button 
-                className="
+                className={`
                     text-primary-dark
                     rounded-full
                     bg-transparent
+                    px-0
                     hover:rotate-90
                     transition
                     flex items-center justify-center
                     cursor-pointer
-                "
+                    // ${isDropdownOpen ? 'rotate-90' : 'hover:rotate-90'}
+                `}
                 onClick={toggle}
                 ref={buttonRef}
                 
             >
-                <ReactSVG src='/svgs/three-dots.svg'/>
+                <ReactSVG 
+                    src='/svgs/three-dots.svg'
+                    beforeInjection={(svg) => {
+                        svg.setAttribute('width', isMobile ? '20' : '24')
+                        svg.setAttribute('height', isMobile ? '20' : '24')
+                    }}
+                />
             </button>
             {isDropdownOpen && (
                 <div
                     className="
-                        absolute right-6 top-14
+                        absolute right-2 top-10
                         text-sm
+                        z-20
                         mt-2 py-1
                         bg-primary-bg 
                         shadow-[0_4px_12px_rgba(0,0,0,0.08)]
@@ -55,8 +65,8 @@ export function StyleBoardMenu({ openModal }){
                         className="
                             block
                              text-primary-dark 
-                            px-3 pt-4 pb-3 m-0 
-                            text-base 
+                            px-3 py-2 m-0 
+                            text-sm narrow:text-base
                             font-normal 
                             tracking-tighter 
                             bg-transparent 
@@ -65,6 +75,7 @@ export function StyleBoardMenu({ openModal }){
                             w-full 
                             relative
                              hover:bg-slate-200
+                            narrow:py-3
 
                         "
                         onClick={(e)=> handleMenuClick(e, 'save')}
@@ -76,8 +87,8 @@ export function StyleBoardMenu({ openModal }){
                         className="
                             block
                              text-primary-dark 
-                            px-3 pt-4 pb-3 m-0 
-                            text-base 
+                            px-3 py-2 m-0 
+                            text-sm narrow:text-base
                             font-normal 
                             tracking-tighter 
                             bg-transparent 
@@ -86,6 +97,7 @@ export function StyleBoardMenu({ openModal }){
                             w-full 
                             relative
                             hover:bg-slate-200
+                            narrow:py-3
                         "
                         onClick={(e)=> handleMenuClick(e, 'switch')}
                     >

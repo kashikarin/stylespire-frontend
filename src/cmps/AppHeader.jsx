@@ -49,7 +49,7 @@ export function AppHeader(){
                 shadow-shadow-strong 
                 min-w-[200px] 
                 py-2 mt-2 
-                z-100 
+                z-20 
                 overflow-hidden
             " 
         ref={dropdownRef}
