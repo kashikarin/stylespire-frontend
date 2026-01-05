@@ -169,9 +169,9 @@ export function AppHeader(){
                     border-b border-primary-dark 
                     w-full min-w-[100dvw] h-[80px]
                 '>
-                <nav className='flex justify-between items-center w-full min-h-[80px] py-2'>            
+                <nav className='flex justify-between items-center w-full min-h-[80px] py-1'>            
                     <Link to='/' className='m-0 p-0'>
-                        <img src="/imgs/sslogo.png" alt="stylespire logo" className='h-12 w-14'/>
+                        <img src="/imgs/sslogo.png" alt="stylespire logo" className='h-[60px] w-[70px]'/>
                     </Link>
                     {(!isMobile) && <div 
                         className="

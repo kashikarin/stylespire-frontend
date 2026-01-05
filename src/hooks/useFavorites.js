@@ -11,9 +11,9 @@ export function useFavorites(){
 
     useEffect(()=>{
         if (!loggedInUser?._id) return
-        if (favorites.length > 0 || isLoading) return
+        // if (favorites.length > 0 || isLoading) return
         loadFavorites({ userId: loggedInUser._id })
-    }, [loggedInUser?._id, favorites.length, isLoading])
+    }, [loggedInUser?._id])
 
     function resetSelectedFav() {
         setSelectedFav(null)
