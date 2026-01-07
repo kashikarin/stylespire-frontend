@@ -12,7 +12,7 @@ export function CanvasToolsColumn({
     BackgroundBar 
 }) {
     return (
-        <div className="flex flex-col items-center gap-2 p-4 bg-primary-bg w-[60px] shrink-0">
+        <div className="flex flex-col items-start gap-2 pl-3 pr-4 py-4 bg-primary-bg shrink-0">
             <div className="relative">
                 <BackgroundIconBtn 
                     handleClick={() => setIsBgBarOpen(true)} 
@@ -36,7 +36,7 @@ export function CanvasToolsColumn({
 
             <button 
                 title="Undo (Ctrl+Z)"
-                className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/80 hover:bg-[#407076]/20 shadow-sm transition"
+                className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/80 hover:bg-[#407076]/20 shadow-sm transition shrink-0"
                 onClick={() => canvasRef.current?.undo()}
             >
                 <ReactSVG 
@@ -50,7 +50,7 @@ export function CanvasToolsColumn({
             
             <button 
                 title="Redo (Ctrl+Shift+Z)"
-                className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/80 hover:bg-[#407076]/20 shadow-sm transition"
+                className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/80 hover:bg-[#407076]/20 shadow-sm transition shrink-0"
                 onClick={() => canvasRef.current?.redo()}
             >
                 <div className="scale-x-[-1]">
@@ -66,7 +66,7 @@ export function CanvasToolsColumn({
 
             <button
                 title="Delete selected item (Del)"
-                className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/80 hover:bg-[#407076]/20 shadow-sm transition"
+                className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/80 hover:bg-[#407076]/20 shadow-sm transition shrink-0"
                 onClick={() => canvasRef.current?.deleteSelected()}
             >
                 <ReactSVG 
@@ -80,7 +80,7 @@ export function CanvasToolsColumn({
 
             <button
                 title="Bring to front (Ctrl+])"
-                className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/80 hover:bg-[#407076]/20 shadow-sm transition"
+                className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/80 hover:bg-[#407076]/20 shadow-sm transition shrink-0"
                 onClick={() => canvasRef.current?.bringSelectedToFront()}
             >
                 <ReactSVG 
@@ -94,7 +94,7 @@ export function CanvasToolsColumn({
 
             <button
                 title="Send to back (Ctrl+[)"
-                className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/80 hover:bg-[#407076]/20 shadow-sm transition"
+                className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/80 hover:bg-[#407076]/20 shadow-sm transition shrink-0"
                 onClick={() => canvasRef.current?.bringSelectedBack()}
             >
                 <ReactSVG 

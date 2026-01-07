@@ -133,6 +133,7 @@ export function StyleBoard(){
                             background={board.selectedBackground} 
                             selectBackground={selectBackground}
                             openModal={(mode) => handleMenuAction(mode)}
+                            openSwitchModal={() => setIsSwitchModalOpen(true)}
                             isMobile={isMobile}
                             board={board}
                             onSaveBoard={handleSaveNewBoard}

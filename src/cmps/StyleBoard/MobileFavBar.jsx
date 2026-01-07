@@ -39,7 +39,7 @@ export function MobileFavBar({ favorites, onItemSelect }){
                                 relative
                                 shrink-0
                                 snap-start
-                                w-[100px] h-[100px]
+                                w-[75px] h-[75px]
                                 rounded-md
                                 overflow-hidden
                             "

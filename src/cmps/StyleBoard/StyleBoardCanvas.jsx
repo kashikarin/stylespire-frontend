@@ -17,6 +17,7 @@ export function StyleBoardCanvas({
     background, 
     selectBackground,
     openModal,
+    openSwitchModal,
     isMobile,
     board,
     onSaveBoard
@@ -187,6 +188,7 @@ export function StyleBoardCanvas({
             {showBoardOptions && (
                 <BoardOptionsColumn 
                     openModal={openModal}
+                    openSwitchModal={openSwitchModal}
                     board={board}
                     onSaveBoard={onSaveBoard}
                 />

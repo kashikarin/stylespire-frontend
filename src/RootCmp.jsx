@@ -1,6 +1,6 @@
 import { AppHeader } from "./cmps/AppHeader"
 import { Favorites } from "./pages/Favorites"
-import { Home } from "./pages/Home"
+import { Home } from "./pages/Home_new"
 import { Routes, Route, useLocation } from 'react-router'
 import { Results } from "./pages/Results"
 import { useSelector } from "react-redux"
