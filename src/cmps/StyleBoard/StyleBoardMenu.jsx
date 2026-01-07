@@ -21,6 +21,7 @@ export function StyleBoardMenu({ openModal, isMobile }){
     return(
         <div 
             className="relative" 
+            style={{ pointerEvents: 'auto' }}
         >
             <button 
                 className={`
@@ -36,7 +37,6 @@ export function StyleBoardMenu({ openModal, isMobile }){
                     narrow:px-2
                     ${isDropdownOpen ? 'rotate-90' : 'hover:rotate-90'}
                 `}
-                style={{ pointerEvents: 'auto' }}
                 onClick={toggle}
                 ref={buttonRef}
                 

@@ -68,7 +68,6 @@ export async function removeFavorite(favoriteId) {
     }
 } 
 
-
 //command creators
 function getCmdAddFavorite(favorite){
     return {
@@ -111,3 +110,11 @@ function getCmdSetError(error) {
         error
     }
 }   
+
+function getCmdFavoriteImageProcessed(processedImage, favoriteId) {
+    return {
+        type: FAVORITE_IMAGE_PROCESSED,
+        processedImage,
+        favoriteId
+    }
+}    

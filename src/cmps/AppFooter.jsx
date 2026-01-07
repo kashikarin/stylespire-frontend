@@ -41,7 +41,7 @@ export function AppFooter(){
                     />
                     Home
                 </Link>
-                <Link 
+                {loggedInUser &&<Link 
                     to='/favorites'
                     className='
                         flex flex-col items-center 
@@ -51,7 +51,18 @@ export function AppFooter(){
                 >
                     <ReactSVG src='/svgs/heart-icon-footer.svg'/>
                     Favorites
-                </Link>
+                </Link>}
+                {loggedInUser && <Link 
+                    to='/board'
+                    className='
+                        flex flex-col items-center 
+                        text-xs
+                    '
+                    onClick={()=> setAuthMode(null)}
+                >
+                    <ReactSVG src='/svgs/board-icon.svg'/>
+                    StyleBoard
+                </Link>}
                 <Link 
                         className='
                             flex flex-col items-center
@@ -59,7 +70,7 @@ export function AppFooter(){
                         '
                         onClick={()=> {
                             if (loggedInUser) logout()
-                            else setAuthMode('signin') 
+                            else setAuthMode('login') 
                         }}
                     > 
                         <ReactSVG src='/svgs/user-icon.svg' />

@@ -1,3 +1,12 @@
 .main-container main {
     min-height: calc(100vh - 10rem);
 }
+
+.processing {
+  border: 2px dashed #a3e635;
+  animation: dash 2s linear infinite;
+}
+
+@keyframes dash {
+  to { border-dashoffset: -20; }
+}

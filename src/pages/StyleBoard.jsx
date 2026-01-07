@@ -50,6 +50,7 @@ export function StyleBoard(){
     function onBackgroundChange(bg) {
         canvasRef.current.setBackground(bg)
     }
+    
     async function handleSaveBoardAction(action) {
         const titleToSave = (action.title && action.title.length) ?
             action.title :
@@ -79,6 +80,7 @@ export function StyleBoard(){
         setIsModalOpen(true)
     }
 
+    // Handle favorite item selection - mobile only
     function handleItemSelect(imageUrl) {
         canvasRef.current?.addItemToCenter(imageUrl)
     }

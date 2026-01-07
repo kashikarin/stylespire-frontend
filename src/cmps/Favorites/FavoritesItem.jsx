@@ -7,7 +7,6 @@ export function FavoriteItem({
     isLiked,
     isLoggedInUser
 }){
-    console.log("🚀 ~ fav:", favorite)
     
     function handleSelectFav(ev, favorite) {
         ev.stopPropagation()

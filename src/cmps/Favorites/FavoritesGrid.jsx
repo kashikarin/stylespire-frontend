@@ -1,7 +1,6 @@
 import { FavoriteItem } from "./FavoritesItem"
 
 export function FavoritesGrid({ favorites, onSelect, onLike, getIsLiked, isLoggedInUser }){
-    console.log("🚀 ~ favorites:", favorites)
     return(
         <article 
             className='

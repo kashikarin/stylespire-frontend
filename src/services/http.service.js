@@ -20,25 +20,27 @@ export const httpService = {
   get(endpoint, data) {
     return ajax(endpoint, 'GET', data)
   },
-  post(endpoint, data) {
-    return ajax(endpoint, 'POST', data)
+
+  post(endpoint, data, config) {
+    return ajax(endpoint, 'POST', data, config)
   },
   put(endpoint, data) {
     return ajax(endpoint, 'PUT', data)
+  },
+  patch(endpoint, data) {
+    return ajax(endpoint, 'PATCH', data)
   },
   delete(endpoint, data) {
     return ajax(endpoint, 'DELETE', data)
   },
 }
 
-async function ajax(endpoint, method = 'GET', data = null) {
-  console.log(
-  `[HTTP] ${method} ${endpoint}`,
-  JSON.stringify(data)
-)
+async function ajax(endpoint, method = 'GET', data = null, config = {}) {
+  
   const options = {
     url: endpoint,
     method,
+    ...config,
     ...(method === 'GET' ? 
       { params: data || {} } :
       { data }

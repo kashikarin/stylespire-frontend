@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react"
 import { loadBoard, updateBoard, saveCurrentAndCreateNewBoard, loadBoards, selectBoard } from "../store/actions/board.actions"
 import { useIsLoggedInUser } from "./useIsLoggedInUser"
 import { useSelector } from "react-redux"
-import { b } from "framer-motion/client"
 
 export function useBoards(){
     const { loggedInUser } = useIsLoggedInUser()    

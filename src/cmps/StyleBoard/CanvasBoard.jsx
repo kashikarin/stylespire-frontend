@@ -19,6 +19,7 @@ function CanvasBoard({ background, isMobile }, ref){
         items: [],
         selectedBackground: null
     })    
+    console.log("🚀 ~ CanvasBoard ~ canvasState:", canvasState)
 
     //canvas size state
     const [size, setSize] = useState({ width: 0, height: 0 })
@@ -361,12 +362,16 @@ function CanvasBoard({ background, isMobile }, ref){
                                     <Transformer 
                                         ref={transformerRef}
                                         rotateEnabled
-                                        keepRatio={true}
+                                        keepRatio={false}
                                         enabledAnchors={[
                                             'top-left',
+                                            'top-center',
                                             'top-right',
+                                            'middle-right',
+                                            'bottom-right',
+                                            'bottom-center',
                                             'bottom-left',
-                                            'bottom-right'
+                                            'middle-left'
                                         ]}
                                     />
                         </Layer>
