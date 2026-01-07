@@ -51,6 +51,18 @@ export function StyleBoard(){
         canvasRef.current.setBackground(bg)
     }
     
+    async function handleSaveNewBoard(newBoardTitle) {
+        const titleToSave = newBoardTitle.length ? newBoardTitle : 'Untitled board'
+        const canvasState = canvasRef.current.getCanvasState()
+        
+        if (canvasRef.current?.isDirty()) {
+            await updateCurrentBoard({ ...canvasState, title: board.title })
+            canvasRef.current?.marksClean()
+        }
+        
+        await saveAndCreateNewBoard({ title: titleToSave })
+    }
+    
     async function handleSaveBoardAction(action) {
         const titleToSave = (action.title && action.title.length) ?
             action.title :
@@ -122,6 +134,8 @@ export function StyleBoard(){
                             selectBackground={selectBackground}
                             openModal={(mode) => handleMenuAction(mode)}
                             isMobile={isMobile}
+                            board={board}
+                            onSaveBoard={handleSaveNewBoard}
                         />
                     </main>
                     {!isMobile && <aside 

@@ -9,7 +9,8 @@ export function UserLetterCircle({username = 'U'}) {
                 text-base uppercase 
                 m-0 p-0 
                 border-none
-            '>
+            '
+        >
             <span>
                 {username.charAt(0).toUpperCase()}
             </span>

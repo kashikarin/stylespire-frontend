@@ -76,9 +76,3 @@ export function RootCmp(){
     )
 }
 
-// In your router
-{/* <Route path="/styleboard" element={
-  <ProtectedRoute>
-    <StyleBoard />
-  </ProtectedRoute>
-} /> */}
