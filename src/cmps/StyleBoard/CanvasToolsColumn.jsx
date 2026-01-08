@@ -1,33 +1,28 @@
 import { ReactSVG } from "react-svg"
+import { BackgroundIconBtn } from "./BackgroundIconBtn"
+import { BackgroundBar } from "./BackgroundBar"
 
 export function CanvasToolsColumn({ 
     canvasRef, 
-    isBgBarOpen, 
-    setIsBgBarOpen, 
+    bgBar,
     backgrounds, 
     loadMore, 
     loadingBgs, 
-    onClose,
-    BackgroundIconBtn,
-    BackgroundBar 
 }) {
     return (
         <div className="flex flex-col items-start gap-2 pl-3 pr-4 py-4 bg-primary-bg shrink-0">
             <div className="relative">
                 <BackgroundIconBtn 
-                    handleClick={() => setIsBgBarOpen(true)} 
+                    handleClick={bgBar.open} 
                     isMobile={false}
                 />
-                {isBgBarOpen && (
+                {bgBar.isOpen && (
                     <BackgroundBar 
                         backgrounds={backgrounds}
-                        selectBackground={(bg) => {
-                            canvasRef.current?.setBackground(bg)
-                            setIsBgBarOpen(false)
-                        }}
+                        selectBackground={bgBar.selectBackground}
                         onLoadMore={loadMore}
                         loading={loadingBgs}
-                        onClose={onClose}
+                        onClose={bgBar.close}
                         isMobile={false}
                         position="left"
                     />

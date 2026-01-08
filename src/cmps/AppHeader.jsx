@@ -1,18 +1,17 @@
 import { Link, NavLink, useLocation } from "react-router-dom"
 import { ReactSVG } from "react-svg"
 import { UserLetterCircle } from "./UserLetterCircle"
-import { useEffect, useRef, useState } from "react"
-import { logout, setAuthMode } from "../store/actions/user.actions"
 import { useIsLoggedInUser } from "../hooks/useIsLoggedInUser"
 import { breakpoints } from "../util/breakpoints"
 import { useMediaQuery } from "../hooks/useMediaQuery"
 import { Portal } from "./Portal"
 import { useDropdownController } from "../hooks/useDropdownController"
+import { useHeaderActions } from "../hooks/useHeaderActions"
 
 export function AppHeader(){
     const { 
         isDropdownOpen, 
-        close,
+        close: closeDropdown,
         toggle, 
         buttonRef,
         dropdownRef,
@@ -27,20 +26,7 @@ export function AppHeader(){
     const fullName = loggedInUser?.fullname
     const firstName = fullName ? fullName.split(' ')[0] : ''
 
-    function onOpenAuthModal(mode = 'login') {
-        setAuthMode(mode)
-        close()
-    }
-
-    async function handleLogout() {
-        try {
-            await logout()
-            close()
-        } catch (err) {
-            console.error('Logout failed:', err)
-        }
-    }
-
+    const { handleLogout, openLogin, openSignup } = useHeaderActions(closeDropdown)
     const dropdown = (
         <div 
             className="
@@ -122,9 +108,8 @@ export function AppHeader(){
 
                             hover:before:scale-x-100
                         "
-                        onClick={()=> onOpenAuthModal('login')}
+                        onClick={openLogin}
                     >
-                        
                         Log in
                     </button>
                     <button
@@ -150,7 +135,7 @@ export function AppHeader(){
 
                             hover:before:scale-x-100
                         "
-                        onClick={()=> onOpenAuthModal('signup')}
+                        onClick={openSignup}
                     >
                         Sign up
                     </button>

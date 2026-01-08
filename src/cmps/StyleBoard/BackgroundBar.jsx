@@ -84,11 +84,7 @@ export function BackgroundBar({ backgrounds, selectBackground, onLoadMore, loadi
                                 transition-all duration-200
                                 ${isMobile ? 'w-7 h-7' : 'w-8 h-8'}
                             `}
-                            onClick={()=> {
-                                console.log('bg', bg)
-                                selectBackground(bg)
-                            }}
-                                
+                            onClick={()=> selectBackground(bg)}              
                             style={{backgroundImage: `url(${bg})`}}
                         >
                         </button>

@@ -1,29 +1,14 @@
 import { useEffect, useState } from "react"
+import { DEFAULT_BACKGROUNDS } from "../util/backgrounds"
 
 export function useCanvasBackgrounds({
     initialQuery = "soft background style inspiration", 
-    perPage = 10,
-    selectedBackground,
-    onBackgroundChange
-}
-) {
+    perPage = 10
+}) {
     
     const PEXELS_API_KEY = import.meta.env.VITE_PEXELS_KEY
 
-    const initialBgs = [
-        '/imgs/bgs/clean.jpg',
-        '/imgs/bgs/unique.jpg',
-        '/imgs/bgs/futuristic.jpg',
-        '/imgs/bgs/graffity.jpg',
-        '/imgs/bgs/marble.jpg',
-        '/imgs/bgs/studio.jpg',
-        '/imgs/bgs/ladder.jpg',
-        '/imgs/bgs/vintagewall.jpg',
-        '/imgs/bgs/nybricks.jpg',
-        '/imgs/bgs/graffity2.jpg'
-    ]
-
-    const [backgrounds, setBackgrounds] = useState(initialBgs)    
+    const [backgrounds, setBackgrounds] = useState(DEFAULT_BACKGROUNDS)    
     const [query, setQuery] = useState(initialQuery)
     const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(false)
@@ -51,7 +36,7 @@ export function useCanvasBackgrounds({
 
             const newBgs = data.photos.map(photo => photo.src.large)
 
-            if (pageToFetch === 1) setBackgrounds([...initialBgs, ...newBgs])
+            if (pageToFetch === 1) setBackgrounds([...DEFAULT_BACKGROUNDS, ...newBgs])
             else setBackgrounds(prev => [...prev, ...newBgs])
 
             setPage(pageToFetch)
@@ -68,17 +53,10 @@ export function useCanvasBackgrounds({
         fetchBackgrounds(page + 1)
     }
 
-    function selectBackground(bg) { 
-        console.log('selectBackground runs')             
-        onBackgroundChange(bg)
-    }
-
     return {
         backgrounds,
         loading,
         error,
         loadMoreBackgrounds,
-        selectedBackground,
-        selectBackground
     }   
 }

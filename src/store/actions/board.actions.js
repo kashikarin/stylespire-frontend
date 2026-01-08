@@ -38,43 +38,19 @@ export function selectBoard(board) {
     store.dispatch(getCmdLoadBoard(board))
 }
 
-export async function saveCurrentAndCreateNewBoard(boardToSave) {
-    store.dispatch(getCmdSetLoading(true))
-    store.dispatch(getCmdSetError(null))
-    try {
-        //save new board with all the data
-        const savedBoard = await boardService.update(boardToSave)
-        store.dispatch(getCmdUpdateBoard(savedBoard))
-
-        //create new empty board
-        const newBoard = await boardService.createEmptyBoard()
-        store.dispatch(getCmdCreateBoard(newBoard))
-
-        //set new board as active board
-        store.dispatch(getCmdLoadBoard(newBoard))
-
-         return newBoard
-    } catch(err) {
-        store.dispatch(getCmdSetError(err.message))
-        throw err
-    } finally{
-        store.dispatch(getCmdSetLoading(false))
-    }
-}
-
 export async function createBoard() {
     store.dispatch(getCmdSetLoading(true))
     store.dispatch(getCmdSetError(null))
-    console.log('CREATE BOARD CALLED', Date.now())
     try {
-        const newBoard = await boardService.createEmptyBoard()       
+        const newBoard = await boardService.createEmptyBoard()
         store.dispatch(getCmdCreateBoard(newBoard))
+        store.dispatch(getCmdLoadBoard(newBoard)) 
         return newBoard
-    } catch (err) { 
+    } catch (err) {
         store.dispatch(getCmdSetError(err.message))
         console.error('Cannot create board', err)
         throw err
-    }  finally {
+    } finally {
         store.dispatch(getCmdSetLoading(false))
     }
 }

@@ -16,14 +16,18 @@ import { useIsLoggedInUser } from "../hooks/useIsLoggedInUser"
 export function StyleBoard(){
     const isMobile = useMediaQuery(breakpoints.mobile)
     const canvasRef = useRef(null)
-    
     const { loggedInUser } = useIsLoggedInUser()
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    const [isSwitchModalOpen, setIsSwitchModalOpen] = useState(false)
-    const [modalMode, setModalMode] = useState(null)
+    
+    const { 
+        boards, 
+        board, 
+        BOARD_MODE,
+        handleBoardFlow,
+        onSelectBoard 
+    } = useBoards()
     
     const { favorites } = useFavorites()
-    const { boards, board, updateCurrentBoard, saveAndCreateNewBoard, onSelectBoard } = useBoards()
+    
     const { 
         backgrounds, 
         loadMoreBackgrounds, 
@@ -31,65 +35,49 @@ export function StyleBoard(){
         selectBackground
     } = useCanvasBackgrounds({
             selectedBackground: board?.selectedBackground, 
-            onBackgroundChange: onBackgroundChange
+            onBackgroundChange
         }
     )
+
+    const [isSaveModalOpen, setIsSaveModalOpen] = useState(false)
+    const [isSwitchModalOpen, setIsSwitchModalOpen] = useState(false)
+    const [modalMode, setModalMode] = useState(null)
     
     useLockBodyScroll(true)
 
     useEffect(() => {
         const canvas = canvasRef.current
         return () => {
-            if (canvas?.isDirty()){
-                const canvasState = canvas.getCanvasState()
-                updateCurrentBoard(canvasState) //save any unsaved changes
+            if (!canvas?.isDirty()) return
+            const canvasState = canvas.getCanvasState()
+            handleBoardFlow(BOARD_MODE.SWITCH, { canvasState })
+                .catch(console.error) //save any unsaved changes
         }
-      }
     }, [])
 
     function onBackgroundChange(bg) {
-        canvasRef.current.setBackground(bg)
-    }
-    
-    async function handleSaveNewBoard(newBoardTitle) {
-        const titleToSave = newBoardTitle.length ? newBoardTitle : 'Untitled board'
-        const canvasState = canvasRef.current.getCanvasState()
-        
-        if (canvasRef.current?.isDirty()) {
-            await updateCurrentBoard({ ...canvasState, title: board.title })
-            canvasRef.current?.marksClean()
-        }
-        
-        await saveAndCreateNewBoard({ title: titleToSave })
-    }
-    
-    async function handleSaveBoardAction(action) {
-        const titleToSave = (action.title && action.title.length) ?
-            action.title :
-            board.title || 'Untitled board'  
-
-        const canvasState = canvasRef.current.getCanvasState()
-
-        if (canvasRef.current?.isDirty()){
-            await updateCurrentBoard({ ...canvasState, title: titleToSave })
-            canvasRef.current?.marksClean()
-        }
-
-        switch(action.type){
-            case 'save':
-                await saveAndCreateNewBoard({ title: titleToSave })
-                break
-            case 'switch':
-                if (titleToSave !== board.title) await updateCurrentBoard({ title: titleToSave })
-                setIsSwitchModalOpen(true)
-                break
-            default: return 
-        }
+        canvasRef.current?.setBackground(bg)
     }
 
-    function handleMenuAction(mode) {
+    function openSaveModal(mode){
         setModalMode(mode)
-        setIsModalOpen(true)
+        setIsSaveModalOpen(true)
+    }
+    
+    async function onSave({ mode, title }) {
+        const canvas = canvasRef.current
+
+        const canvasState = canvas?.isDirty() ? 
+            canvas.getCanvasState() : null
+
+        await handleBoardFlow(mode, { title, canvasState })
+
+        canvas?.marksClean()
+        setIsSaveModalOpen(false)
+
+        if (mode === BOARD_MODE.SWITCH) {
+            setIsSwitchModalOpen(true)
+        }
     }
 
     // Handle favorite item selection - mobile only
@@ -118,25 +106,23 @@ export function StyleBoard(){
                             overflow-hidden
                             bg-primary-bg
                             w-full
-                            h-screen  // ✅ Simple: use full screen height
+                            h-screen 
                             narrow:flex-1
                             narrow:h-auto
                         "
-                        style={isMobile ? { height: 'calc(100vh - 120px)' } : undefined}  // ✅ Inline style for mobile
+                        style={isMobile ? { height: 'calc(100vh - 120px)' } : undefined}  
 
                     >
                         <StyleBoardCanvas 
-                            ref={canvasRef}
+                            canvasRef={canvasRef}
                             backgrounds={backgrounds} 
                             loadMore={loadMoreBackgrounds} 
                             loadingBgs={loading} 
                             background={board.selectedBackground} 
-                            selectBackground={selectBackground}
-                            openModal={(mode) => handleMenuAction(mode)}
-                            openSwitchModal={() => setIsSwitchModalOpen(true)}
                             isMobile={isMobile}
-                            board={board}
-                            onSaveBoard={handleSaveNewBoard}
+                            onSaveClick={() => openSaveModal(BOARD_MODE.SAVE)}
+                            onSwitchClick={()=> openSaveModal(BOARD_MODE.SWITCH)}
+                            onSave={onSave}
                         />
                     </main>
                     {!isMobile && <aside 
@@ -154,20 +140,19 @@ export function StyleBoard(){
                             narrow:order-none
                             narrow:overflow-y-auto
                         ">
-                            <FavsSidebar favorites={favorites || []}/>
+                            <FavsSidebar favorites={favorites || []} />
                     </aside>}
                 </div>
-                
             </div>
             <Portal>
-                {isMobile && <MobileFavBar favorites={favorites || []} onItemSelect={handleItemSelect}/>}
+                {isMobile && <MobileFavBar favorites={favorites || []} onItemSelect={handleItemSelect} />}
             </Portal>
             <SaveBoardModal 
                 mode={modalMode}
                 board={board}
-                isOpen={isModalOpen}
-                onClose={()=>setIsModalOpen(false)}
-                onAction={(action) => handleSaveBoardAction(action)}
+                isOpen={isSaveModalOpen}
+                onClose={()=>setIsSaveModalOpen(false)}
+                onSubmit={({ title }) => onSave({ mode: modalMode, title })}
             />
             <SwitchBoardModal 
                 onClose={()=>setIsSwitchModalOpen(false)}
@@ -175,7 +160,6 @@ export function StyleBoard(){
                 isOpen={isSwitchModalOpen}
                 selectedBoardId={board._id}
                 onSelectBoard={onSelectBoard}
-
             />
         </>
     )

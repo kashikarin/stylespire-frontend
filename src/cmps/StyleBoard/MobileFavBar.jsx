@@ -43,7 +43,7 @@ export function MobileFavBar({ favorites, onItemSelect }){
                                 rounded-md
                                 overflow-hidden
                             "
-                            onClick={() => onItemSelect(processedImage)}
+                            onClick={isProcessed ? () => onItemSelect(processedImage) : undefined}
                         >
                                 <img 
                                     src={fav.image.url} 

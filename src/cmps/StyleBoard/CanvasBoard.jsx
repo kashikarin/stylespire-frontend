@@ -4,6 +4,7 @@ import { useCanvasImages } from '../../hooks/useCanvasImages'
 import { useCanvasShortcuts } from '../../hooks/useCanvasShortcuts'
 import { useBoardHistory } from '../../hooks/useBoardHistory'
 import { useBoards } from '../../hooks/useBoards'
+import { useCanvasLayout } from '../../hooks/useCanvasLayout'
 
 function CanvasBoard({ background, isMobile }, ref){
     const containerRef = useRef()
@@ -13,6 +14,9 @@ function CanvasBoard({ background, isMobile }, ref){
 
     //on mount - set to signal - no changes to canvasState yet
     const isDirtyRef = useRef(false) 
+    
+    const [size, setSize] = useState({ width: 0, height: 0 })
+    const layout = useCanvasLayout(size, isMobile)
 
     //local canvas state - items and selected background
     const [canvasState, setCanvasState] = useState({
@@ -20,13 +24,6 @@ function CanvasBoard({ background, isMobile }, ref){
         selectedBackground: null
     })    
     console.log("🚀 ~ CanvasBoard ~ canvasState:", canvasState)
-
-    //canvas size state
-    const [size, setSize] = useState({ width: 0, height: 0 })
-    
-    
-    const VIRTUAL_WIDTH = 1200
-    const VIRTUAL_HEIGHT = 800
 
     const [selectedId, setSelectedId] = useState(null)
     const imageRefs = useRef({})
@@ -79,17 +76,6 @@ function CanvasBoard({ background, isMobile }, ref){
         return () => observer.disconnect()
     }, [])
     
-    // Calculate scale for coordinate conversion - never exceed 1
-    const scale = Math.min(size.width / VIRTUAL_WIDTH, size.height / VIRTUAL_HEIGHT, 1)
-    
-    // Use smaller of container size or virtual size to prevent overflow
-    const stageWidth = Math.min(size.width, VIRTUAL_WIDTH)
-    const stageHeight = Math.min(size.height, VIRTUAL_HEIGHT)
-    
-    // For mobile: calculate dimensions maintaining 3:2 aspect ratio
-    const mobileStageWidth = isMobile ? Math.min(size.width, VIRTUAL_WIDTH) : stageWidth
-    const mobileStageHeight = isMobile ? (mobileStageWidth / VIRTUAL_WIDTH) * VIRTUAL_HEIGHT : stageHeight
-
     //setting transformer on selected item
     useEffect(() => {
         const transformer = transformerRef.current
@@ -119,8 +105,8 @@ function CanvasBoard({ background, isMobile }, ref){
         
         const stageRect = stage.container().getBoundingClientRect()
 
-        const x = (e.clientX - stageRect.left) / scale
-        const y = (e.clientY - stageRect.top) / scale
+        const x = (e.clientX - stageRect.left) / layout.scale
+        const y = (e.clientY - stageRect.top) / layout.scale
         
         const itemWidth = 200
         const itemHeight = 200
@@ -142,6 +128,30 @@ function CanvasBoard({ background, isMobile }, ref){
         })
 
         isDirtyRef.current = true
+    }
+
+    function handleTransformEnd(e, item) {
+        const node = e.target
+        const scaleX = node.scaleX()
+        const scaleY = node.scaleY()
+
+        const updatedItem = {
+            ...item,
+            width: Math.max(20, (node.width() * scaleX) / layout.scale),
+            height: Math.max(20, (node.height() * scaleY) / layout.scale),
+            x: node.x() / layout.scale,
+            y: node.y() / layout.scale,
+            rotation: node.rotation()
+        }
+
+        node.scaleX(1)
+        node.scaleY(1)
+
+        setCanvasState(prev => ({ ...prev, items: prev.items.map(i => i.id === item.id ?
+            updatedItem : i)})
+        )
+        isDirtyRef.current = true
+        commitTransaction()
     }
 
     function setBackground(bg) {
@@ -167,8 +177,8 @@ function CanvasBoard({ background, isMobile }, ref){
     }
     
     function addItemToCenter(imageUrl) {
-        const centerX = VIRTUAL_WIDTH / 2
-        const centerY = VIRTUAL_HEIGHT / 2
+        const centerX = layout.VIRTUAL_CANVAS_WIDTH / 2
+        const centerY = layout.VIRTUAL_CANVAS_HEIGHT / 2
         const itemWidth = 200
         const itemHeight = 200  
 
@@ -253,13 +263,13 @@ function CanvasBoard({ background, isMobile }, ref){
                 <div style={{ 
                     position: 'relative', 
                     bottom: isMobile ? '90px' : '0px',
-                    width: isMobile ? `${mobileStageWidth}px` : '100%',
-                    height: isMobile ? `${mobileStageHeight}px` : '100%'
+                    width: isMobile ? `${layout.mobileStageWidth}px` : '100%',
+                    height: isMobile ? `${layout.mobileStageHeight}px` : '100%'
                 }}>
                     <Stage 
                         ref={stageRef}
-                        width={isMobile ? mobileStageWidth : stageWidth} 
-                        height={isMobile ? mobileStageHeight : stageHeight}
+                        width={isMobile ? layout.mobileStageWidth : layout.stageWidth} 
+                        height={isMobile ? layout.mobileStageHeight : layout.stageHeight}
                         style={{ display: 'block' }}
                         onClick={(e) => {
                             // If we clicked on an item, the item's onClick will handle selection
@@ -289,8 +299,8 @@ function CanvasBoard({ background, isMobile }, ref){
                         <Layer>
                             {backgroundImage && <KonvaImage 
                                 image={backgroundImage}
-                                width={isMobile ? mobileStageWidth : stageWidth}
-                                height={isMobile ? mobileStageHeight : stageHeight}
+                                width={isMobile ? layout.mobileStageWidth : layout.stageWidth}
+                                height={isMobile ? layout.mobileStageHeight : layout.stageHeight}
                             />} 
                         </Layer>
                         <Layer>
@@ -305,10 +315,10 @@ function CanvasBoard({ background, isMobile }, ref){
                                         key={item.id}
                                         ref={node => imageRefs.current[item.id] = node}
                                         image={img}
-                                        x={item.x * scale}
-                                        y={item.y * scale}
-                                        width={item.width * scale}
-                                        height={item.height * scale}
+                                        x={item.x * layout.scale}
+                                        y={item.y * layout.scale}
+                                        width={item.width * layout.scale}
+                                        height={item.height * layout.scale}
                                         rotation={item.rotation || 0}
                                         draggable
                                         onDragStart={beginTransaction}
@@ -317,7 +327,7 @@ function CanvasBoard({ background, isMobile }, ref){
                                             setCanvasState(prev => ({
                                                 ...prev,
                                                 items: prev.items.map(i => i.id === item.id ?
-                                                        { ...i, x: node.x() / scale, y: node.y() / scale } : i
+                                                        { ...i, x: node.x() / layout.scale, y: node.y() / layout.scale } : i
                                                     )
                                             }))
                                             
@@ -325,30 +335,7 @@ function CanvasBoard({ background, isMobile }, ref){
                                             commitTransaction()
                                         }}
                                         onTransformStart={beginTransaction}
-                                        onTransformEnd={(e) => {
-                                            const node = e.target
-
-                                            const scaleX = node.scaleX()
-                                            const scaleY = node.scaleY()
-
-                                            const updatedItem = {
-                                                ...item,
-                                                width: Math.max(20, (node.width() * scaleX) / scale),
-                                                height: Math.max(20, (node.height() * scaleY) / scale),
-                                                x: node.x() / scale,
-                                                y: node.y() / scale,
-                                                rotation: node.rotation()
-                                            }
-
-                                            node.scaleX(1)
-                                            node.scaleY(1)
-
-                                            setCanvasState(prev => ({ ...prev, items: prev.items.map(i => i.id === item.id ?
-                                                updatedItem : i)})
-                                            )
-                                            isDirtyRef.current = true
-                                            commitTransaction()
-                                        }}
+                                        onTransformEnd={(e) => handleTransformEnd(e, item)}
                                         onClick={()=>{
                                             setSelectedId(item.id)
                                         }}

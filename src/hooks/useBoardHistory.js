@@ -1,4 +1,3 @@
-import { current } from "@reduxjs/toolkit"
 import { useRef } from "react"
 
 export function useBoardHistory(canvasState, setCanvasState){

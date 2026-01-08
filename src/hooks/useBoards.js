@@ -1,5 +1,10 @@
 import { useEffect, useRef } from "react"
-import { loadBoard, updateBoard, saveCurrentAndCreateNewBoard, loadBoards, selectBoard } from "../store/actions/board.actions"
+import { loadBoard, 
+    updateBoard, 
+    createBoard, 
+    loadBoards, 
+    selectBoard 
+} from "../store/actions/board.actions"
 import { useIsLoggedInUser } from "./useIsLoggedInUser"
 import { useSelector } from "react-redux"
 
@@ -7,8 +12,14 @@ export function useBoards(){
     const { loggedInUser } = useIsLoggedInUser()    
     const board = useSelector(state => state.boardModule.board)
     const boards = useSelector(state => state.boardModule.boards)
-    const hasInitializedRef = useRef(false)
     
+    const hasInitializedRef = useRef(false)
+
+    const BOARD_MODE = {
+        SAVE: 'save',
+        SWITCH: 'switch',
+    }
+
     useEffect(()=>{
         if (!loggedInUser?._id) return
         if (hasInitializedRef.current) return
@@ -27,38 +38,39 @@ export function useBoards(){
         }   
     }
 
-    //save current board and create new empty board
-    async function saveAndCreateNewBoard(updatedBoard){
+    async function saveCurrentBoard({ title, canvasState }) {
+        if (!board) return  
+
+        const finalTitle =
+            title?.trim() || board.title || 'Untitled board'
+
         const boardToSave = {
-            ...board, 
-            ...updatedBoard,  
-            updatedAt: Date.now()
+            ...board,
+            ...(canvasState || {}),
+            title: finalTitle,
+            updatedAt: Date.now(),
         }
-        await saveCurrentAndCreateNewBoard(boardToSave)
+
+        await updateBoard(boardToSave)
     }
 
-    //update current board without creating a new one
-    async function updateCurrentBoard(updatedFields = {}){
-        const boardToUpdate = {
-            ...board,
-            ...updatedFields,   
-            updatedAt: Date.now()
+    async function handleBoardFlow(mode, { title, canvasState }) {
+        await saveCurrentBoard({ title, canvasState })
+
+        if (mode === BOARD_MODE.SAVE) {
+            await createBoard()
         }
-        await updateBoard(boardToUpdate)
     }
         
-    async function onSelectBoard(boardToSelect, canvasState = {}){
-        if (Object.keys(canvasState).length > 0){
-            await updateBoard(canvasState) //ensure any unsaved changes are saved
-        }
+    async function onSelectBoard(boardToSelect){
         selectBoard(boardToSelect)
     }
 
     return {
         boards,
         board,
-        updateCurrentBoard,
-        saveAndCreateNewBoard,
+        BOARD_MODE,
+        handleBoardFlow,
         onSelectBoard
     }
 }

@@ -2,7 +2,7 @@ import { ReactSVG } from "react-svg"
 import { useDropdownController } from "../../hooks/useDropdownController"
 
 
-export function StyleBoardMenu({ openModal, isMobile }){
+export function StyleBoardMenu({ onSaveClick, onSwitchClick, isMobile }){
     
     const {
         close,
@@ -14,7 +14,7 @@ export function StyleBoardMenu({ openModal, isMobile }){
 
     function handleMenuClick(e, mode){
         e.stopPropagation()
-        openModal(mode)
+        mode === 'save' ? onSaveClick() : onSwitchClick()
         close()
     }
 
@@ -35,7 +35,7 @@ export function StyleBoardMenu({ openModal, isMobile }){
                     cursor-pointer
                     z-20
                     narrow:px-2
-                    ${isDropdownOpen ? 'rotate-90' : 'hover:rotate-90'}
+                    ${isDropdownOpen ? 'rotate-90' : ''}
                 `}
                 onClick={toggle}
                 ref={buttonRef}

@@ -67,7 +67,6 @@ export function SwitchBoardModal({
                                 bg-primary-dark
                                 px-1 py-0
                                 rounded-lg
-                                text-
                                 text-text-on-primary
                                 hover:bg-primary-dark-80
                             "

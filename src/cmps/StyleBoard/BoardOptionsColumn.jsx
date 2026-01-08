@@ -1,14 +1,22 @@
 import { useState } from "react"
 
 // Internal helper component for form rendering
-function BoardForm({ onSubmit, onCancel, label, buttonText, value, onChange, isSaving }) {
+function BoardForm({ 
+    label, 
+    buttonText, 
+    value, 
+    onChange, 
+    onSubmit, 
+    onCancel, 
+}) {
     return (
-        <form onSubmit={onSubmit} className="flex flex-col px-4 pt-0 pb-3 border-b border-primary-dark/20">
+        <form 
+            onSubmit={onSubmit} 
+            className="flex flex-col px-4 pt-0 pb-3 border-b border-primary-dark/20">
             <div className="flex items-start justify-end">
                 <button
                     type="button"
                     onClick={onCancel}
-                    disabled={isSaving}
                     className="
                         shrink-0 w-5 h-5
                         flex items-center justify-center
@@ -22,7 +30,12 @@ function BoardForm({ onSubmit, onCancel, label, buttonText, value, onChange, isS
                     ✕
                 </button>
             </div>
-            <label className="text-xs font-medium text-primary-dark/70 my-0">
+            <label 
+                className="
+                    text-xs font-medium text-primary-dark/70 
+                    my-0
+                "
+            >
                 {label}
             </label>
             <input
@@ -43,7 +56,7 @@ function BoardForm({ onSubmit, onCancel, label, buttonText, value, onChange, isS
             />
             <button
                 type="submit"
-                disabled={isSaving || !value.trim()}
+                disabled={!value.trim()}
                 className="
                     w-full px-2 py-1.5
                     text-xs font-medium
@@ -54,88 +67,59 @@ function BoardForm({ onSubmit, onCancel, label, buttonText, value, onChange, isS
                     disabled:opacity-60 disabled:cursor-not-allowed
                 "
             >
-                {isSaving ? '...' : buttonText}
+                {buttonText}
             </button>
         </form>
     )
 }
 
-export function BoardOptionsColumn({ openModal, openSwitchModal, board, onSaveBoard }) {
-    const [newBoardTitle, setNewBoardTitle] = useState('')
-    const [showSaveForm, setShowSaveForm] = useState(false)
-    const [showSwitchForm, setShowSwitchForm] = useState(false)
-    const [isSaving, setIsSaving] = useState(false)
+export function BoardOptionsColumn({ onSave }) {
+    const [title, setTitle] = useState('')
+    const [mode, setMode] = useState(null) 
 
-    async function handleSaveNewBoard(e) {
+    function closeForm() {
+        setTitle('')
+        setMode(null)
+    }
+
+    function handleSubmit(e) {
         e.preventDefault()
-        setIsSaving(true)
-        try {
-            await onSaveBoard(newBoardTitle.trim())
-            setNewBoardTitle('')
-            setShowSaveForm(false)
-        } catch (err) {
-            console.error('Failed to save board:', err)
-        } finally {
-            setIsSaving(false)
-        }
-    }
-
-    async function handleSaveAndSwitch(e) {
-        e.preventDefault()
-        setIsSaving(true)
-        try {
-            await onSaveBoard(newBoardTitle.trim())
-            setNewBoardTitle('')
-            setShowSwitchForm(false)
-            openSwitchModal()
-        } catch (err) {
-            console.error('Failed to save board:', err)
-        } finally {
-            setIsSaving(false)
-        }
-    }
-
-    function cancelSave() {
-        setNewBoardTitle('')
-        setShowSaveForm(false)
-    }
-
-    function cancelSwitch() {
-        setNewBoardTitle('')
-        setShowSwitchForm(false)
+        onSave({ mode, title: title.trim() })
+        closeForm()
     }
 
     return (
-        <div className="flex flex-col border-l border-primary-dark bg-primary-bg w-[200px] shrink-0">
+        <div 
+            className="
+                flex flex-col 
+                border-l border-primary-dark 
+                bg-primary-bg w-[200px] 
+                shrink-0
+            "
+        >
             {/* Save New Board Form */}
-            {showSaveForm && (
+            {mode && (
                 <BoardForm
-                    onSubmit={handleSaveNewBoard}
-                    onCancel={cancelSave}
-                    label="New Board Title"
-                    buttonText="Save"
-                    value={newBoardTitle}
-                    onChange={(e) => setNewBoardTitle(e.target.value)}
-                    isSaving={isSaving}
+                    label={
+                        mode === 'save' ?
+                            "New Board Title" :
+                            "Save board before switching?"
+                    }
+                    buttonText={
+                        mode === 'save' ?
+                            "Save" :
+                            "Save and continue"
+                    }
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    onSubmit={handleSubmit}
+                    onCancel={closeForm}
                 />
             )}
 
             {/* Save Before Switch Form */}
-            {showSwitchForm && (
-                <BoardForm
-                    onSubmit={handleSaveAndSwitch}
-                    onCancel={cancelSwitch}
-                    label="Save board before switching?"
-                    buttonText="Save and continue"
-                    value={newBoardTitle}
-                    onChange={(e) => setNewBoardTitle(e.target.value)}
-                    isSaving={isSaving}
-                />
-            )}
-            
-            {/* Action Buttons */}
-            <div className="flex flex-col gap-3 p-4">
-                {!showSaveForm && !showSwitchForm && (
+            {!mode && (
+                <div className="flex flex-col gap-3 p-4">
                     <button 
                         className="
                             w-full px-2 py-1.5 
@@ -144,13 +128,10 @@ export function BoardOptionsColumn({ openModal, openSwitchModal, board, onSaveBo
                             bg-white/80 hover:bg-[#407076]/20
                             transition
                         "
-                        onClick={() => setShowSaveForm(true)}
+                        onClick={() => setMode('save')}
                     >
                         Save Board
                     </button>
-                )}
-                
-                {!showSwitchForm && (
                     <button 
                         className="
                             w-full px-2 py-1.5 
@@ -159,12 +140,12 @@ export function BoardOptionsColumn({ openModal, openSwitchModal, board, onSaveBo
                             bg-white/80 hover:bg-[#407076]/20
                             transition
                         "
-                        onClick={() => setShowSwitchForm(true)}
+                        onClick={() => setMode('switch')}
                     >
                         Switch Board
                     </button>
-                )}
-            </div>
+                </div>
+            )}
         </div>
     )
 }

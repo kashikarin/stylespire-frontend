@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom"
 import { useIsLoggedInUser } from "../hooks/useIsLoggedInUser"
 import { ReactSVG } from "react-svg"
-import { closeStyleMeModal, logout, setAuthMode } from "../store/actions/user.actions"
+import { useFooterActions } from "../hooks/useFooterActions"
 
 export function AppFooter(){
     const { loggedInUser } = useIsLoggedInUser()
+    const { resetAuthMode, handleAuthClick } = useFooterActions()
 
     return(
         <footer 
@@ -34,7 +35,7 @@ export function AppFooter(){
                             flex flex-col items-center 
                             text-xs 
                         '
-                        onClick={()=> setAuthMode(null)}
+                        onClick={resetAuthMode}
                     >
                     <ReactSVG 
                         src='/svgs/home-icon.svg' 
@@ -47,7 +48,7 @@ export function AppFooter(){
                         flex flex-col items-center 
                         text-xs
                     '
-                    onClick={()=> setAuthMode(null)}
+                    onClick={resetAuthMode}
                 >
                     <ReactSVG src='/svgs/heart-icon-footer.svg'/>
                     Favorites
@@ -58,7 +59,7 @@ export function AppFooter(){
                         flex flex-col items-center 
                         text-xs
                     '
-                    onClick={()=> setAuthMode(null)}
+                    onClick={resetAuthMode}
                 >
                     <ReactSVG src='/svgs/board-icon.svg'/>
                     StyleBoard
@@ -68,10 +69,7 @@ export function AppFooter(){
                             flex flex-col items-center
                             text-xs
                         '
-                        onClick={()=> {
-                            if (loggedInUser) logout()
-                            else setAuthMode('login') 
-                        }}
+                        onClick={handleAuthClick}
                     > 
                         <ReactSVG src='/svgs/user-icon.svg' />
                         {loggedInUser ? 'Logout' : 'Login'}    

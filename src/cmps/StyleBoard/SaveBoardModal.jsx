@@ -6,45 +6,31 @@ export function SaveBoardModal({
     board,
     isOpen,
     onClose,
-    onAction
+    onSubmit
 }){
     const [title, setTitle] = useState('')    
     const [error, setError] = useState('')
-    const [isLoading, setIsLoading] = useState(false)
+    const [isSaving, setIsSaving] = useState(false)
 
     useEffect(()=>{
-        reset()
-    }, [])
-
-    useEffect(()=>{
-        if (isOpen){
-            setTitle(board?.title || '')
-            setError('')
-        }
+        if (!isOpen) return
+        setTitle(board?.title || '')
+        setError('')
     }, [isOpen, board])
 
     async function handleSubmit(e) {
         e.preventDefault()
-        setIsLoading(true)
+        setIsSaving(true)
         setError('')
+
         try {
-            await onAction({ type: mode, title: title.trim() })
-            close()
+            await onSubmit({ title: title.trim() })
+            onClose()
         } catch(err) {
-            setError('Failed to save board', err)
+            setError(err.message || 'Failed to save board')  
         } finally {
-            setIsLoading(false) 
-        }        
-    }
-
-    function close(){
-        reset()
-        onClose()
-    }
-
-    function reset(){
-        setError('')
-        setTitle('')
+            setIsSaving(false)
+        }
     }
 
     if (!isOpen) return null
@@ -58,7 +44,7 @@ export function SaveBoardModal({
                     flex justify-center items-stretch
                     narrow:items-center
                 " 
-                onClick={close}
+                onClick={onClose}
             >
                 <div 
                     className="
@@ -143,9 +129,9 @@ export function SaveBoardModal({
                                         disabled:opacity-60
                                     '
                                     type="submit" 
-                                    disabled={isLoading}
+                                    disabled={isSaving}
                                 >
-                                    {isLoading ? 'Saving...' : 
+                                    {isSaving ? 'Saving...' : 
                                         mode === 'save' ? 'Save' : 'Save and Continue'
                                     }
                                 </button>
@@ -162,7 +148,8 @@ export function SaveBoardModal({
                                         disabled:opacity-60
                                     '
                                     type="button" 
-                                    onClick={close}
+                                    onClick={onClose}
+                                    disabled={isSaving}
                                 >
                                     Cancel
                                 </button>
