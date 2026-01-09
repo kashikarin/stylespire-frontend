@@ -27,7 +27,7 @@ function CanvasBoard({ background, isMobile }, ref){
 
     const [selectedId, setSelectedId] = useState(null)
     const imageRefs = useRef({})
-    const { board } = useBoards()
+    const { board, resolveImageSrc } = useBoards()
 
     useEffect(() => {
         if (!board._id) return
@@ -93,11 +93,17 @@ function CanvasBoard({ background, isMobile }, ref){
     }, [selectedId])
 
     //container accepts droped items - addItem
-    function handleDrop(e){
+    async function handleDrop(e){
         e.preventDefault()
 
         const src = e.dataTransfer.getData('image-src')
         if (!src) return
+
+        let finalSrc = src
+
+        if (src.startsWith('blob:')) {
+            finalSrc = await resolveImageSrc(src)
+        }
 
         // Get rect from the actual Stage canvas, not container
         const stage = stageRef.current
@@ -114,7 +120,7 @@ function CanvasBoard({ background, isMobile }, ref){
         atomicChange(()=>{
             const newItem = {
                 id: crypto.randomUUID(),
-                src,
+                src: finalSrc,
                 x: x - (itemWidth / 2),
                 y: y - (itemHeight / 2),
                 width: itemWidth,

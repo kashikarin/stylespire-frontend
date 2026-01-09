@@ -3,7 +3,8 @@ import { loadBoard,
     updateBoard, 
     createBoard, 
     loadBoards, 
-    selectBoard 
+    selectBoard,
+    resolveBoardImageSrc
 } from "../store/actions/board.actions"
 import { useIsLoggedInUser } from "./useIsLoggedInUser"
 import { useSelector } from "react-redux"
@@ -66,11 +67,16 @@ export function useBoards(){
         selectBoard(boardToSelect)
     }
 
+    async function resolveImageSrc(src) {       
+        return await resolveBoardImageSrc(src)
+    }
+
     return {
         boards,
         board,
         BOARD_MODE,
         handleBoardFlow,
-        onSelectBoard
+        onSelectBoard,
+        resolveImageSrc
     }
 }

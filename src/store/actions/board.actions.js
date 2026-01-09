@@ -88,6 +88,30 @@ export async function removeBoard(boardId) {
     }         
 }
 
+    export async function resolveBoardImageSrc(src) {
+        console.log("🚀 ~ resolveBoardImageSrc ~ src:", src)
+        if (!src) return null
+
+        try {
+            if (!src.startsWith('blob:')) return src
+            
+            const response = await fetch(src)
+            const blob = await response.blob()
+
+            const { url } = await boardService.uploadBoardImage(blob)
+            
+            return url
+        } catch(err){
+            console.error('Failed to resolve board image src', err)
+            throw err
+        }
+
+
+
+        // העלאה לשרת דרך board.service
+
+    }
+
 //command creators
 function getCmdLoadBoards(boards) {
     return { 

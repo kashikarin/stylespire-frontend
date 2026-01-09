@@ -7,7 +7,8 @@ export const boardService = {
     getEmptyBoard,
     getByUserId,
     loadOrCreateSelectedBoard,
-    createEmptyBoard
+    createEmptyBoard,
+    uploadBoardImage
 }
 
 async function query() {
@@ -48,3 +49,13 @@ async function loadOrCreateSelectedBoard(currentBoardId){
     return await createEmptyBoard()
 }
 
+async function uploadBoardImage(blob){
+    // 
+    const formData = new FormData()
+    formData.append('file', blob)
+
+    // 
+    const res = await httpService.post('upload/image', formData)
+
+    return res
+}
