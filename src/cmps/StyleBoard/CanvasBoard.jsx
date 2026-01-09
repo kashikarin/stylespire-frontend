@@ -182,16 +182,18 @@ function CanvasBoard({ background, isMobile }, ref){
         isDirtyRef.current = false
     }
     
-    function addItemToCenter(imageUrl) {
+    async function addItemToCenter(imageUrl) {
         const centerX = layout.VIRTUAL_CANVAS_WIDTH / 2
         const centerY = layout.VIRTUAL_CANVAS_HEIGHT / 2
         const itemWidth = 200
         const itemHeight = 200  
 
+        const finalSrc = await resolveImageSrc(imageUrl)
+
         atomicChange(()=>{
             const newItem = {
                 id: crypto.randomUUID(),
-                src: imageUrl,
+                src: finalSrc,
                 x: centerX - (itemWidth / 2),
                 y: centerY - (itemHeight / 2),
                 width: itemWidth,

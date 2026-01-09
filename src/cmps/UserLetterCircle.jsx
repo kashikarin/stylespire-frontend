@@ -3,7 +3,7 @@ export function UserLetterCircle({username = 'U'}) {
         <div 
             className='
                 bg-primary-dark text-white 
-                w-10 h-10 
+                w-8 h-8 
                 rounded-full 
                 flex items-center justify-center 
                 text-base uppercase 

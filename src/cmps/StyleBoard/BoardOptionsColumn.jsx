@@ -73,7 +73,8 @@ function BoardForm({
     )
 }
 
-export function BoardOptionsColumn({ onSave }) {
+export function BoardOptionsColumn({ onSave, board }) {
+    console.log("🚀 ~ BoardOptionsColumn ~ board:", board)
     const [title, setTitle] = useState('')
     const [mode, setMode] = useState(null) 
 
@@ -97,6 +98,13 @@ export function BoardOptionsColumn({ onSave }) {
                 shrink-0
             "
         >
+            {/* Board Title */}
+            <div className="text-center px-4 pt-4 pb-1">
+                <p className="text-sm text-primary-dark/60 mb-0">
+                    {board?.title || 'Untitled Board'}
+                </p>
+            </div>
+
             {/* Save New Board Form */}
             {mode && (
                 <BoardForm

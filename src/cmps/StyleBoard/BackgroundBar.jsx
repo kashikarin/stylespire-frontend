@@ -13,6 +13,7 @@ export function BackgroundBar({ backgrounds, selectBackground, onLoadMore, loadi
             ref={barRef}
             className={`
                 absolute
+                pointer-events-auto
                 ${isMobile 
                     ? 'top-full mt-1 left-0 w-[calc(100vw-48px)] border-2 border-white/60 bg-white/70' 
                     : position === 'left'
@@ -82,6 +83,7 @@ export function BackgroundBar({ backgrounds, selectBackground, onLoadMore, loadi
                                 hover:border-white/70
                                 hover:scale-105
                                 transition-all duration-200
+                                cursor-pointer
                                 ${isMobile ? 'w-7 h-7' : 'w-8 h-8'}
                             `}
                             onClick={()=> selectBackground(bg)}              
@@ -104,6 +106,7 @@ export function BackgroundBar({ backgrounds, selectBackground, onLoadMore, loadi
                                 text-black
                                 hover:bg-white/80
                                 transition-all
+                                cursor-pointer
                                 ${isMobile ? 'w-7 h-7' : 'w-8 h-8'}
                             `}
                             onClick={onLoadMore}

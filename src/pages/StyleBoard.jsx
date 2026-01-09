@@ -123,6 +123,7 @@ export function StyleBoard(){
                             onSaveClick={() => openSaveModal(BOARD_MODE.SAVE)}
                             onSwitchClick={()=> openSaveModal(BOARD_MODE.SWITCH)}
                             onSave={onSave}
+                            board={board}
                         />
                     </main>
                     {!isMobile && <aside 

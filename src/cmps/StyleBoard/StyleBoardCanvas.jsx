@@ -17,7 +17,8 @@ export function StyleBoardCanvas({
     isMobile,
     onSaveClick,
     onSwitchClick,
-    onSave
+    onSave,
+    board
 }){
     const actions = useCanvasOverlayActions(canvasRef)
     const bgBar = useCanvasBackgroundBar(canvasRef)
@@ -50,6 +51,10 @@ export function StyleBoardCanvas({
                         <CanvasOverlayTools 
                             actions={actions} 
                             isMobile={isMobile}
+                            bgBar={bgBar}
+                            backgrounds={backgrounds}
+                            loadMore={loadMore}
+                            loadingBgs={loadingBgs}
                         />
                         {!showBoardOptions && (
                             <StyleBoardMenu 
@@ -82,6 +87,7 @@ export function StyleBoardCanvas({
             {showBoardOptions && (
                 <BoardOptionsColumn 
                     onSave={onSave}
+                    board={board}
                 />
             )}
         </div>

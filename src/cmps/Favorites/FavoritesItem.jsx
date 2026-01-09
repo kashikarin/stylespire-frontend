@@ -35,7 +35,7 @@ export function FavoriteItem({
                 overflow-hidden 
                 shadow-shadow-soft
                 hover:shadow-shadow-hover
-                hover:-translate-y-1
+                hover:-translate-y-[2px]
                 transition-all duration-300
             " 
             onClick={(ev) =>handleSelectFav(ev, favorite)}

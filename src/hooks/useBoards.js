@@ -14,6 +14,8 @@ export function useBoards(){
     const board = useSelector(state => state.boardModule.board)
     const boards = useSelector(state => state.boardModule.boards)
     
+    console.log("🚀 ~ useBoards ~ board:", board)
+
     const hasInitializedRef = useRef(false)
 
     const BOARD_MODE = {

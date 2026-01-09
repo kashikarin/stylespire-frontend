@@ -159,11 +159,11 @@ export function AppHeader(){
                         <img 
                             src="/imgs/sslogo.png" 
                             alt="stylespire logo" 
-                            className={isMobile? 'h-[50px] w-[60px]' : 'h-[60px] w-[70px]'}/>
+                            className={isMobile? 'h-[50px] w-[60px]' : 'h-[55px] w-[65px]'}/>
                     </Link>
                     {(!isMobile) && <div 
                         className="
-                            flex justify-end items-center gap-8
+                            flex justify-end items-center gap-8 text-sm
                         "
                     >
                         {loggedInUser && 

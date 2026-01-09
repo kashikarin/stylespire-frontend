@@ -54,18 +54,19 @@ export function ResultsCarousel({ images, onLike, getIsLiked, isLoggedInUser }){
         ev.preventDefault()
         ev.stopPropagation()
         setCurrent(idx)
-        // if (isNarrow) return 
-
-        // imgTrackRef.current.scrollTo({
-        //     left: idx * slideWidth,
-        //     behavior: "smooth",
-        // })
+        
+        if (isNarrow && imgTrackRef.current && slideWidth) {
+            imgTrackRef.current.scrollTo({
+                left: idx * slideWidth,
+                behavior: "smooth",
+            })
+        }
     }
 
     if (!images || !images.length) return null
 
     return(
-        <article className="w-[90vw] max-w-none narrow:w-[70%] group relative mx-auto">
+        <article className="w-full max-w-none narrow:w-[75%] normal:w-[50%] wide:w-[50%] group relative mx-auto">
             <div 
                 ref={frameRef}
                 className="w-full overflow-hidden rounded-lg"  
@@ -73,12 +74,18 @@ export function ResultsCarousel({ images, onLike, getIsLiked, isLoggedInUser }){
                 <div 
                     className={`
                         flex flex-nowrap transition-transform duration-300 
+                        [&::-webkit-scrollbar]:hidden
                         ${isNarrow ? "overflow-x-auto snap-x snap-mandatory scroll-smooth"        
                         : ""}
                     `}
                     ref={imgTrackRef}
                     onScroll={onScroll}
-                    style={!isNarrow && slideWidth? { transform: `translateX(-${current * slideWidth}px)` } : {} }
+                    style={{
+                        ...((!isNarrow && slideWidth) ? { transform: `translateX(-${current * slideWidth}px)` } : {}),
+                        scrollbarWidth: 'none',
+                        msOverflowStyle: 'none',
+                        WebkitOverflowScrolling: 'touch'
+                    }}
                 >
                     {images.map((image, i) => (
                         // slide wrapper
@@ -95,7 +102,7 @@ export function ResultsCarousel({ images, onLike, getIsLiked, isLoggedInUser }){
                         left-1/2
                         -translate-x-1/2
                         z-3
-                        pointer-events-none
+                        pointer-events-auto
                     "
                 >
                     <DotsIndicator
