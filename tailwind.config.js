@@ -88,7 +88,7 @@ export default {
       },
       animation: {
         modalSlideIn: 'modalSlideIn 0.3s ease-out',
-        dropdownSlideIn: 'dropdownSlideIn 0.2 ease-in-out',
+        dropdownSlideIn: 'dropdownSlideIn 0.2s ease-in-out',
         fadeIn: 'fadeIn 0.4s ease-out',
         logoGlow: 'logoGlow 1.8s ease-in-out infinite',
         scan: 'scan 1.6s ease-in-out infinite',
@@ -98,5 +98,4 @@ export default {
   plugins: [
     require('tailwind-scrollbar')
   ],
-}
-
+ }

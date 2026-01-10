@@ -114,7 +114,7 @@ function CanvasBoard({ background, isMobile }, ref){
         const x = (e.clientX - stageRect.left) / layout.scale
         const y = (e.clientY - stageRect.top) / layout.scale
         
-        const itemWidth = 200
+        const itemWidth = 100
         const itemHeight = 200
 
         atomicChange(()=>{
@@ -185,7 +185,7 @@ function CanvasBoard({ background, isMobile }, ref){
     async function addItemToCenter(imageUrl) {
         const centerX = layout.VIRTUAL_CANVAS_WIDTH / 2
         const centerY = layout.VIRTUAL_CANVAS_HEIGHT / 2
-        const itemWidth = 200
+        const itemWidth = 100
         const itemHeight = 200  
 
         const finalSrc = await resolveImageSrc(imageUrl)
