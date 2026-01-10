@@ -17,13 +17,15 @@ import { useIsLoggedInUser } from "./hooks/useIsLoggedInUser"
 
 export function RootCmp(){
     const location = useLocation()
-    const { loggedInUser } = useIsLoggedInUser()
+    const { loggedInUser, loading } = useIsLoggedInUser()
     const authMode = useSelector(state => state.userModule.authMode)
     const isStyleMeModalOpen = useSelector(state => state.systemModule.isStyleMeModalOpen)
     const isMobile = useMediaQuery(breakpoints.mobile)
     const isStyleBoard = location.pathname === '/board' && loggedInUser
     
     useCurrentUser()
+
+    if (loading) return null
 
     return(
         <>

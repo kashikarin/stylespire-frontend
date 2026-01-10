@@ -1,4 +1,5 @@
 import { userService } from "../../services/user.service";
+import { SET_LOADING } from "../reducers/favorites.reducer";
 import { CLOSE_STYLEME_MODAL, OPEN_STYLEME_MODAL } from "../reducers/system.reducer";
 import { SET_AUTH_MODE, SET_LOGGEDINUSER, SET_USER_LOADING } from "../reducers/user.reducer";
 import { store } from "../store";
@@ -51,9 +52,16 @@ export async function loadCurrentUser(){
     const user = await userService.getCurrentUser()
     store.dispatch(getCmdLoadCurrentUser(user))
   } catch (err) {
-    console.error('Cannot load current user', err)
-    store.dispatch(getCmdSetLoading(false))
+    if (err.message === 'Session expired') {
+      await logout()
+    } else {
+      store.dispatch(getCmdSetLoading(false))
+    }
   }
+}
+
+export function resolveAuth(){
+  store.dispatch(getCmdSetLoading(false))
 }
 
 export function openStyleMeModal(){

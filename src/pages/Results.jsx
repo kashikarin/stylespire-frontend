@@ -81,8 +81,10 @@ export function Results() {
             <ResultsTags formData={formData} />
             <ResultsCarousel images={results} onLike={toggleLike} getIsLiked={getIsLiked} isLoggedInUser={isLoggedInUser}/>
             <p className="text-xs text-primary-dark/50 text-center mt-2">
-  Like a look to save it to your favorites
-</p>
+                {isLoggedInUser ?
+                    "Like a look to save it to your favorites" : 
+                    "Love this look? Sign in to save it to your favorites"}
+            </p>
         </section>
     )
 }
