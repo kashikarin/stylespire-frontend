@@ -20,9 +20,16 @@ export default {
         // Utility opacity colors 
         "primary-dark-10": "#40707610", //for bg
         "primary-dark-40": "#40707640", //for border
+        "primary-dark-50": "#40707650",
+        "primary-dark-60": "#40707660",
         "primary-dark-80": "#40707680", //for shadow
         "primary-dark-20": "#40707620", //for hover
-        
+
+        //homepage-colors:
+        "accent-light": "#5A8B91",
+        "accent-lighter": "#7AA5AB",
+        "home-gray": '#6C757D',
+
         // Secondary palette
         secondary: "#698996",
 
@@ -47,6 +54,7 @@ export default {
         gray2: "#aaa",
         gray3: "#777",
         gray4: "#333",
+        gray5: "#CCC",
       },
       boxShadow: { 
         "shadow-soft": "0 2px 6px rgba(0, 0, 0, 0.10)",
