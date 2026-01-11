@@ -6,23 +6,28 @@ export function useLike(){
     const favorites = useSelector(state => state.favoriteModule.favorites)
     const { loggedInUser } = useIsLoggedInUser()
     
-    async function toggleLike(isLiked, imageUrl, imageId, imageDescription){
-        if (!loggedInUser) return
+    function getIsLiked(imageId) {
+        if (!loggedInUser || !imageId) return false
+        return favorites.some(fav => fav.image.id === imageId)
+    }
+
+    async function toggleLike({ imageId, imageUrl, imageDescription }){
+        if (!loggedInUser || !imageId) return
+        const isLiked = getIsLiked(imageId)
+
         if (isLiked) {
             const fav = favorites.find(f => f.image.id === imageId)
+            if (!fav?._id) return
+
             await removeFavorite(fav._id)
             await loadFavorites({userId: loggedInUser._id})
-        } else addFavorite(
-            loggedInUser._id,
-            imageUrl, 
-            imageId, 
-            imageDescription
-        )
-    }
-    
-    function getIsLiked(imageId) {
-        if (!loggedInUser) return
-        return favorites.some(fav => fav.image.id === imageId)
+        } else {
+            addFavorite(loggedInUser._id, {
+                id: imageId,
+                url: imageUrl,
+                description: imageDescription
+            })
+        }
     }
 
     return {

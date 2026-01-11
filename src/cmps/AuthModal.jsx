@@ -13,7 +13,8 @@ export function AuthModal(){
         authMode, 
         isLoading, 
         onInputChange, 
-        error 
+        error,
+        onLoginDemo
     } = useAuthForm()
 
     useEffect(() => {
@@ -194,6 +195,40 @@ export function AuthModal(){
                                 >
                                     {authMode === 'signup' ? 'Log In' : 'Sign Up'}
                                 </button>
+                                <div className="flex items-center gap-3 my-5">
+                                    <span className="flex-1 h-px bg-border"></span>
+                                    <span className="text-xs text-gray3">or</span>
+                                    <span className="flex-1 h-px bg-border"></span>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={onLoginDemo}
+                                    disabled={isLoading}
+                                    className="
+                                        w-full
+                                        py-3 px-5
+                                        rounded-lg
+                                        text-base
+                                        font-semibold
+                                        cursor-pointer
+                                        border border-primary-dark-40
+                                        text-primary-dark
+                                        bg-white
+                                        transition-all
+                                        duration-300
+                                        hover:bg-primary-dark-10
+                                        focus:outline-none
+                                        focus:ring-2
+                                        focus:ring-primary-dark-20
+                                        disabled:opacity-50
+                                        disabled:cursor-not-allowed
+                                    "
+                                >
+                                    Continue with Demo
+                                </button>
+                                <p className="text-xs text-gray3 text-center mt-2">
+                                    No sign up required
+                                </p>
                             </span>
                         </div>
                     </div>

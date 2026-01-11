@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useSelector } from "react-redux"
-import { login, setAuthMode, signup } from '../store/actions/user.actions.js'
+import { login, setAuthMode, signup, startDemoSession } from '../store/actions/user.actions.js'
 
 export function useAuthForm(){
     const [error, setError] = useState('')
@@ -54,6 +54,16 @@ export function useAuthForm(){
             setError(err.response?.data?.err || err.message || 'Something went wrong')
         }
     }
+
+    async function onLoginDemo(){
+        try{
+            await startDemoSession()
+            onClose()
+        } catch(err){
+            console.error('Demo session error:', err)
+            setError(err.response?.data?.err || err.message || 'Something went wrong')
+        }
+    }
     
     return{
         onClose,
@@ -63,6 +73,7 @@ export function useAuthForm(){
         isLoading,
         authMode,
         error,
-        credentials
+        credentials,
+        onLoginDemo
     }
 }

@@ -27,7 +27,7 @@ export function useResults() {
         setFormData(routerFormData) 
         updateSearchParamsFromFormData(routerFormData) 
         loadResults(routerFormData)             
-    }, [routerFormData])
+    }, [routerFormData, updateSearchParamsFromFormData])
 
     async function loadResults(data) {
         try {

@@ -13,7 +13,8 @@ export function Favorites(){
         } = useFavorites()  
     const { isLoggedInUser } = useIsLoggedInUser()  
     const { getIsLiked, toggleLike } = useLike()
-    
+    const hasFavorites = favorites.length > 0
+
     if (!isLoggedInUser) return null
 
     return(
@@ -46,26 +47,12 @@ export function Favorites(){
                         Saved Outfit Inspirations
                     </h1>
                         
-                    {favorites.length ? <p 
-                        className='
-                            text-gray3 
-                            mt-1 
-                            text-sm 
-                            narrow:text-base
-                        '
-                    >
-                        A personal collection of looks you can revisit and refine
-                    </p> :
-                    <p 
-                        className='
-                            text-gray3 
-                            mt-1 
-                            text-sm 
-                            narrow:text-base
-                        '
-                    >
-                        Save looks you love to build your personal style collection
-                    </p>} 
+                    <p className='text-gray3 mt-1 text-sm narrow:text-base'>
+                        {hasFavorites ?
+                            'A personal collection of looks you can revisit and refine' :
+                            'Save looks you love to build your personal style collection'
+                        }
+                    </p>
                 </div>    
                 <div
                     className="

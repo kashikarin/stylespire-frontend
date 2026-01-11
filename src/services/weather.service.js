@@ -85,7 +85,11 @@ export async function getWeatherData() {
     _saveToCache(weather)
     return weather
   } catch (err) {
-    console.error("Browser location failed:", err)
+    if (err?.code === 1) {
+      console.info("User denied geolocation, falling back to IP")
+    } else {
+      console.error("Browser geolocation weather failed:", err)
+    }
   }
 
   // --- 2. IP fallback (good enough) ---

@@ -2,24 +2,22 @@ import { favoriteService } from "../../services/favorite.service";
 import { ADD_FAVORITE, REMOVE_FAVORITE, SET_ERROR, SET_FAVORITE, SET_FAVORITES, SET_LOADING } from "../reducers/favorites.reducer";
 import { store } from "../store"
 
-export async function addFavorite(userId, imageUrl, imageId, imageDescription){
-    const favoriteToSave = favoriteService.createFavorite(imageUrl, imageId, imageDescription)
+export async function addFavorite(userId, image) {
+    const favoriteToSave = favoriteService.createFavorite(userId, image)
     store.dispatch(getCmdSetLoading(true))
     store.dispatch(getCmdSetError(null))
     try {
         const savedFavorite = await favoriteService.save(favoriteToSave)
-        console.log("🚀 ~ savedFavorite:", savedFavorite)
         store.dispatch(getCmdAddFavorite(savedFavorite))
-        console.log("🚀 ~ savedFavorite:", savedFavorite)
-        await loadFavorites({userId})
+        await loadFavorites({ userId })
         return savedFavorite
-  } catch (err) {
+    } catch (err) {
         store.dispatch(getCmdSetError(err.message))
         console.error('Cannot add favorite', err)
         throw err
-  } finally {
+    } finally {
         store.dispatch(getCmdSetLoading(false))
-  }
+    }
 }
 
 export async function loadFavorites(filterFavoritesBy){
@@ -58,7 +56,6 @@ export async function removeFavorite(favoriteId) {
     try {
         await favoriteService.remove(favoriteId)
         store.dispatch(getCmdRemoveFavorite(favoriteId))
-        await loadFavorites({})
     } catch (err) {
         store.dispatch(getCmdSetError(err.message))
         console.error('Cannot remove favorite', err)

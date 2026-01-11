@@ -13,6 +13,7 @@ export function StyleboardHintBlob() {
                 font-medium
                 text-primary-dark
                 leading-snug
+                animate-hintPulse
             "
         >
             <span>

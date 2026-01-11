@@ -11,17 +11,11 @@ export function Results() {
     const { formData, results, loading, refresh } = useResults()
     const { getIsLiked, toggleLike } = useLike()
 
-    if (!results || results.length === 0)
-        return (
-        <Loader />
-        )
-    if (loading || !formData)
-        return (
-
-            <Loader />
-        )
+    if (loading || !formData || !results?.length)
+        return <Loader />
+        
     return(
-        <section className="w-full max-w-7xl mx-auto px-4flex flex-col gap-4">
+        <section className="w-full max-w-7xl mx-auto px-4 flex flex-col gap-4">
             <div className="flex justify-between">
                 <div className="flex flex-col gap-1">
                     <h3 

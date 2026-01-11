@@ -8,8 +8,6 @@ import { AuthModal } from "./cmps/AuthModal"
 import { breakpoints } from "./util/breakpoints"
 import { useMediaQuery } from "./hooks/useMediaQuery"
 import { AppFooter } from "./cmps/AppFooter"
-import { StyleMeModal } from "./cmps/StyleMeModal"
-import { motion, AnimatePresence } from "framer-motion"
 import { StyleBoard } from "./pages/StyleBoard"
 import { useCurrentUser } from "./hooks/useCurrentUser"
 import { ProtectedRoute } from "./cmps/ProtectedRoute"
@@ -19,7 +17,6 @@ export function RootCmp(){
     const location = useLocation()
     const { loggedInUser, loading } = useIsLoggedInUser()
     const authMode = useSelector(state => state.userModule.authMode)
-    const isStyleMeModalOpen = useSelector(state => state.systemModule.isStyleMeModalOpen)
     const isMobile = useMediaQuery(breakpoints.mobile)
     const isStyleBoard = location.pathname === '/board' && loggedInUser
     
@@ -53,26 +50,7 @@ export function RootCmp(){
                 )}
             </div>
             {isMobile && <AppFooter />}
-            {authMode && <AuthModal />}
-            <AnimatePresence>
-                {isStyleMeModalOpen && 
-                    <motion.div
-                        className="
-                            fixed inset-0 
-                            bg-black/40 backdrop-blur-sm 
-                            flex items-center justify-center 
-                            p-4 
-                            z-50
-                        "
-                        initial={{ opacity: 0 }}
-                        animate={{opacity: 1 }}
-                        exit={{  opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
-                    >
-                        <StyleMeModal />
-                    </motion.div>}
-            </AnimatePresence>
-            
+            {authMode && <AuthModal />}            
         </>
         
     )

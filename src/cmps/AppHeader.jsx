@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { ReactSVG } from "react-svg"
 import { UserLetterCircle } from "./UserLetterCircle"
 import { useIsLoggedInUser } from "../hooks/useIsLoggedInUser"
@@ -17,11 +17,9 @@ export function AppHeader(){
         dropdownRef,
         coords
         } = useDropdownController( { withPosition: true } )
-    const location = useLocation()
     const { loggedInUser } = useIsLoggedInUser()
-    const isHomePage = location.pathname === '/'
+    console.log("🚀 ~ AppHeader ~ loggedInUser:", loggedInUser)
     const isMobile = useMediaQuery(breakpoints.mobile)
-    const isStyleBoardPage = location.pathname === '/board'
 
     const fullName = loggedInUser?.fullname
     const firstName = fullName ? fullName.split(' ')[0] : ''

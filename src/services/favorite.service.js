@@ -46,7 +46,7 @@ function getEmptyFavorite() {
 }
 
 function getFilterFromSearchParams(searchParams) {
-  const defaultFilter = getDefaultFavoritesFilter()
+  const defaultFilter = getDefaultFavoriteFilter()
   const filterBy = {}
   for (const field in defaultFilter) {
     filterBy[field] = searchParams.get(field) || ''
@@ -62,12 +62,13 @@ function getDefaultFavoriteFilter() {
   }
 }
 
-function createFavorite(imageUrl, imageId, imageDescription){
+function createFavorite(userId, image) {
   return {
+    userId,
     image: {
-      id: imageId,
-      description: imageDescription,
-      url: imageUrl,
+      id: image.id,
+      url: image.url,
+      description: image.description,
     },
     createdAt: Date.now()
   }

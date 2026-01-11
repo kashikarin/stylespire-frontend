@@ -1,8 +1,8 @@
-import { th } from 'framer-motion/client'
 import { httpService } from './http.service'
 
 export const userService = {
   login,
+  loginDemo,
   signup,
   logout,
   getCurrentUser,
@@ -20,6 +20,14 @@ async function login(userCred) {
   } catch (err) {
     throw err
   }
+}
+
+async function loginDemo() {
+  const { user, accessToken } = await httpService.post('/auth/demo')
+  if (accessToken) {
+      _saveAccessToken(accessToken)
+    }
+    return user
 }
 
 async function signup(userCred) {

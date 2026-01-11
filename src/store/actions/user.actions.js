@@ -1,6 +1,6 @@
 import { userService } from "../../services/user.service";
 import { SET_LOADING } from "../reducers/favorites.reducer";
-import { CLOSE_STYLEME_MODAL, OPEN_STYLEME_MODAL } from "../reducers/system.reducer";
+// import { CLOSE_STYLEME_MODAL, OPEN_STYLEME_MODAL } from "../reducers/system.reducer";
 import { SET_AUTH_MODE, SET_LOGGEDINUSER, SET_USER_LOADING } from "../reducers/user.reducer";
 import { store } from "../store";
 
@@ -64,12 +64,19 @@ export function resolveAuth(){
   store.dispatch(getCmdSetLoading(false))
 }
 
-export function openStyleMeModal(){
-  store.dispatch(getCmdOpenStyleMeModal())
-}
-
-export function closeStyleMeModal(){
-  store.dispatch(getCmdCloseStyleMeModal())
+export async function startDemoSession() {
+  store.dispatch(getCmdSetLoading(true))
+  try {
+    const user = await userService.loginDemo()
+    console.log("🚀 ~ startDemoSession ~ user:", user)
+    store.dispatch(getCmdLogin(user))
+    console.log('demo user:', store.getState().userModule.loggedInUser)
+    return user
+  } catch (err) {
+    console.error('Cannot start demo session', err)
+    store.dispatch(getCmdSetLoading(false))
+    throw err
+  }
 }
 
 //cmd creators
