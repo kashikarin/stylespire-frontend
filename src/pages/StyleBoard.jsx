@@ -15,6 +15,8 @@ import { useIsLoggedInUser } from "../hooks/useIsLoggedInUser"
 
 export function StyleBoard(){
     const isMobile = useMediaQuery(breakpoints.mobile)
+    console.log("🚀 ~ StyleBoard ~ isMobile:", isMobile)
+    const isTablet = useMediaQuery(breakpoints.tablet)
     const canvasRef = useRef(null)
     const { loggedInUser } = useIsLoggedInUser()
     
@@ -31,8 +33,7 @@ export function StyleBoard(){
     const { 
         backgrounds, 
         loadMoreBackgrounds, 
-        loading, 
-        selectBackground
+        loading
     } = useCanvasBackgrounds({
             selectedBackground: board?.selectedBackground, 
             onBackgroundChange
@@ -92,23 +93,21 @@ export function StyleBoard(){
             <div className='full'>
             
                 <div 
-                    className="
-                        narrow:h-[100dvh] 
+                    className={`
+                        h-[100dvh] 
                         w-full 
-                        flex flex-col flex-1
+                        flex flex-row
                         overflow-hidden
-                        narrow:flex-row
-                    "
+                        ${isMobile ? 'flex-col' : ''}
+                    `}
                 >
                     <main 
                         className="
                             relative
                             overflow-hidden
                             bg-primary-bg
-                            w-full
-                            h-screen 
-                            narrow:flex-1
-                            narrow:h-auto
+                            flex-1
+                            min-w-0
                         "
                         style={isMobile ? { height: 'calc(100vh - 120px)' } : undefined}  
 
@@ -127,21 +126,17 @@ export function StyleBoard(){
                         />
                     </main>
                     {!isMobile && <aside 
-                        className="
-                            w-full h-[40dvh]
+                        className={`
                             shrink-0
-                            
                             border-t border-primary-dark
-                            p-4 
-                            pb-24
+                            p-4 pb-24
                             bg-primary-bg
                             order-2
-                            narrow:w-[200px] 
-                            narrow:border-t-0 narrow:border-l narrow:border-primary-dark
-                            narrow:h-full
-                            narrow:order-none
-                            narrow:overflow-y-auto
-                        ">
+                            ${isTablet ? 'w-[120px]' : 'w-[200px]'} 
+                            border-t-0 border-l border-primary-dark
+                            h-full
+                            overflow-y-auto
+                        `}>
                             <FavsSidebar favorites={favorites || []} />
                     </aside>}
                 </div>

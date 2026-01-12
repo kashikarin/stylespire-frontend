@@ -27,7 +27,6 @@ export function StyleBoardCanvas({
     const showBoardOptions = useMediaQuery(breakpoints.veryWide) // >= 1530px
     const showToolsColumn = useMediaQuery(breakpoints.extremelyWide) // >= 1650px
     const hasRightBlackbox = useMediaQuery(breakpoints.wide) && !showBoardOptions// >= 1400px
-    console.log("🚀 ~ StyleBoardCanvas ~ hasRightBlackbox:", hasRightBlackbox)
     
     // Tools should only appear in overlay when NOT in right column
     const showToolsOverlay = !showToolsColumn
