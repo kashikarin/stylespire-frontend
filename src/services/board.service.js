@@ -48,12 +48,19 @@ async function loadOrCreateSelectedBoard(currentBoardId){
 }
 
 async function uploadBoardImage(blob){
-    // 
     const formData = new FormData()
     formData.append('file', blob)
 
     // 
     const res = await httpService.post('upload/image', formData)
+    return res.url
+}
 
-    return res
+export function buildImageUrl(path) {
+  if (!path) return ''
+
+  if (path.startsWith('http')) return path
+
+  const baseUrl = import.meta.env.VITE_API_BASE_URL
+  return `${baseUrl}${path}`
 }

@@ -4,21 +4,19 @@
         minmax(24px, 1fr)                
         minmax(auto, $normal-breakpoint) 
         minmax(24px, 1fr);               
-    min-height: 100dvh;
+    min-height: 100svh;
     
     & > main {
         grid-column: 2;
         display: flex;
         flex-direction: column;
         padding-block-start: 1rem;
-        // min-height: calc(100dvh - $header-height);
         
         &.no-header-padding {
             padding-block-start: 0;
         } 
 
         @include for-mobile-layout {
-            // min-height: calc(100dvh - $header-height - $footer-height);
             padding-block-end: calc($footer-height + 1rem);
         }
     }

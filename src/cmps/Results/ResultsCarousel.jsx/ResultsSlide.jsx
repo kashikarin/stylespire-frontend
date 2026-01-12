@@ -10,7 +10,7 @@ export function ResultsSlide({ image, isLoggedInUser }){
         description: image.alt_description || image.description || ''
     }
     return(
-        <div className="relative w-full aspect-[4/3] max-h-[90vh]">
+        <div className="relative w-full aspect-[4/3] max-h-[90svh]">
             {/* top overlay bar */}
             <div 
                 className={`

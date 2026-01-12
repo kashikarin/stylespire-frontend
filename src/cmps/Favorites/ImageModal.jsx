@@ -41,7 +41,7 @@ export function ImageModal({ selectedFav, onClose}){
                         src={selectedFav.image.url} 
                         alt={selectedFav.image.description} 
                         className="
-                            w-full max-h-[70vh] 
+                            w-full max-h-[70svh] 
                             object-contain
                         "
                     />

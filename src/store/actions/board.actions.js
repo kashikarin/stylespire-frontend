@@ -91,23 +91,18 @@ export async function removeBoard(boardId) {
         if (!src) return null
 
         try {
-            if (!src.startsWith('blob:')) return src
+            if (!src.startsWith('blob:')) return boardService.buildImageUrl(src)
             
             const response = await fetch(src)
             const blob = await response.blob()
 
-            const { url } = await boardService.uploadBoardImage(blob)
+            const imagePath = await boardService.uploadBoardImage(blob)
             
-            return url
+            return boardService.buildImageUrl(imagePath)
         } catch(err){
             console.error('Failed to resolve board image src', err)
             throw err
         }
-
-
-
-        // העלאה לשרת דרך board.service
-
     }
 
 //command creators

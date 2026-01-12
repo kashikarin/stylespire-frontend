@@ -21,7 +21,7 @@ export function Favorites(){
         <section 
             className='
                 bg-primary-bg 
-                min-h-[100dvh]
+                min-h-[100svh]
             '
         >
             <header 

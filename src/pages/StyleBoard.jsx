@@ -93,7 +93,7 @@ export function StyleBoard(){
             
                 <div 
                     className={`
-                        h-[100dvh] 
+                        h-[100svh] 
                         w-full 
                         flex flex-row
                         overflow-hidden
@@ -108,7 +108,7 @@ export function StyleBoard(){
                             flex-1
                             min-w-0
                         "
-                        style={isMobile ? { height: 'calc(100vh - 120px)' } : undefined}  
+                        style={isMobile ? { height: 'calc(100svh - 120px)' } : undefined}  
 
                     >
                         <StyleBoardCanvas 

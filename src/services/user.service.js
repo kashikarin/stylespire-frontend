@@ -50,7 +50,7 @@ async function getCurrentUser() {
   catch (err) {
     if (err.response && err.response.status === 401) {
       _clearAccessToken()
-      throw new Error('Session expired')
+      return null
     }
     throw err
   } 
