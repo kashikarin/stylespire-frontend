@@ -133,9 +133,7 @@ function getLabels(formData){
     
     keywords.forEach(word => {
         let clone = [...labelMap[word]]
-        console.log("🚀 ~ clone:", clone)
         let randomIdx = Math.round(Math.random() * clone.length - 1)
-        console.log("🚀 ~ randomIdx:", randomIdx)
         res.push(clone[randomIdx])
     })
     

@@ -1,55 +1,69 @@
 import { favoriteService } from "../../services/favorite.service";
-import { ADD_FAVORITE, REMOVE_FAVORITE, SET_FAVORITE, SET_FAVORITES } from "../reducers/favorites.reducer";
-import { store } from "../store";
+import { ADD_FAVORITE, REMOVE_FAVORITE, SET_ERROR, SET_FAVORITE, SET_FAVORITES, SET_LOADING } from "../reducers/favorites.reducer";
+import { store } from "../store"
 
-export async function addFavorite(userId, userFullname, imageUrl, imageId, imageDescription){
-    const favoriteToSave = favoriteService.createFavorite(userId, userFullname, imageUrl, imageId, imageDescription)
-    console.log("🚀 ~ favoriteToSave:", favoriteToSave)
+export async function addFavorite(userId, image) {
+    const favoriteToSave = favoriteService.createFavorite(userId, image)
+    store.dispatch(getCmdSetLoading(true))
+    store.dispatch(getCmdSetError(null))
     try {
         const savedFavorite = await favoriteService.save(favoriteToSave)
-        console.log("🚀 ~ savedFavorite:", savedFavorite)
         store.dispatch(getCmdAddFavorite(savedFavorite))
-        console.log("🚀 ~ savedFavorite:", savedFavorite)
-        await loadFavorites({userId})
+        await loadFavorites({ userId })
         return savedFavorite
-  } catch (err) {
+    } catch (err) {
+        store.dispatch(getCmdSetError(err.message))
         console.error('Cannot add favorite', err)
         throw err
-  }
+    } finally {
+        store.dispatch(getCmdSetLoading(false))
+    }
 }
 
 export async function loadFavorites(filterFavoritesBy){
-    console.log("🚀 ~ filterFavoritesBy:", filterFavoritesBy)
+    store.dispatch(getCmdSetLoading(true))
+    store.dispatch(getCmdSetError(null))
     try {
         const favorites = await favoriteService.query(filterFavoritesBy)
         store.dispatch(getCmdSetFavorites(favorites))
   } catch (err) {
+        store.dispatch(getCmdSetError(err.message))
         console.error('Cannot load favorites', err)
         throw err
-  }
+  } finally {
+        store.dispatch(getCmdSetLoading(false))
+  } 
 }
 
 export async function loadFavorite(favoriteId){
+    store.dispatch(getCmdSetLoading(true))
+    store.dispatch(getCmdSetError(null))    
     try {
         const favorite = await favoriteService.getById(favoriteId)
         store.dispatch(getCmdSetFavorite(favorite))
   } catch (err) {
+        store.dispatch(getCmdSetError(err.message))
         console.error('Cannot load favorite', err)
         throw err
-  }
+  } finally {
+        store.dispatch(getCmdSetLoading(false))
+  } 
 }
 
 export async function removeFavorite(favoriteId) {
-  try {
-    await favoriteService.remove(favoriteId)
-    store.dispatch(getCmdRemoveFavorite(favoriteId))
-    await loadFavorites({})
-  } catch (err) {
-    console.error('Cannot remove favorite', err)
-    throw err
-  }
+    store.dispatch(getCmdSetError(null))    
+    store.dispatch(getCmdSetLoading(true))
+    try {
+        await favoriteService.remove(favoriteId)
+        store.dispatch(getCmdRemoveFavorite(favoriteId))
+    } catch (err) {
+        store.dispatch(getCmdSetError(err.message))
+        console.error('Cannot remove favorite', err)
+        throw err
+    } finally {
+        store.dispatch(getCmdSetLoading(false))
+    }
 } 
-
 
 //command creators
 function getCmdAddFavorite(favorite){
@@ -79,3 +93,25 @@ function getCmdRemoveFavorite(favoriteId){
         favoriteId
     }
 }
+
+function getCmdSetLoading(isLoading) {
+    return {
+        type: SET_LOADING,
+        isLoading
+    }
+}   
+
+function getCmdSetError(error) {
+    return {
+        type: SET_ERROR,
+        error
+    }
+}   
+
+function getCmdFavoriteImageProcessed(processedImage, favoriteId) {
+    return {
+        type: FAVORITE_IMAGE_PROCESSED,
+        processedImage,
+        favoriteId
+    }
+}    

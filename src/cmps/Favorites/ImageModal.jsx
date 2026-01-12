@@ -1,5 +1,4 @@
 export function ImageModal({ selectedFav, onClose}){
-    console.log("🚀 ~ selectedFav:", selectedFav)
     if (!selectedFav) return null
 
     return(

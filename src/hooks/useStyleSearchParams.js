@@ -34,7 +34,6 @@ export function useStyleSearchParams(onFormDataChange = () => {}) {
       
       if (!Array.isArray(value)) {
         newParams[key] = value || ""
-        console.log("🚀 ~ updateSearchParamsFromFormData ~ newParams:", newParams)
         continue
       }
 
@@ -44,7 +43,6 @@ export function useStyleSearchParams(onFormDataChange = () => {}) {
     }
 
     setSearchParams(newParams)
-    console.log("🚀 ~ updateSearchParamsFromFormData ~ newParams:", newParams)
   }
   
   return {

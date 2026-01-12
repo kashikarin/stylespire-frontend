@@ -12,7 +12,6 @@ export const favoriteService = {
 }
 
 async function query(filterFavoritesBy = {}) {
-console.log('client → filterFavoritesBy:', filterFavoritesBy)  
   return httpService.get(`favorite`, filterFavoritesBy)
 }
 
@@ -42,12 +41,11 @@ function getEmptyFavorite() {
     imageId: '',
     description: '',
     url: '',
-    user: { _id: '', fullname: ''}
   }
 }
 
 function getFilterFromSearchParams(searchParams) {
-  const defaultFilter = getDefaultFavoritesFilter()
+  const defaultFilter = getDefaultFavoriteFilter()
   const filterBy = {}
   for (const field in defaultFilter) {
     filterBy[field] = searchParams.get(field) || ''
@@ -63,17 +61,13 @@ function getDefaultFavoriteFilter() {
   }
 }
 
-function createFavorite(userId, userFullname, imageUrl, imageId, imageDescription){
-  if (!userId) return
+function createFavorite(userId, image) {
   return {
+    userId,
     image: {
-      id: imageId,
-      description: imageDescription,
-      url: imageUrl,
-    },
-    user: {
-      _id: userId,
-      fullname: userFullname
+      id: image.id,
+      url: image.url,
+      description: image.description,
     },
     createdAt: Date.now()
   }

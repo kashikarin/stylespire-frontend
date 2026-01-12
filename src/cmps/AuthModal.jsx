@@ -1,84 +1,34 @@
-import { useEffect, useState } from "react"
 import { LoginFields } from "./LoginFields"
 import { SignupFields } from "./SignupFields"
-import { login, setAuthMode, signup } from '../store/actions/user.actions.js'
-import { useSelector } from "react-redux"
+import { useAuthForm } from "../hooks/useAuthForm"
+import { useEffect, useRef } from "react"
 
 export function AuthModal(){
-    const [error, setError] = useState('')
-    const [isLoading, setIsLoading] = useState(false)
-    const [credentials, setCredentials] = useState({
-        email: '',
-        password: '',
-        fullname: '',
-    })
-    const authMode = useSelector(state => state.userModule.authMode)
+    const emailRef = useRef(null)
+    const contentRef = useRef(null)
+    const { onClose, 
+        credentials,
+        toggleMode,
+        submitAuth, 
+        authMode, 
+        isLoading, 
+        onInputChange, 
+        error,
+        onLoginDemo
+    } = useAuthForm()
 
     useEffect(() => {
-        setError('') 
+      emailRef.current?.focus()
     }, [])
-    
-    function resetState() {
-        setError('')
-        setCredentials({
-            email: '',
-            password: '',
-            fullname: '',
-        })
-    }
 
-    function handleClose() {
-        console.log("modal is closing!")
-        resetState()
-        setAuthMode(null)
-    }
-
-    function handleInputChange(ev) {
-        const { name, value } = ev.target
-        setCredentials((prev) => ({ ...prev, [name]: value }))
-    }
-
-    function toggleMode() {
-      setAuthMode(authMode === 'login' ? 'signup' : 'login')  
-      resetState()
-    }
-
-    async function handleAuth(ev) {
-        ev.preventDefault()
-        setIsLoading(true)
-        setError('')
-        console.log('handleauth runs')
-        try {
-            let user
-            if (authMode === 'signup') {
-                user = await signup({
-                    email: credentials.email,
-                    password: credentials.password,
-                    fullname: credentials.fullname,
-                })
-            } else {
-                console.log('authmodal - login if runs')
-                user = await login({
-                    email: credentials.email,
-                    password: credentials.password,
-                })
-            }
-
-            handleClose()
-        } catch (err) {
-            console.error('Auth error:', err)
-            setError(err.response?.data?.err || err.message || 'Something went wrong')
-        } finally {
-            setIsLoading(false)
+    useEffect(() => {
+        if (error) {
+            contentRef.current?.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            })
         }
-    }
-
-    function handleKeyDown(ev) {
-        if (ev.key === 'Enter') {
-            ev.preventDefault()
-            handleAuth()
-        }
-    }
+    }, [error])
 
     return(
         <>
@@ -90,7 +40,7 @@ export function AuthModal(){
                     narrow:backdrop-blur-sm
                     narrow:block hidden
                 " 
-                onClick={handleClose}
+                onClick={onClose}
             
             />
             <div 
@@ -113,7 +63,9 @@ export function AuthModal(){
                     narrow:p-0
                 "
             >
-                <div className="
+                <div
+                    ref={contentRef} 
+                    className="
                         flex-none
                         bg-white
                         rounded-xl
@@ -142,10 +94,8 @@ export function AuthModal(){
                             narrow:rounded-full
                             narrow:transition-all narrow:duration-300 narrow:ease-linear
                             narrow:hover:text-gray4 narrow:hover:bg-primary-bg
-                        " 
-
-                        
-                        onClick={handleClose}
+                        "
+                        onClick={onClose}
                     >
                         ×
                     </button>
@@ -178,18 +128,18 @@ export function AuthModal(){
                             </div>
                         }
 
-                        <form onSubmit={handleAuth} className="flex flex-col gap-3">
+                        <form onSubmit={submitAuth} className="flex flex-col gap-3">
                             {authMode === 'login' ? 
                             <LoginFields 
+                                emailRef={emailRef}
                                 credentials={credentials} 
                                 isLoading={isLoading}
-                                handleKeyDown={handleKeyDown}
-                                onInputChange={handleInputChange}
+                                onInputChange={onInputChange}
                             /> :
                             <SignupFields 
+                                emailRef={emailRef}
                                 credentials={credentials} 
-                                handleKeyDown={handleKeyDown}
-                                onInputChange={handleInputChange}
+                                onInputChange={onInputChange}
                                 isLoading={isLoading}
                             />}
                             <button
@@ -216,40 +166,74 @@ export function AuthModal(){
                             >
                                {isLoading ? 'Loading...' : authMode === 'signup' ? 'Sign Up' : 'Log In'}
                             </button>
-                            </form>
-                            <div className="
-                                    text-center 
-                                    mt-5
-                                    pt-5
-                                    border-t-border
-                                ">
-                                <span className="text-gray3 text-sm">
-                                    {authMode === 'signup'
-                                        ? 'Already have an account? '
-                                        : "Don't have an account? "}
-                                    <button
-                                        className="
-                                            bg-transparent
-                                            border-none
-                                            text-primary-dark
-                                            cursor-pointer
-                                            text-sm
-                                            undeline
-                                            font-semibold
-                                            hover:text-text
-                                            disabled:text-gray1 disabled:cursor-not-allowed
-                                            focus:outline-text outline-offset-2
-                                        "
-                                        onClick={toggleMode}
-                                        disabled={isLoading}
-                                    >
-                                        {authMode === 'signup' ? 'Log In' : 'Sign Up'}
-                                    </button>
-                                </span>
-                            </div>
-                    </div>
+                        </form>
+                        <div className="
+                                text-center 
+                                mt-5
+                                pt-5
+                                border-t-border
+                            ">
+                            <span className="text-gray3 text-sm">
+                                {authMode === 'signup'
+                                    ? 'Already have an account? '
+                                    : "Don't have an account? "}
+                                <button
+                                    className="
+                                        bg-transparent
+                                        border-none
+                                        text-primary-dark
+                                        cursor-pointer
+                                        text-sm
+                                        undeline
+                                        font-semibold
+                                        hover:text-text
+                                        disabled:text-gray1 disabled:cursor-not-allowed
+                                        focus:outline-text outline-offset-2
+                                    "
+                                    onClick={toggleMode}
+                                    disabled={isLoading}
+                                >
+                                    {authMode === 'signup' ? 'Log In' : 'Sign Up'}
+                                </button>
+                                <div className="flex items-center gap-3 my-5">
+                                    <span className="flex-1 h-px bg-border"></span>
+                                    <span className="text-xs text-gray3">or</span>
+                                    <span className="flex-1 h-px bg-border"></span>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={onLoginDemo}
+                                    disabled={isLoading}
+                                    className="
+                                        w-full
+                                        py-3 px-5
+                                        rounded-lg
+                                        text-base
+                                        font-semibold
+                                        cursor-pointer
+                                        border border-primary-dark-40
+                                        text-primary-dark
+                                        bg-white
+                                        transition-all
+                                        duration-300
+                                        hover:bg-primary-dark-10
+                                        focus:outline-none
+                                        focus:ring-2
+                                        focus:ring-primary-dark-20
+                                        disabled:opacity-50
+                                        disabled:cursor-not-allowed
+                                    "
+                                >
+                                    Continue with Demo
+                                </button>
+                                <p className="text-xs text-gray3 text-center mt-2">
+                                    No sign up required
+                                </p>
+                            </span>
+                        </div>
                     </div>
                 </div>
-                </>
+            </div>
+        </>
     )
 }

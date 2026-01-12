@@ -11,12 +11,15 @@
     "tailwind": "tailwindcss"
   },
   "dependencies": {
+    "@imgly/background-removal": "^1.7.0",
     "@reduxjs/toolkit": "^2.9.2",
     "axios": "^1.13.2",
     "framer-motion": "^12.23.24",
+    "konva": "^10.0.12",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-dropzone": "^14.3.8",
+    "react-konva": "^19.2.1",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.4",
     "react-svg": "^16.3.0",

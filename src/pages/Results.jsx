@@ -11,47 +11,50 @@ export function Results() {
     const { formData, results, loading, refresh } = useResults()
     const { getIsLiked, toggleLike } = useLike()
 
-    if (!results || results.length === 0)
-        return (
-        <h3 className="text-center mt-12 text-primary-dark">
-            No looks found for your style.
-        </h3>
-        )
-    if (loading || !formData)
-        return (
-
-            <Loader />
-        )
+    if (loading || !formData || !results?.length)
+        return <Loader />
+        
     return(
-        <section className="w-full flex flex-col gap-2">
+        <section className="w-full max-w-7xl mx-auto px-4 flex flex-col gap-4">
             <div className="flex justify-between">
-                <h3 
-                    className="
-                        text-2xl 
-                        narrow:text-3xl 
-                        font-semibold 
-                        text-primary-dark
-                        tracking-tight
-                    "
-                >
-                    Your personalized style inspirations
-                </h3>
+                <div className="flex flex-col gap-1">
+                    <h3 
+                        className="
+                            text-2xl 
+                            narrow:text-3xl 
+                            font-semibold 
+                            text-primary-dark
+                            tracking-tight
+                            m-1
+                        "
+                    >
+                        Curated Outfit Suggestions
+                    </h3>
+                    <p className="text-sm text-primary-dark/60">
+                        Based on your selected preferences
+                    </p>
+                </div>
                 <button 
                     className="
                         hidden
                         normal:self-start
-                        normal:inline-flex normal:items-center normal:justify-center
-                        normal:px-4 normal:py-1.5 normal:rounded-full
-                        normal:text-primary-dark normal:text-sm normal:font-medium 
-                        normal:bg-primary-dark-10 
-                        normal:border normal:border-primary-dark-40
-                        normal:shadow-[0_0_6px_theme(colors.primary-dark-40)]
-                        normal:transition-colors normal:duration-200
-                       normal:hover:bg-primary-dark-10/20                        
+                        normal:inline-flex normal:items-center normal:gap-2
+                        normal:px-4 normal:py-1.5 
+                        normal:rounded-full
+                        normal:text-primary-dark 
+                        normal:text-sm normal:font-medium 
+                        normal:bg-primary-dark/5
+                        normal:border normal:border-primary-dark-20
+                        normal:shadow-[0_0_6px_theme(colors.primary-dark-20)]
+                        normal:transition-all normal:duration-200
+                      normal:hover:bg-primary-dark-10 
+                        hover:translate-y-[-1px]   
+                        normal:hover:shadow-[0_0_10px_theme(colors.primary-dark/30)]
+                        active:scale-[0.98]                    
                     "
                     onClick={refresh}
                 >
-                    ✨ Refresh Looks
+                    Refresh Suggestions
                 </button>
                 <button 
                     className="
@@ -71,6 +74,11 @@ export function Results() {
             </div>
             <ResultsTags formData={formData} />
             <ResultsCarousel images={results} onLike={toggleLike} getIsLiked={getIsLiked} isLoggedInUser={isLoggedInUser}/>
+            <p className="text-xs text-primary-dark/50 text-center mt-2">
+                {isLoggedInUser ?
+                    "Like a look to save it to your favorites" : 
+                    "Love this look? Sign in to save it to your favorites"}
+            </p>
         </section>
     )
 }

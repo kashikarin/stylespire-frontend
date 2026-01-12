@@ -1,9 +1,10 @@
-export function LoginFields({ credentials, isLoading, handleKeyDown, onInputChange }){
+export function LoginFields({ emailRef, credentials, isLoading, onInputChange }){
     return(
         <>
             <div className="flex flex-col gap-2">
                 <label className='font-semibold text-gray4 text-sm'>Email</label>
                 <input
+                    ref={emailRef}
                     type="text"
                     name="email"
                     className='
@@ -18,7 +19,6 @@ export function LoginFields({ credentials, isLoading, handleKeyDown, onInputChan
                     '
                     value={credentials.email}
                     onChange={onInputChange}
-                    onKeyDown={handleKeyDown}
                     onMouseDown={(e) => e.stopPropagation()}
                     onClick={(ev) => ev.stopPropagation()}
                     placeholder="Enter email or username"
@@ -43,7 +43,6 @@ export function LoginFields({ credentials, isLoading, handleKeyDown, onInputChan
                     "
                     value={credentials.password}
                     onChange={onInputChange}
-                    onKeyDown={handleKeyDown}
                     placeholder="Enter password"
                     disabled={isLoading}
                     required

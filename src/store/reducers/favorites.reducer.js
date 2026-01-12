@@ -2,10 +2,14 @@ export const ADD_FAVORITE = 'ADD_FAVORITE'
 export const REMOVE_FAVORITE = 'REMOVE_FAVORITE'
 export const SET_FAVORITE = 'SET_FAVORITE'
 export const SET_FAVORITES = 'SET_FAVORITES'
+export const SET_LOADING = 'SET_LOADING'
+export const SET_ERROR = 'SET_ERROR'    
 
 const initialState = {
     favorite: null,
     favorites: [],
+    loading: false,
+    error: null
 }
 
 export function favoriteReducer(state = initialState, action = {}) {
@@ -35,6 +39,18 @@ export function favoriteReducer(state = initialState, action = {}) {
                 favorites: action.favorites  
             }
             break 
+        case SET_LOADING:
+            newState = {
+                ...state,
+                loading: action.isLoading
+            }
+            break
+        case SET_ERROR:
+            newState = {
+                ...state,
+                error: action.error
+            }
+            break   
         default: 
     }
     return newState

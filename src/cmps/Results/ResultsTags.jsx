@@ -9,15 +9,13 @@ export function ResultsTags({ formData }){
                 <span 
                     key={tag} 
                     className="
-                        rounded-full 
-                        text-[13px] font-medium
-                        text-primary-dark 
-                        bg-[#40707610] 
-                        border border-[#40707640]
-                        backdrop-blur-[2px]
-                        shadow-[0_0_6px_#40707640]
-                        py-1 px-2
-
+                        rounded-full
+                        text-xs font-medium
+                        text-primary-dark/80
+                        bg-primary-dark/5
+                        border border-primary-dark/10
+                        px-3 py-1
+                        tracking-wide
                     "
                 >
                     {tag}

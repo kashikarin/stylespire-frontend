@@ -17,7 +17,7 @@ export function CarouselArrows({ index, length, onPrevClick, onNextClick }){
                     absolute 
                     top-1/2
                     -translate-y-1/2
-                    left-0
+                    left-2
                     pointer-events-auto
                 "
             >
@@ -32,8 +32,8 @@ export function CarouselArrows({ index, length, onPrevClick, onNextClick }){
                             p-0
                             border-none
                             rounded-full
-                            bg-surface/40
-                            shadow-shadow-soft
+                            bg-white/60 backdrop-blur-sm
+                            shadow-md
                         "
                     >
                         <ReactSVG src='/svgs/left-arrow.svg' className='fill-white drop-shadow-[0_0_3px_white] flex items-center justify-center w-10 h-10' />
@@ -45,7 +45,7 @@ export function CarouselArrows({ index, length, onPrevClick, onNextClick }){
                     absolute 
                     top-1/2
                     -translate-y-1/2
-                    right-0
+                    right-2
                     pointer-events-auto
                 "
             >
@@ -60,8 +60,8 @@ export function CarouselArrows({ index, length, onPrevClick, onNextClick }){
                             p-0
                             border-none
                             rounded-full
-                             bg-surface/40
-                            shadow-shadow-soft
+                            bg-white/60 backdrop-blur-sm
+                            shadow-md
                         "
                     >
                         <ReactSVG src='/svgs/right-arrow.svg' className='fill-white drop-shadow-[0_0_3px_white] flex items-center justify-center w-10 h-10'/>

@@ -10,26 +10,12 @@
         grid-column: 2;
         display: flex;
         flex-direction: column;
-        padding-block-start: calc($header-height + 1rem);
+        padding-block-start: 1rem;
         // min-height: calc(100dvh - $header-height);
         
-        & > * {
-            
-
-            &.full {
-                grid-column: 1 / -1;
-            }
-        }
-
-        .page-layout {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding-block: 3rem;
-            width: 100%;
-        }
+        &.no-header-padding {
+            padding-block-start: 0;
+        } 
 
         @include for-mobile-layout {
             // min-height: calc(100dvh - $header-height - $footer-height);
@@ -37,7 +23,12 @@
         }
     }
 
+    & > .full {
+        grid-column: 1 / -1;
+    }
+
     
+
 
     @include for-narrow-layout {
         grid-template-columns:
@@ -56,6 +47,22 @@
             minmax(20px, 1fr)
             minmax(auto, $normal-breakpoint)
             minmax(20px, 1fr);
+    }
+}
+
+.main-container.no-main-layout {
+    padding: 0;
+    margin: 0;
+    display: block;
+
+    > .full {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        grid-column: 1 / -1;
+    }
+
+    @include for-mobile-layout {
+        padding-top: 0 !important;
     }
 }
 

@@ -1,9 +1,10 @@
-export function SignupFields({ credentials, handleKeyDown, onInputChange, isLoading }){
+export function SignupFields({ emailRef, credentials, onInputChange, isLoading }){
     return(
             <>
                 <div className="flex flex-col gap-2">
                     <label className='font-semibold text-gray4 text-sm'>Full Name</label>
                     <input
+                        ref={emailRef}
                         type="text"
                         name="fullname"
                         className='
@@ -18,7 +19,6 @@ export function SignupFields({ credentials, handleKeyDown, onInputChange, isLoad
                         '
                         value={credentials.fullname}
                         onChange={onInputChange}
-                        onKeyDown={handleKeyDown}
                         placeholder="Enter full name"
                         disabled={isLoading}
                         required
@@ -41,7 +41,6 @@ export function SignupFields({ credentials, handleKeyDown, onInputChange, isLoad
                         '
                         value={credentials.email}
                         onChange={onInputChange}
-                        onKeyDown={handleKeyDown}
                         placeholder="Enter email"
                         disabled={isLoading}
                         required
@@ -64,7 +63,6 @@ export function SignupFields({ credentials, handleKeyDown, onInputChange, isLoad
                         '
                         value={credentials.password}
                         onChange={onInputChange}
-                        onKeyDown={handleKeyDown}
                         placeholder="Enter password"
                         disabled={isLoading}
                         required

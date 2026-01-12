@@ -20,14 +20,22 @@ export default {
         // Utility opacity colors 
         "primary-dark-10": "#40707610", //for bg
         "primary-dark-40": "#40707640", //for border
+        "primary-dark-50": "#40707650",
+        "primary-dark-60": "#40707660",
         "primary-dark-80": "#40707680", //for shadow
         "primary-dark-20": "#40707620", //for hover
-        
+
+        //homepage-colors:
+        "accent-light": "#5A8B91",
+        "accent-lighter": "#7AA5AB",
+        "home-gray": '#6C757D',
+
         // Secondary palette
         secondary: "#698996",
 
         // Backgrounds & Surfaces
         "primary-bg": "#fdf9fb",
+        
         surface: "#C9C5BA",
         "green-surface": "#97B1A6",
 
@@ -46,6 +54,7 @@ export default {
         gray2: "#aaa",
         gray3: "#777",
         gray4: "#333",
+        gray5: "#CCC",
       },
       boxShadow: { 
         "shadow-soft": "0 2px 6px rgba(0, 0, 0, 0.10)",
@@ -79,18 +88,33 @@ export default {
             opacity: '1',
             filter: 'drop-shadow(0 0 12px #40707680)'
           }
-        }
+        },
+        scan: {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(100%)' },
+        },
+        hintPulse: {
+          '0%, 100%': { 
+            boxShadow: '0 0 0 0 #40707640',
+            opacity: 1
+           },
+          '50%': { 
+            boxShadow: '0 0 12px 4px #40707680',
+            opacity: 0.85
+           }
+        },
       },
       animation: {
         modalSlideIn: 'modalSlideIn 0.3s ease-out',
-        dropdownSlideIn: 'dropdownSlideIn 0.2 ease-in-out',
+        dropdownSlideIn: 'dropdownSlideIn 0.2s ease-in-out',
         fadeIn: 'fadeIn 0.4s ease-out',
         logoGlow: 'logoGlow 1.8s ease-in-out infinite',
+        scan: 'scan 1.6s ease-in-out infinite',
+        hintPulse: 'hintPulse 1.6s ease-in-out infinite',
       },
     },
   },
   plugins: [
     require('tailwind-scrollbar')
   ],
-}
-
+ }

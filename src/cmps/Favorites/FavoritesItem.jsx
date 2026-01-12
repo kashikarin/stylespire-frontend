@@ -2,25 +2,18 @@ import { LikeIcon } from "../LikeIcon"
 
 export function FavoriteItem({ 
     favorite, 
-    onSelect,  
-    onLike,
-    isLiked,
+    onSelect,
     isLoggedInUser
 }){
-    console.log("🚀 ~ fav:", favorite)
+    const image = {
+        id: favorite.image.id,
+        url: favorite.image.url,
+        description: favorite.image.description
+    }
     
     function handleSelectFav(ev, favorite) {
         ev.stopPropagation()
         onSelect(favorite)
-    }
-
-    function onLikeFromIcon() {
-        onLike(
-            isLiked,
-            favorite.image.url,
-            favorite.image.id,
-            favorite.image.description
-        )
     }
 
     return(
@@ -36,7 +29,7 @@ export function FavoriteItem({
                 overflow-hidden 
                 shadow-shadow-soft
                 hover:shadow-shadow-hover
-                hover:-translate-y-1
+                hover:-translate-y-[2px]
                 transition-all duration-300
             " 
             onClick={(ev) =>handleSelectFav(ev, favorite)}
@@ -55,11 +48,7 @@ export function FavoriteItem({
                     group-hover:opacity-90
                 "
             >
-                {isLoggedInUser && <LikeIcon 
-                    imageId={favorite.image.id}
-                    onLike={onLikeFromIcon} 
-                />}
-                
+                {isLoggedInUser && <LikeIcon image={image} />}    
             </div>
             <img src={favorite.image.url} className="w-full object-cover" loading="lazy"/>
         </div>

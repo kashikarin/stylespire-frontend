@@ -1,125 +1,72 @@
-import { Link, NavLink, useLocation } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { ReactSVG } from "react-svg"
 import { UserLetterCircle } from "./UserLetterCircle"
-import { useEffect, useRef, useState } from "react"
-import { createPortal } from "react-dom"
-import { logout, setAuthMode } from "../store/actions/user.actions"
 import { useIsLoggedInUser } from "../hooks/useIsLoggedInUser"
 import { breakpoints } from "../util/breakpoints"
 import { useMediaQuery } from "../hooks/useMediaQuery"
+import { Portal } from "./Portal"
+import { useDropdownController } from "../hooks/useDropdownController"
+import { useHeaderActions } from "../hooks/useHeaderActions"
 
 export function AppHeader(){
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false)    
-    const buttonRef = useRef()
-    const dropdownRef = useRef()
-    const location = useLocation()
-    const [coords, setCoords] = useState({ top: 0, right: 0 })
+    const { 
+        isDropdownOpen, 
+        close: closeDropdown,
+        toggle, 
+        buttonRef,
+        dropdownRef,
+        coords
+        } = useDropdownController( { withPosition: true } )
     const { loggedInUser } = useIsLoggedInUser()
-    const isHomePage = location.pathname === '/'
     const isMobile = useMediaQuery(breakpoints.mobile)
-    console.log("🚀 ~ AppHeader ~ isMobile:", isMobile)
-    
-    useEffect(() => {
-        let portalRoot = document.getElementById('portal-root')
-        if (!portalRoot) {
-            portalRoot = document.createElement('div')
-            portalRoot.id = 'portal-root'
-            document.body.appendChild(portalRoot)
-        }
-    }, [])
+    const isDesktop = useMediaQuery(breakpoints.desktop)
 
-  function updateMenuPosition() {
-    if (!buttonRef.current) return
-    const rect = buttonRef.current.getBoundingClientRect()
-    setCoords({
-      top: rect.bottom + window.scrollY + 8,
-      right: window.innerWidth - rect.right - window.scrollX - 8,
-    })
-  }
+    const fullName = loggedInUser?.fullname
+    const firstName = fullName ? fullName.split(' ')[0] : ''
 
-  function toggleDropdown() {
-    if (!isDropdownOpen) updateMenuPosition()
-    setIsDropdownOpen((prev) => !prev)
-  }
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && 
-          !dropdownRef.current.contains(event.target) &&
-          !buttonRef.current.contains(event.target)
-         ) {
-        setIsDropdownOpen(false)
-      }
-    }
-
-    function handleEsc(e) {
-      if (e.key === 'Escape') setIsDropdownOpen(false)
-    }
-
-    if (isDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-      document.addEventListener('keydown', handleEsc)
-      window.addEventListener('resize', updateMenuPosition)
-      window.addEventListener('scroll', updateMenuPosition)
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-      document.removeEventListener('keydown', handleEsc)
-      window.removeEventListener('resize', updateMenuPosition)
-      window.removeEventListener('scroll', updateMenuPosition)
-    }
-  }, [isDropdownOpen])
-
-    function onOpenAuthModal(mode = 'login') {
-        setAuthMode(mode)
-        setIsDropdownOpen(false)
-    }
-
-    async function handleLogout() {
-        try {
-            await logout()
-            setIsDropdownOpen(false)
-        } catch (err) {
-            console.error('Logout failed:', err)
-        }
-    }
-
+    const { handleLogout, openLogin, openSignup } = useHeaderActions(closeDropdown)
     const dropdown = (
         <div 
-            className="
+            className={`
                 bg-white 
                 rounded-xl 
                 shadow-shadow-strong 
-                min-w-[200px] 
-                py-2 mt-2 
-                z-100 
+                ${isDesktop ? 'min-w-[200px]' : 'min-w-[150px]'}
+                ${isDesktop ? 'py-2 mt-2' : 'py-1 mt-1'}
+                z-20 
                 overflow-hidden
-            " 
+            `} 
         ref={dropdownRef}
         style={{
             position: 'absolute',
-            top: coords.top + 10,
+            top: coords.top + 15,
             right: coords.right,
         }}
         >
-            {(loggedInUser) ? (<div className="flex flex-col rounded-lg py-2">
-                <div className="
-                    px-5 pt-3 pb-3 m-0
-                    text-primary-dark
-                    text-base
-                    font-semibold
-                ">
-                    {`Hi ${loggedInUser?.fullname.split(' ')[0]}`} 
+            {(loggedInUser) ? (<div 
+                className={`
+                    flex flex-col 
+                    rounded-lg 
+                    ${isDesktop ? 'text-base' : 'text-sm'}
+                    py-1
+                `}>
+                <div 
+                    className={`
+                        ${isDesktop ? 'px-5 pt-3 pb-3 m-0' : 'px-4 pt-2 pb-2 m-0'}
+                        text-primary-dark
+                        
+                        font-semibold
+                    `}
+                >
+                    {`Hi ${firstName}`} 
                 </div>
                 <div className="h-[1px] bg-gray2 my-2"></div>
                 {/* <div className="menu-divider"></div> */}
                 <button 
-                    className="
+                    className={`
                         block 
                         text-primary-dark 
-                        px-5 pt-4 pb-3 m-0 
-                        text-base 
+                        ${isDesktop ? 'px-5 pt-4 pb-3 m-0' : 'px-4 pt-2 pb-2 m-0'}
                         font-normal 
                         tracking-tighter 
                         bg-transparent 
@@ -134,9 +81,8 @@ export function AppHeader(){
                         before:origin-left
                         before:scale-x-0
                         before:transition-transform before:duration-200 before:ease-in-out
-
                         hover:before:scale-x-100
-                    "
+                    `}
                     onClick={handleLogout}
                 >
                     Log out
@@ -148,7 +94,6 @@ export function AppHeader(){
                             block 
                             text-primary-dark 
                             px-5 pt-4 pb-3 m-0 
-                            text-base 
                             font-normal 
                             tracking-tighter 
                             bg-transparent 
@@ -166,9 +111,8 @@ export function AppHeader(){
 
                             hover:before:scale-x-100
                         "
-                        onClick={()=> onOpenAuthModal('login')}
+                        onClick={openLogin}
                     >
-                        
                         Log in
                     </button>
                     <button
@@ -176,7 +120,6 @@ export function AppHeader(){
                             block 
                             text-primary-dark 
                             px-5 pt-4 pb-3 m-0 
-                            text-base 
                             font-normal 
                             tracking-tighter 
                             bg-transparent 
@@ -194,13 +137,14 @@ export function AppHeader(){
 
                             hover:before:scale-x-100
                         "
-                        onClick={()=> onOpenAuthModal('signup')}
+                        onClick={openSignup}
                     >
                         Sign up
                     </button>
                 </div>)}
             </div>
   )
+
     return(
         <>
             <div 
@@ -212,28 +156,52 @@ export function AppHeader(){
                     border-b border-primary-dark 
                     w-full min-w-[100dvw] h-[80px]
                 '>
-                <nav className='flex justify-between items-center w-full min-h-[80px] py-2'>            
+                <nav 
+                    className='
+                        flex justify-between items-center 
+                        w-full min-h-[80px] 
+                        py-1
+                    '
+                >            
                     <Link to='/' className='m-0 p-0'>
-                        <img src="/imgs/sslogo.png" alt="stylespire logo" className='h-12 w-14'/>
+                        <img 
+                            src="/imgs/sslogo.png" 
+                            alt="stylespire logo" 
+                            className={isMobile? 'h-[50px] w-[60px]' : 'h-[55px] w-[65px]'}/>
                     </Link>
-                    {(isHomePage && !isMobile) && <div 
-                        className="
+                    {(!isMobile) && <div 
+                        className={`
                             flex justify-end items-center gap-8
-                        "
+                            ${isDesktop ? 'text-base' : 'text-sm'}
+                        `}
                     >
                         {loggedInUser && 
-                            <NavLink 
-                                to='/favorites' 
-                                className='
-                                    font-semibold 
-                                    p-0 m-0 
-                                    rounded-[10px] 
-                                    text-primary-dark 
-                                    hover:text-secondary
-                                '
-                            >
-                                Favorites
-                            </NavLink>
+                            <>
+                                <NavLink
+                                    to='/board'
+                                    className='
+                                        font-semibold
+                                        p-0 m-0 
+                                        rounded-[10px] 
+                                        text-primary-dark 
+                                        hover:text-secondary
+                                    '
+                                >
+                                    StyleBoard
+                                </NavLink>
+                                <NavLink 
+                                    to='/favorites' 
+                                    className='
+                                        font-semibold 
+                                        p-0 m-0 
+                                        rounded-[10px] 
+                                        text-primary-dark 
+                                        hover:text-secondary
+                                    '
+                                >
+                                    Favorites
+                                </NavLink>
+                            </>
                         }
                         <button 
                             className='
@@ -245,7 +213,7 @@ export function AppHeader(){
                                 font-medium text-sm 
                                 whitespace-nowrap
                             ' 
-                            ref={buttonRef} onClick={toggleDropdown}>
+                            ref={buttonRef} onClick={toggle}>
                             {(loggedInUser) ? 
                                 <UserLetterCircle username={loggedInUser.fullname}/> :
                                 <ReactSVG src='/svgs/hamburger-icon.svg'/>
@@ -254,12 +222,11 @@ export function AppHeader(){
                     </div>}
                 </nav>
             </div>
-            {isDropdownOpen && 
-                createPortal(
-                    dropdown,
-                    document.getElementById('portal-root') || document.body
-                )
-            }
+            {isDropdownOpen && (
+                <Portal>
+                    {dropdown}
+                </Portal>
+            )}
         </>
     )
 }
