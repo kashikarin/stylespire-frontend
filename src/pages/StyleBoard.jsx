@@ -133,6 +133,7 @@ export function StyleBoard(){
                             
                             border-t border-primary-dark
                             p-4 
+                            pb-24
                             bg-primary-bg
                             order-2
                             narrow:w-[200px] 

@@ -46,7 +46,12 @@ export function useBackgroundRemoval(favorites) {
                     if (cancelled) return
                     processedImagesRef.current.set(fav._id, processedImageUrl)
                 } catch (err) {
-                    console.warn('Preload failed', err)
+                    // Guard: handle TOKEN_EXPIRED error
+                    if (err?.response?.data?.error === 'TOKEN_EXPIRED' || err?.error === 'TOKEN_EXPIRED') {
+                        // Optionally, trigger a logout or user notification here
+                        console.warn('Session expired (TOKEN_EXPIRED) during background removal.');
+                        // You could call a logout function or set a global error state here
+                    }
                     setFailedIds(prev => {
                         const next = new Set(prev)
                         next.add(fav._id)

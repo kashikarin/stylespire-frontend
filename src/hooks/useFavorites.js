@@ -9,9 +9,24 @@ export function useFavorites(){
     const [selectedFav, setSelectedFav] = useState(null)
     const { loggedInUser } = useIsLoggedInUser()
 
-    useEffect(()=>{
+    useEffect(() => {
         if (!loggedInUser?._id) return
-        loadFavorites({ userId: loggedInUser._id })
+
+        const isTokenExpired = err =>
+            err?.response?.data?.error === 'TOKEN_EXPIRED' || err?.error === 'TOKEN_EXPIRED'
+
+        async function fetchFavorites() {
+            try {
+                await loadFavorites({ userId: loggedInUser._id })
+            } catch (err) {
+                if (isTokenExpired(err)) {
+                    console.warn('Session expired (TOKEN_EXPIRED) while loading favorites.')
+                } else {
+                    console.error('Failed to load favorites:', err)
+                }
+            }
+        }
+        fetchFavorites()
     }, [loggedInUser?._id])
 
     function resetSelectedFav() {

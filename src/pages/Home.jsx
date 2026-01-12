@@ -37,11 +37,11 @@ export function Home(){
                 className="
                     max-w-7xl w-full
                     mx-auto 
-                    grid grid-cols-1 normal:grid-cols-2 gap-8 narrow:gap-12 normal:gap-16 items-center
+                    grid grid-cols-1 normal:grid-cols-2 gap-8 narrow:gap-6 normal:gap-16 items-center
                 "
             >
                 {/* Left: Editorial Copy */}
-                <div className="flex flex-col gap-4 narrow:gap-6">
+                <div className="flex flex-col gap-4 narrow:gap-2">
                     <div className="inline-block self-start">
                         <span 
                             className="
@@ -388,7 +388,7 @@ export function Home(){
                                                         : 'bg-gray5 opacity-40 cursor-not-allowed'
                                                 }`}
                                             >
-                                                Show My Looks ✨
+                                                Get Style Inspiration
                                             </button>
                                         )}
                                     </>
@@ -450,15 +450,14 @@ export function Home(){
                                                     py-2.5 
                                                     text-sm 
                                                     rounded-xl 
-                                                    font-medium text-white 
-                                                    transition-all duration-300 
-                                                    shadow-lg 
+                                                    font-medium text-primary-dark 
+                                                    transition-all duration-200 ease-in-out
                                                     ${isStep3Valid 
-                                                        ? 'bg-primary-dark hover:bg-accent-light' 
+                                                        ? 'bg-[#E6F0EE] hover:bg-[#D2E6E3] hover:box-shadow: 0 4px 12px rgba(0,0,0,0.06)' 
                                                         : 'bg-gray5 opacity-40 cursor-not-allowed'
                                                     }`}
                                             >
-                                                Show My Looks ✨
+                                                Get Style Inspiration
                                             </button>
                                         )}
                                     </>
