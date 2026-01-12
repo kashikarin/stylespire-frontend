@@ -15,7 +15,6 @@ import { useIsLoggedInUser } from "../hooks/useIsLoggedInUser"
 
 export function StyleBoard(){
     const isMobile = useMediaQuery(breakpoints.mobile)
-    console.log("🚀 ~ StyleBoard ~ isMobile:", isMobile)
     const isTablet = useMediaQuery(breakpoints.tablet)
     const canvasRef = useRef(null)
     const { loggedInUser } = useIsLoggedInUser()
