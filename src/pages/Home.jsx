@@ -41,7 +41,7 @@ export function Home(){
                 "
             >
                 {/* Left: Editorial Copy */}
-                <div className="flex flex-col gap-4 narrow:gap-2">
+                <div className="flex flex-col gap-1 narrow:gap-2">
                     <div className="inline-block self-start">
                         <span 
                             className="
@@ -71,9 +71,9 @@ export function Home(){
                         </span>
                     </h1>
                     
-                    <p 
+                    {(!isMobile || currentStep === 1) && <p 
                         className="
-                            text-base narrow:text-lg normal:text-xl 
+                            text-base narrow:text-lg normal:text-xl mb-0
                             text-primary-dark/70 
                             leading-relaxed 
                             max-w-lg
@@ -81,7 +81,7 @@ export function Home(){
                     >
                         Define your preferences, receive curated outfit suggestions,
                         and organize selected looks into editable styleboards.
-                    </p>
+                    </p>}
 
                     {!isMobile && !isTablet && !isLaptop && (
                         <div 
