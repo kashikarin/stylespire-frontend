@@ -18,8 +18,8 @@ export function AppHeader(){
         coords
         } = useDropdownController( { withPosition: true } )
     const { loggedInUser } = useIsLoggedInUser()
-    console.log("🚀 ~ AppHeader ~ loggedInUser:", loggedInUser)
     const isMobile = useMediaQuery(breakpoints.mobile)
+    const isDesktop = useMediaQuery(breakpoints.desktop)
 
     const fullName = loggedInUser?.fullname
     const firstName = fullName ? fullName.split(' ')[0] : ''
@@ -27,39 +27,46 @@ export function AppHeader(){
     const { handleLogout, openLogin, openSignup } = useHeaderActions(closeDropdown)
     const dropdown = (
         <div 
-            className="
+            className={`
                 bg-white 
                 rounded-xl 
                 shadow-shadow-strong 
-                min-w-[200px] 
-                py-2 mt-2 
+                ${isDesktop ? 'min-w-[200px]' : 'min-w-[150px]'}
+                ${isDesktop ? 'py-2 mt-2' : 'py-1 mt-1'}
                 z-20 
                 overflow-hidden
-            " 
+            `} 
         ref={dropdownRef}
         style={{
             position: 'absolute',
-            top: coords.top + 10,
+            top: coords.top + 15,
             right: coords.right,
         }}
         >
-            {(loggedInUser) ? (<div className="flex flex-col rounded-lg py-2">
-                <div className="
-                    px-5 pt-3 pb-3 m-0
-                    text-primary-dark
-                    text-base
-                    font-semibold
-                ">
+            {(loggedInUser) ? (<div 
+                className={`
+                    flex flex-col 
+                    rounded-lg 
+                    ${isDesktop ? 'text-base' : 'text-sm'}
+                    py-1
+                `}>
+                <div 
+                    className={`
+                        ${isDesktop ? 'px-5 pt-3 pb-3 m-0' : 'px-4 pt-2 pb-2 m-0'}
+                        text-primary-dark
+                        
+                        font-semibold
+                    `}
+                >
                     {`Hi ${firstName}`} 
                 </div>
                 <div className="h-[1px] bg-gray2 my-2"></div>
                 {/* <div className="menu-divider"></div> */}
                 <button 
-                    className="
+                    className={`
                         block 
                         text-primary-dark 
-                        px-5 pt-4 pb-3 m-0 
-                        text-base 
+                        ${isDesktop ? 'px-5 pt-4 pb-3 m-0' : 'px-4 pt-2 pb-2 m-0'}
                         font-normal 
                         tracking-tighter 
                         bg-transparent 
@@ -74,9 +81,8 @@ export function AppHeader(){
                         before:origin-left
                         before:scale-x-0
                         before:transition-transform before:duration-200 before:ease-in-out
-
                         hover:before:scale-x-100
-                    "
+                    `}
                     onClick={handleLogout}
                 >
                     Log out
@@ -88,7 +94,6 @@ export function AppHeader(){
                             block 
                             text-primary-dark 
                             px-5 pt-4 pb-3 m-0 
-                            text-base 
                             font-normal 
                             tracking-tighter 
                             bg-transparent 
@@ -115,7 +120,6 @@ export function AppHeader(){
                             block 
                             text-primary-dark 
                             px-5 pt-4 pb-3 m-0 
-                            text-base 
                             font-normal 
                             tracking-tighter 
                             bg-transparent 
@@ -152,7 +156,13 @@ export function AppHeader(){
                     border-b border-primary-dark 
                     w-full min-w-[100dvw] h-[80px]
                 '>
-                <nav className='flex justify-between items-center w-full min-h-[80px] py-1'>            
+                <nav 
+                    className='
+                        flex justify-between items-center 
+                        w-full min-h-[80px] 
+                        py-1
+                    '
+                >            
                     <Link to='/' className='m-0 p-0'>
                         <img 
                             src="/imgs/sslogo.png" 
@@ -160,9 +170,10 @@ export function AppHeader(){
                             className={isMobile? 'h-[50px] w-[60px]' : 'h-[55px] w-[65px]'}/>
                     </Link>
                     {(!isMobile) && <div 
-                        className="
-                            flex justify-end items-center gap-8 text-sm
-                        "
+                        className={`
+                            flex justify-end items-center gap-8
+                            ${isDesktop ? 'text-base' : 'text-sm'}
+                        `}
                     >
                         {loggedInUser && 
                             <>

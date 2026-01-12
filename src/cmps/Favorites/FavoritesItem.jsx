@@ -5,7 +5,6 @@ export function FavoriteItem({
     onSelect,
     isLoggedInUser
 }){
-    console.log("🚀 ~ FavoriteItem ~ favorite:", favorite)
     const image = {
         id: favorite.image.id,
         url: favorite.image.url,

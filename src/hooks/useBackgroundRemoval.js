@@ -24,6 +24,16 @@ export function useBackgroundRemoval(favorites) {
                     continue
                 }
 
+                // skip and mark as failed if image URL is missing
+                if (!fav?.image?.url) {
+                    setFailedIds(prev => {
+                        const next = new Set(prev)
+                        next.add(fav._id)
+                        return next
+                    })
+                    continue
+                }
+
                 processingRef.current.add(fav._id)
                 setProcessingIds(prev => {
                     const next = new Set(prev)

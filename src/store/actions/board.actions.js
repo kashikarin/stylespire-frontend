@@ -56,7 +56,6 @@ export async function createBoard() {
 }
 
 export async function updateBoard(board) {
-    console.log("🚀 ~ updateBoard ~ board:", board)
     store.dispatch(getCmdSetLoading(true))
     store.dispatch(getCmdSetError(null))
     try {
@@ -89,7 +88,6 @@ export async function removeBoard(boardId) {
 }
 
     export async function resolveBoardImageSrc(src) {
-        console.log("🚀 ~ resolveBoardImageSrc ~ src:", src)
         if (!src) return null
 
         try {

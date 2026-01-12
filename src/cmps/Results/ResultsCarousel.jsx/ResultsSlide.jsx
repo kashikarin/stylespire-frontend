@@ -3,7 +3,6 @@ import { breakpoints } from "../../../util/breakpoints"
 import { LikeIcon } from "../../LikeIcon"
 
 export function ResultsSlide({ image, isLoggedInUser }){
-    console.log("🚀 ~ ResultsSlide ~ image:", image)
     const isNarrow = useMediaQuery(breakpoints.tablet)
     const cleanImage = {
         id: image.id,

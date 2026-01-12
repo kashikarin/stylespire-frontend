@@ -2,7 +2,6 @@ import { glowyTagMap } from "./styleTagMaps";
 
 export function buildGlowyTags(formData){
     const { mood, style, purpose } = formData
-    console.log("🚀 ~ buildGlowyTags ~ mood, style, purpose:", mood, style, purpose)
     const tags = []
 
     function normalize(str = '') {

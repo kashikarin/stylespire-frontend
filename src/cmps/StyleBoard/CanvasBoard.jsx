@@ -23,7 +23,6 @@ function CanvasBoard({ background, isMobile }, ref){
         items: [],
         selectedBackground: null
     })    
-    console.log("🚀 ~ CanvasBoard ~ canvasState:", canvasState)
 
     const [selectedId, setSelectedId] = useState(null)
     const imageRefs = useRef({})
@@ -67,7 +66,6 @@ function CanvasBoard({ background, isMobile }, ref){
 
         const observer = new ResizeObserver(entries => {
             const { width, height } = entries[0].contentRect
-            console.log("🚀 ~ CanvasBoard ~ width, height:", width, height)
             setSize({ width, height })
         })
 

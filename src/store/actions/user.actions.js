@@ -68,9 +68,7 @@ export async function startDemoSession() {
   store.dispatch(getCmdSetLoading(true))
   try {
     const user = await userService.loginDemo()
-    console.log("🚀 ~ startDemoSession ~ user:", user)
     store.dispatch(getCmdLogin(user))
-    console.log('demo user:', store.getState().userModule.loggedInUser)
     return user
   } catch (err) {
     console.error('Cannot start demo session', err)

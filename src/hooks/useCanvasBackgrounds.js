@@ -24,7 +24,6 @@ export function useCanvasBackgrounds({
         setLoading(true)
         try {
             const url= `https://api.pexels.com/v1/search?query=${query}&per_page=${perPage}&page=${pageToFetch}`
-            console.log("🚀 ~ fetchBackgrounds ~ url:", url)
             const res =  await fetch(url, { headers: 
                 {
                     Authorization: PEXELS_API_KEY 

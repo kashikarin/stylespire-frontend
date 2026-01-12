@@ -11,7 +11,6 @@ export function ResultsCarousel({ images, onLike, getIsLiked, isLoggedInUser }){
     const [current, setCurrent] = useState(0)
     const isNarrow = useMediaQuery(breakpoints.tablet)
     const [slideWidth, setSlideWidth] = useState(0)
-    console.log("🚀 ~ slideWidth:", slideWidth)
 
     useEffect(() => {
         if (!frameRef.current) return

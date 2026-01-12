@@ -12,7 +12,6 @@ export const favoriteService = {
 }
 
 async function query(filterFavoritesBy = {}) {
-console.log('client → filterFavoritesBy:', filterFavoritesBy)  
   return httpService.get(`favorite`, filterFavoritesBy)
 }
 

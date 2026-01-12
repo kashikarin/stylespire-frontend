@@ -74,7 +74,6 @@ function BoardForm({
 }
 
 export function BoardOptionsColumn({ onSave, board }) {
-    console.log("🚀 ~ BoardOptionsColumn ~ board:", board)
     const [title, setTitle] = useState('')
     const [mode, setMode] = useState(null) 
 

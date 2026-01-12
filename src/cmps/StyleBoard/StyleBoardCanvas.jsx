@@ -26,6 +26,8 @@ export function StyleBoardCanvas({
     // Breakpoints for responsive columns
     const showBoardOptions = useMediaQuery(breakpoints.veryWide) // >= 1530px
     const showToolsColumn = useMediaQuery(breakpoints.extremelyWide) // >= 1650px
+    const hasRightBlackbox = useMediaQuery(breakpoints.wide) && !showBoardOptions// >= 1400px
+    console.log("🚀 ~ StyleBoardCanvas ~ hasRightBlackbox:", hasRightBlackbox)
     
     // Tools should only appear in overlay when NOT in right column
     const showToolsOverlay = !showToolsColumn
@@ -56,12 +58,24 @@ export function StyleBoardCanvas({
                             loadMore={loadMore}
                             loadingBgs={loadingBgs}
                         />
-                        {!showBoardOptions && (
+                        {!showBoardOptions && !hasRightBlackbox&& (
                             <StyleBoardMenu 
                                 onSaveClick={onSaveClick}
                                 onSwitchClick={onSwitchClick}
                                 isMobile={isMobile}
                             />
+                        )}
+                        {!showBoardOptions && hasRightBlackbox && (
+                            <div
+                                className="fixed top-19 z-30"
+                                style={{ left: '1140px' }}
+                            >
+                                <StyleBoardMenu
+                                    onSaveClick={onSaveClick}
+                                    onSwitchClick={onSwitchClick}
+                                    isMobile={false}
+                                />
+                            </div>
                         )}
                     </div>
                 )}
