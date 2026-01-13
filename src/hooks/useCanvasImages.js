@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { buildImageUrl } from '../services/board.service.js'
+import { boardService } from '../services/board.service.js'
 
 export function useCanvasImages(items, background){
     const [imagesById, setImagesById] = useState({})
@@ -11,7 +11,7 @@ export function useCanvasImages(items, background){
             if (!item?.id || !item?.src) return
             if (imagesById[item.id]) return
 
-            const fullSrc = buildImageUrl(item.src)
+            const fullSrc = boardService.buildImageUrl(item.src)
 
             const img = new window.Image()
             img.src = fullSrc
