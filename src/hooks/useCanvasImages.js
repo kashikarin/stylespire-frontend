@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { buildImageUrl } from '../services/image.util.js'
+import { normalizeImageSrc } from '../services/image.util.js'
 
 export function useCanvasImages(items, background){
 useEffect(() => {
@@ -14,7 +14,7 @@ useEffect(() => {
             if (!item?.id || !item?.src) return
             if (imagesById[item.id]) return
 
-            const fullSrc = buildImageUrl(item.src)
+            const fullSrc = normalizeImageSrc(item.src)
 
             const img = new window.Image()
             img.src = fullSrc
