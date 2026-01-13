@@ -8,7 +8,8 @@ export const boardService = {
     getByUserId,
     loadOrCreateSelectedBoard,
     createEmptyBoard,
-    uploadBoardImage
+    uploadBoardImage,
+    buildImageUrl
 }
 
 async function query() {
@@ -56,7 +57,7 @@ async function uploadBoardImage(blob){
     return res.url
 }
 
-export function buildImageUrl(path) {
+function buildImageUrl(path) {
     if (!path) return ''
 
     if (path.startsWith('http')) return path.replace(/\/$/, '')
