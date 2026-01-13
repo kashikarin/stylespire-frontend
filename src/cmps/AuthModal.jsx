@@ -48,34 +48,33 @@ export function AuthModal(){
                     safe-pt safe-pb
                     fixed inset-0 
                     bg-white 
-                    max-w-none max-h-none w-full h-full 
-                    flex flex-col justify-start items-stretch 
+                    w-full h-full 
+                    flex flex-col 
                     z-10
-                    p-6
+                    px-4 py-3 mt-3
                     narrow:inset-auto
                     narrow:top-1/2 narrow:left-1/2
                     narrow:-translate-x-1/2 narrow:-translate-y-1/2 
                     narrow:scrollbar-none
                     narrow:z-50
-                    narrow:w-[500px] narrow:h-auto narrow:max-h-[90svh]
+                    narrow:w-[500px] narrow:max-h-[90svh]
                     narrow:rounded-xl
                     narrow:shadow-lg
-                    // narrow:overflow-y-auto
                     narrow:p-0
                 "
             >
                 <div
                     ref={contentRef} 
                     className="
-                        flex-none
+                        flex flex-col
                         bg-white
                         rounded-xl
                         dir-ltr text-left
-                        p-7
-                        overflow-y-auto overscroll-contain 
+                        px-5 py-4
+                        overflow-hidden 
                         border border-gray1
-                        narrow:flex-initial
-                        narrow:rounded-xl
+                        narrow:overflow-y-auto
+                        narrow:p-7
                         narrow:relative  
                         narrow:modalSlideIn
                     "
@@ -104,10 +103,11 @@ export function AuthModal(){
                         <h2 
                             className='
                                 text-center
-                                mb-3
+                                mb-2
                                 font-semibold
-                                text-2xl
-                                mobile:text-lg
+                                text-xl
+                                narrow:mb-3
+                                narrow:text-2xl
                             '
                         >
                             {authMode === 'signup' ? 'Sign Up' : 'Log In'}
@@ -116,20 +116,21 @@ export function AuthModal(){
                             <div 
                                 className="
                                     bg-surface
-                                    py-3 px-4
+                                    py-2 px-3
                                     rounded-md
                                     border-green-surface
                                     text-sm
                                     text-primary-dark
-                                    mb-5
+                                    mb-3
                                     text-center
+                                    narrow:py-3 narrow:px-4 narrow:mb-5
                                 "
                             >
                                 {error}
                             </div>
                         }
 
-                        <form onSubmit={submitAuth} className="flex flex-col gap-3">
+                        <form onSubmit={submitAuth} className="flex flex-col gap-2 narrow:gap-3">
                             {authMode === 'login' ? 
                             <LoginFields 
                                 emailRef={emailRef}
@@ -149,19 +150,19 @@ export function AuthModal(){
                                     bg-primary-dark
                                     text-white
                                     border-none
-                                    py-3 px-5
+                                    py-2
                                     rounded-lg
                                     text-base
                                     font-semibold
                                     cursor-pointer
                                     transition-all
                                     duration-300
-                                    mt-2
-                                    mx-0
+                                    mt-1
                                     hover:bg-green-surface
                                     disabled:bg-surface 
                                     disabled:cursor-not-allowed
                                     disabled:transform-none
+                                    narrow:py-3 narrow:mt-2
                                 "
                                 disabled={isLoading}
                             >
@@ -170,9 +171,9 @@ export function AuthModal(){
                         </form>
                         <div className="
                                 text-center 
-                                mt-5
-                                pt-5
+                                mt-3 pt-3
                                 border-t-border
+                                narrow:mt-5 narrow:pt-5
                             ">
                             <span className="text-gray3 text-sm">
                                 {authMode === 'signup'
@@ -196,7 +197,7 @@ export function AuthModal(){
                                 >
                                     {authMode === 'signup' ? 'Log In' : 'Sign Up'}
                                 </button>
-                                <div className="flex items-center gap-3 my-5">
+                                <div className="flex items-center gap-3 my-3 narrow:my-5">
                                     <span className="flex-1 h-px bg-border"></span>
                                     <span className="text-xs text-gray3">or</span>
                                     <span className="flex-1 h-px bg-border"></span>
@@ -207,7 +208,7 @@ export function AuthModal(){
                                     disabled={isLoading}
                                     className="
                                         w-full
-                                        py-3 px-5
+                                        py-2
                                         rounded-lg
                                         text-base
                                         font-semibold
@@ -223,11 +224,12 @@ export function AuthModal(){
                                         focus:ring-primary-dark-20
                                         disabled:opacity-50
                                         disabled:cursor-not-allowed
+                                        narrow:py-3
                                     "
                                 >
                                     Continue with Demo
                                 </button>
-                                <p className="text-xs text-gray3 text-center mt-2">
+                                <p className="text-xs text-gray3 text-center mt-1 hidden narrow:block">
                                     No sign up required
                                 </p>
                             </span>
