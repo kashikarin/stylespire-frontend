@@ -1,41 +1,42 @@
 # 🌟 Stylespire – Frontend  
-*A personalized, weather-aware outfit inspiration app built with React.*
+*A responsive, interactive outfit inspiration & styleboard application built with React.*
 
 ---
 
 ## 📌 Overview
 
-The **Stylespire Frontend** is a modern React application that generates personalized outfit inspiration based on user preferences, location, and live weather.  
-Users can browse curated images, save favorites, and soon create customizable style boards.
+The **Stylespire Frontend** is a modern, fully responsive React application that that combines personalized outfit inspiration with an interactive visual styleboard.  
+Users can browse curated images, save favorites, and create customizable StyleBoards.
+This project is built as a production-grade frontend, with a strong focus on scalability, separation of concerns, and real-world UX patterns.
 
-The app is fully component-based, built with **React hooks**, and emphasizes clean architecture, modular components, and a smooth user experience.
+The app guides users from inspiration to creation:
+
+1. Collects user preferences, location, and live weather
+2. Generates outfit inspiration images
+3. Allows users to save favorites
+4. Enables advanced visual composition via a drag-and-drop StyleBoard editor
+
+The frontend emphasizes clean architecture, custom hooks, and rich canvas-based interactions.
 
 ---
 
-## ✨ Features
+## ✨ Core Features
 
 ### 🔹 Smart Inspiration Flow
-Users submit a short form (gender, age, mood, clothing style, outing purpose).  
+Users submit a short form (gender, age, mood, clothing style, occasion).  
 The app then enriches the data with:
 - 🌍 Geolocation  
 - 🌤 Weather API data  
 
-And fetches curated visuals from **Unsplash**.
+And fetches curated visuals from **Unsplash** and **Pexels**.
 
 ---
 
-### 🔹 Routing & Page-to-Page Data Transfer
+### 🔹 Routing & Data Flow
 
-The application uses **React Router v6** for client-side routing.  
-While most data is handled globally via Redux, a **single targeted use-case** uses Router state:
+The application uses **React Router v6** for client-side routing.
 
-- When the user submits the inspiration form, the enriched search results (Unsplash images) are passed to the Results page using:
-
-```js
-navigate('/results', { state: { results } });
-```
-This prevents overloading Redux with temporary, per-request data and keeps the global store clean.
-The pattern is intentionally scoped to this flow only, making the transition seamless and avoiding unnecessary network re-fetching on the Results page.
+Routing is kept purely navigational, while all application data (authentication, favorites, search results, and styleboards) is managed via **Redux** and backend APIs. This ensures consistent data availability across pages without relying on route-based state.
 
 ---
 
@@ -48,21 +49,31 @@ The pattern is intentionally scoped to this flow only, making the transition sea
 ---
 
 ### 🔹 JWT Authentication  
-- Login / Signup UI  
-- Auth state managed via JWT-based authentication (token stored client-side) 
-- Auto-redirect rules (protected routes)  
-- Global auth state (Redux)
-- Protected routes based on Redux state
-
-  
+- Login / Signup flows  
+- JWT-based authentication  
+- Protected routes  
+- Global auth state via Redux
 
 ---
 
 ### 🔹 Favorites System  
-- Heart button to toggle favorites  
+- Like / unlike images (heart toggle)  
 - Favorites saved per authenticated user  
 - Smooth real-time UI updates  
-- Dedicated Favorites page  
+- Dedicated Favorites page with styled grid layout
+-  
+
+---
+
+### 🎨 Styleboard
+
+The Styleboard is an interactive canvas-based workspace that allows users to transform inspiration into personalized outfit compositions.
+
+Users can select a background and drag images directly from their Favorites onto the canvas. Images are placed without their original backgrounds, enabled through integration with a custom Python microservice that removes backgrounds and selects the dominant figure in each image.
+
+The canvas supports common editing actions such as moving, resizing, layering (z-index), deletion, undo/redo, and keyboard shortcuts for efficient workflows.
+
+Styleboards can be saved with a custom name and reopened later for continued editing. Future enhancements include sharing, exporting, and printing boards.
 
 ---
 
@@ -70,56 +81,93 @@ The pattern is intentionally scoped to this flow only, making the transition sea
 
 ### Hook-Based Architecture (Modern & Scalable)
 
-The app is built entirely using **custom hooks**, keeping UI components clean and declarative.
+The application relies heavily on a rich set of **custom hooks**, grouped by responsibility.  
+This approach keeps components lean while allowing complex behavior to evolve independently.
 
-#### Key principles:
+**Authentication & User**
+- `useAuthForm()`
+- `useCurrentUser()`
+- `useIsLoggedInUser()`
+- `useDemoLogin()`
 
-- **Logic extracted into hooks**  
-  - `useUnsplash()` – photo fetching logic  
-  - `useWeather()` – API + geolocation logic  
-  - `useForm()` – form states and validations  
-  - `useFavorites()` – add/remove/sync favorites  
-  - `useResults()` – browse & sync unsplash results 
-  - `useIsLoggedInUser()` – retrieve and validate authentication state
-  - `useLike()` – get & toggle like (heart) state for images
-  - `useMediaQuery()` – manage responsive breakpoints & screen width state
+**Inspiration & Search**
+- `useForm()`
+- `useUnsplash()`
+- `useWeather()`
+- `useResults()`
+- `useStyleSearchParams()`
+- `useHomeHero()`
 
-- **UI components contain zero business logic**
-- **Reusable components** (Carousel, Card, Modals, Forms)
-- **Responsive SCSS** architecture
+**Favorites & Likes**
+- `useFavorites()`
+- `useLike()`
 
-This structure mirrors real-world production standards.
+**Styleboard & Canvas**
+- `useBoards()`
+- `useBoardHistory()`
+- `useBoardItems()`
+- `useBackgroundRemoval()`
+- `useCanvasActions()`
+- `useCanvasImages()`
+- `useCanvasLayout()`
+- `useCanvasBackgrounds()`
+- `useCanvasBackgroundBar()`
+- `useCanvasOverlayActions()`
+- `useCanvasShortcuts()`
+
+**UI, Layout & Interaction**
+- `useMediaQuery()`
+- `useDragToScroll()`
+- `useDropdownController()`
+- `useOnClickOutside()`
+- `useLockBodyScroll()`
+- `useHeaderActions()`
+- `useFooterActions()`
+- `useEffectUpdate()`
+
+**Key principles:**
+- UI components are focused on presentation, with business logic extracted into hooks  
+- Reusable, composable components (Carousel, Cards, Modals, Forms)  
+- Fully responsive layout using Tailwind CSS and scoped styles where needed  
+
+This structure mirrors real-world, production-grade frontend architecture.
 
 ---
 
 ### 🧩 State Management
 
 The app uses **Redux** for global state management, handling:
-- Authentication state
-- User data
-- Favorites
-- API loading states
+- Authentication state  
+- User data  
+- Favorites  
+- Global loading and error states  
+
+Editor- and canvas-specific state (Styleboard) is intentionally managed locally to keep the global store lean and focused.
 
 ---
 
 ## 🛠 Tech Stack
 
-**Frontend:**  
+**Frontend**
 - React  
 - JavaScript (ES6+)  
 - React Hooks  
 - Redux  
-- SCSS / CSS Modules  
-- React Router v6 – client-side routing & state transfer between pages
+- React Router v6  
+- Konva.js (canvas rendering & interactions)  
+- Tailwind CSS  
+- SCSS / CSS Modules (where needed)  
 
-**APIs:**  
+**APIs & Services**
 - Unsplash API  
+- Pexels API
 - Geolocation API  
 - Weather API  
-- Stylespire Backend (Node/Express)
+- Stylespire Backend (Node / Express)  
+- Background removal microservice (Python)
 
-**Tools:**  
-- Vite
+**Tooling**
+- Vite  
 - Git & GitHub  
 - Postman  
 - VS Code  
@@ -141,26 +189,11 @@ Create a `.env` file in the project root and include the following variables:
 ```
 VITE_WEATHER_KEY=
 VITE_UNSPLASH_KEY=
+VITE_PEXELS_KEY=
+VITE_API_BASE_URL=
 ```
-
-
 
 > ⚠️ **Do not include actual API keys in your repository.**  
 > Make sure `.env` is added to `.gitignore`.
 
 
-## 🚀 Coming Next (V2)
-
-The next major feature on the frontend is the **Stylespiration Board** — an interactive mood-board style workspace where users can create personalized outfit inspiration layouts.
-
-Planned capabilities include:
-
-- Selectable backgrounds (textures, themes, colors)  
-- A favorites sidebar showing saved images  
-- Drag & drop images from favorites onto the board  
-- Automatic background removal for placed images  
-- Positioning, resizing, and arranging elements on the board  
-- Saving the board for later editing  
-- Exporting or sharing the final board layout  
-
-This feature will serve as the creative core of Stylespire and is currently in development.
