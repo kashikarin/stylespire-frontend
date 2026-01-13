@@ -65,19 +65,20 @@ export function AuthModal(){
             >
                 <div
                     ref={contentRef} 
-                    className="
+                    className='
                         flex flex-col
                         bg-white
                         rounded-xl
                         dir-ltr text-left
                         px-5 py-4
                         overflow-hidden 
-                        border border-gray1
+                        border narrow:border-gray1 
+                        narrow:border-none
                         narrow:overflow-y-auto
                         narrow:p-7
                         narrow:relative  
                         narrow:modalSlideIn
-                    "
+                    '
                 >
                     <button 
                         className="
@@ -208,10 +209,11 @@ export function AuthModal(){
                                     disabled={isLoading}
                                     className="
                                         w-full
-                                        py-2
+                                        py-3 px-5
                                         rounded-lg
-                                        text-base
+                                        text-sm
                                         font-semibold
+                                        
                                         cursor-pointer
                                         border border-primary-dark-40
                                         text-primary-dark

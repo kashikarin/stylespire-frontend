@@ -7,6 +7,7 @@ import { useMediaQuery } from "../hooks/useMediaQuery"
 import { Portal } from "./Portal"
 import { useDropdownController } from "../hooks/useDropdownController"
 import { useHeaderActions } from "../hooks/useHeaderActions"
+import { useDemoLogin } from "../hooks/useDemoLogin"
 
 export function AppHeader(){
     const { 
@@ -17,7 +18,11 @@ export function AppHeader(){
         dropdownRef,
         coords
         } = useDropdownController( { withPosition: true } )
+    
+        const { onLoginDemo, isLoading, error } = useDemoLogin()
+
     const { loggedInUser } = useIsLoggedInUser()
+
     const isMobile = useMediaQuery(breakpoints.mobile)
     const isDesktop = useMediaQuery(breakpoints.desktop)
 
@@ -43,7 +48,7 @@ export function AppHeader(){
             right: coords.right,
         }}
         >
-            {(loggedInUser) ? (<div 
+            {loggedInUser ? (<div 
                 className={`
                     flex flex-col 
                     rounded-lg 
@@ -89,6 +94,47 @@ export function AppHeader(){
                 </button>
                 </div>) : (
                 <div className="flex flex-col rounded-lg py-2">
+                    <button
+                        className="
+                            block 
+                            text-primary-dark 
+                            px-5 pt-4 pb-3 m-0 
+                            font-semibold 
+                            tracking-tight 
+                            cursor-pointer 
+                            text-left 
+                            w-full 
+                            relative
+                            rounded-md
+                            bg-[rgba(64,112,118,0.06)]
+                            transition-all duration-200
+
+                            before:content-['']
+                            before:absolute before:left-0 before:top-0
+                            before:h-full before:w-[4px]
+                            before:bg-primary-dark
+                            before:origin-left
+                            before:scale-x-0
+                            before:transition-transform before:duration-200 before:ease-in-out
+
+                            hover:bg-[rgba(64,112,118,0.12)]
+                            hover:before:scale-x-100
+                        "
+                        onClick={async () => {
+                            await onLoginDemo()
+                            if (!error) closeDropdown()
+                        }}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Starting demo…' : 'Try demo'}
+                    </button>
+
+                    {error && (
+                        <p className="text-xs text-rose-700 mt-2">
+                            {error}
+                        </p>
+                    )}
+        
                     <button
                         className="
                             block 
