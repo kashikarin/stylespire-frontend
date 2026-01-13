@@ -3,24 +3,28 @@ import { useEffect } from 'react'
 import { buildImageUrl } from '../services/board.service.js'
 
 export function useCanvasImages(items, background){
-    const [imagesBySrc, setImagesBySrc] = useState({})
+    const [imagesById, setImagesById] = useState({})
     const [backgroundImage, setBackgroundImage] = useState(null)
 
     useEffect(() => {
         items?.forEach(item => {
-            if (!item?.src) return
-            if (imagesBySrc[item.src]) return
+            if (!item?.id || !item?.src) return
+            if (imagesById[item.id]) return
+
+            const fullSrc = buildImageUrl(item.src)
 
             const img = new window.Image()
-            img.src = buildImageUrl(item.src)
+            img.src = fullSrc
 
-            img.onload = () => setImagesBySrc(prev => ({
+            img.onload = () => setImagesById(prev => ({
                 ...prev,
-                [item.src]: img 
+                [item.id]: img 
             }))
+
+            img.onerror = () => console.warn('Failed to load image:', fullSrc)
         })
         
-    }, [items, imagesBySrc])
+    }, [items, imagesById])
 
 
     useEffect(() => {
@@ -28,10 +32,10 @@ export function useCanvasImages(items, background){
 
         const img = new window.Image()
         img.src = background
-        
+
         img.onload = ()=>setBackgroundImage(img)
     }, [background])
 
 
-    return { imagesBySrc, backgroundImage }
+    return { imagesById, backgroundImage }
 }

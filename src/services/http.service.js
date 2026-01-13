@@ -65,11 +65,11 @@ axios.interceptors.response.use(
       isRefreshing = true
 
       try {
-        const { data } = await Axios.post(
-          BASE_URL + "auth/refresh",
-          {},
-          { withCredentials: true }
-        )
+        const { data } = await axios.post("auth/refresh", {})
+
+        if (!data?.accessToken) {
+          throw new Error('No access token returned from refresh')
+        }
         
         localStorage.setItem("accessToken", data.accessToken)
         axios.defaults.headers.common.Authorization = "Bearer " + data.accessToken

@@ -37,7 +37,7 @@ function CanvasBoard({ background, isMobile }, ref){
     }, [canvasState])
     
     // sync image resource with items' changes
-    const { imagesBySrc, backgroundImage } = useCanvasImages(canvasState.items, canvasState.selectedBackground)
+    const { imagesById, backgroundImage } = useCanvasImages(canvasState.items, canvasState.selectedBackground)
 
     //getting history-related functions
     const { 
@@ -310,9 +310,9 @@ function CanvasBoard({ background, isMobile }, ref){
                         </Layer>
                         <Layer>
                             {canvasState.items.map(item => {
-                                if (!item || !item.src) return null
+                                if (!item?.id) return null
 
-                                const img = imagesBySrc[item.src]
+                                const img = imagesById[item.id]
                                 if (!img) return null
 
                                 return(
