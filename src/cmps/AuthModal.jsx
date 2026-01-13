@@ -45,6 +45,7 @@ export function AuthModal(){
             />
             <div 
                 className="
+                    safe-pt safe-pb
                     fixed inset-0 
                     bg-white 
                     max-w-none max-h-none w-full h-full 

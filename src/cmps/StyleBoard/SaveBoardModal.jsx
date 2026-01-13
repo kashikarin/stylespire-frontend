@@ -49,6 +49,7 @@ export function SaveBoardModal({
                 <div 
                     className="
                         bg-primary-bg 
+                        safe-pt safe-pb
                         w-full h-full 
                         flex flex-col 
                         p-5

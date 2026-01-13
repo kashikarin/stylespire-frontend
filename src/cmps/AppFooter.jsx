@@ -10,6 +10,7 @@ export function AppFooter(){
     return(
         <footer 
             className="
+                safe-pb
                 fixed 
                 py-3
                 h-[4rem]

@@ -118,10 +118,16 @@ async function ajax(endpoint, method = 'GET', data = null, config = {}) {
     })
     return res.data
   } catch(err){
-    console.error(
-      `Had Issues ${method}ing to the backend, endpoint: ${endpoint}, with data: `,
-      data
-    )
-    throw err
+      const isSilentAuthError =
+        err.response?.status === 401 &&
+        err.response?.data?.error === 'TOKEN_EXPIRED'
+
+      if (!isSilentAuthError) {
+        console.error(
+          `Had Issues ${method}ing to the backend, endpoint: ${endpoint}, with data: `,
+          data
+        ) 
+      }
+      throw err    
   } 
 }

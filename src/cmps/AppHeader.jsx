@@ -149,6 +149,7 @@ export function AppHeader(){
         <>
             <div 
                 className='
+                    safe-pt
                     app-header-container full 
                     bg-primary-bg 
                     sticky top-0 

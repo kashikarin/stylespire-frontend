@@ -57,10 +57,11 @@ async function uploadBoardImage(blob){
 }
 
 export function buildImageUrl(path) {
-  if (!path) return ''
+    if (!path) return ''
 
-  if (path.startsWith('http')) return path
+    if (path.startsWith('http')) return path.replace(/\/$/, '')
+    const baseUrl = import.meta.env.VITE_API_BASE_URL
+    const cleanPath = path.startsWith('/') ? path : `/${path}`
 
-  const baseUrl = import.meta.env.VITE_API_BASE_URL
-  return `${baseUrl}${path}`
+    return `${baseUrl}${cleanPath}`
 }
