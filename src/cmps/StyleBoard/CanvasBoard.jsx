@@ -17,7 +17,6 @@ function CanvasBoard({ background, isMobile }, ref){
     
     const [size, setSize] = useState({ width: 0, height: 0 })
     const layout = useCanvasLayout(size, isMobile)
-    const effectiveScale = isMobile ? 1 : layout.scale // for touch devices, keep scale 1
 
     const [canvasState, setCanvasState] = useState({
         items: [],
@@ -141,10 +140,10 @@ function CanvasBoard({ background, isMobile }, ref){
 
         const updatedItem = {
             ...item,
-            width: Math.max(20, (node.width() * scaleX) / effectiveScale),
-            height: Math.max(20, (node.height() * scaleY) / effectiveScale),
-            x: node.x() / effectiveScale,
-            y: node.y() / effectiveScale,
+            width: Math.max(20, (node.width() * scaleX) / layout.scale),
+            height: Math.max(20, (node.height() * scaleY) / layout.scale),
+            x: node.x() / layout.scale,
+            y: node.y() / layout.scale,
             rotation: node.rotation()
         }
 
@@ -321,10 +320,10 @@ function CanvasBoard({ background, isMobile }, ref){
                                         key={item.id}
                                         ref={node => imageRefs.current[item.id] = node}
                                         image={img}
-                                        x={item.x * effectiveScale}
-                                        y={item.y * effectiveScale}
-                                        width={item.width * effectiveScale}
-                                        height={item.height * effectiveScale}
+                                        x={item.x * layout.scale}
+                                        y={item.y * layout.scale}
+                                        width={item.width * layout.scale}
+                                        height={item.height * layout.scale}
                                         rotation={item.rotation || 0}
                                         draggable
                                         onDragStart={beginTransaction}
@@ -333,7 +332,7 @@ function CanvasBoard({ background, isMobile }, ref){
                                             setCanvasState(prev => ({
                                                 ...prev,
                                                 items: prev.items.map(i => i.id === item.id ?
-                                                        { ...i, x: node.x() / effectiveScale, y: node.y() / effectiveScale } : i
+                                                        { ...i, x: node.x() / layout.scale, y: node.y() / layout.scale } : i
                                                     )
                                             }))
                                             

@@ -98,6 +98,7 @@ export async function removeBoard(boardId) {
 
             const imagePath = await boardService.uploadBoardImage(blob)
             
+            console.log("🚀 ~ resolveBoardImageSrc ~ boardService.buildImageUrl(imagePath):", boardService.buildImageUrl(imagePath))
             return boardService.buildImageUrl(imagePath)
         } catch(err){
             console.error('Failed to resolve board image src', err)

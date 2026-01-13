@@ -48,7 +48,7 @@ async function getCurrentUser() {
     return user
   }
   catch (err) {
-    if (err.response && err.response.status === 401) {
+    if (err?.response && err.response?.status === 401) {
       _clearAccessToken()
       return null
     }
