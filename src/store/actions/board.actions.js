@@ -1,4 +1,5 @@
 import { boardService } from "../../services/board.service";
+import { buildImageUrl } from "../../services/image.util";
 import { ADD_BOARD, REMOVE_BOARD, SET_BOARD, SET_BOARDS, SET_ERROR, SET_LOADING, UPDATE_BOARD } from "../reducers/board.reducer";
 import { store } from "../store"
 
@@ -91,15 +92,14 @@ export async function removeBoard(boardId) {
         if (!src) return null
 
         try {
-            if (!src.startsWith('blob:')) return boardService.buildImageUrl(src)
+            if (!src.startsWith('blob:')) return buildImageUrl(src)
             
             const response = await fetch(src)
             const blob = await response.blob()
 
             const imagePath = await boardService.uploadBoardImage(blob)
             
-            console.log("🚀 ~ resolveBoardImageSrc ~ boardService.buildImageUrl(imagePath):", boardService.buildImageUrl(imagePath))
-            return boardService.buildImageUrl(imagePath)
+            return buildImageUrl(imagePath)
         } catch(err){
             console.error('Failed to resolve board image src', err)
             throw err

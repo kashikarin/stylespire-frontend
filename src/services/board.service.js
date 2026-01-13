@@ -9,7 +9,6 @@ export const boardService = {
     loadOrCreateSelectedBoard,
     createEmptyBoard,
     uploadBoardImage,
-    buildImageUrl
 }
 
 async function query() {
@@ -57,12 +56,3 @@ async function uploadBoardImage(blob){
     return res.url
 }
 
-function buildImageUrl(path) {
-    if (!path) return ''
-
-    if (path.startsWith('http')) return path.replace(/\/$/, '')
-    const baseUrl = import.meta.env.VITE_API_BASE_URL
-    const cleanPath = path.startsWith('/') ? path : `/${path}`
-
-    return `${baseUrl}${cleanPath}`
-}
