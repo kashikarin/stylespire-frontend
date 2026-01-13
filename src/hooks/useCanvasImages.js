@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { buildImageUrl } from '../services/board.service'
+import { buildImageUrl } from '../services/board.service.js'
 
 export function useCanvasImages(items, background){
     const [imagesById, setImagesById] = useState({})
