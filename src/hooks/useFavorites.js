@@ -43,6 +43,5 @@ export function useFavorites(){
         handleSelect,
         resetSelectedFav,
         isLoading
-
     }
 }

@@ -1,6 +1,5 @@
 import { httpService } from "./http.service.js"
 
-
 export const backgroundRemovalService = {
     removeBackgroundFromImage
 }

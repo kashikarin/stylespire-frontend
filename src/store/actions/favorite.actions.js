@@ -108,10 +108,3 @@ function getCmdSetError(error) {
     }
 }   
 
-function getCmdFavoriteImageProcessed(processedImage, favoriteId) {
-    return {
-        type: FAVORITE_IMAGE_PROCESSED,
-        processedImage,
-        favoriteId
-    }
-}    

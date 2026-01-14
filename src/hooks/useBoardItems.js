@@ -1,7 +1,6 @@
 import { useBoards } from "./useBoards"
 
 export function useBoardItems(){
-    
     const { board, updateBoardField } = useBoards()
     const items = board?.items || []
     

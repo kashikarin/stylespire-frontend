@@ -3,9 +3,6 @@ import { useEffect } from 'react'
 import { normalizeImageSrc } from '../services/image.util.js'
 
 export function useCanvasImages(items, background){
-useEffect(() => {
-  console.log('API BASE:', import.meta.env.VITE_API_BASE_URL)
-}, [])
     const [imagesById, setImagesById] = useState({})
     const [backgroundImage, setBackgroundImage] = useState(null)
 

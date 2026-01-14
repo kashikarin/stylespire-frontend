@@ -43,10 +43,6 @@ a {
     text-decoration: none;
 }
 
-// a:hover {
-//     text-decoration: underline;
-// }
-
 ul {
     list-style: none;
     padding: 0;
@@ -59,14 +55,4 @@ input {
 
 pre {
     white-space: pre-wrap;
-}
-
-.no-scrollbar {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;  /* IE and Edge */
-}
-
-.overscroll-bounce {
-    overscroll-behavior-x: contain;
-    -webkit-overflow-scrolling: touch;
 }

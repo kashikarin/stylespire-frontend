@@ -1,5 +1,4 @@
 button {
-	// border: 0;
 	background-color: $color-primary-dark;
 	color: $color-text;
 	padding: 5px 10px;
@@ -9,14 +8,12 @@ button {
 
 form > * {
 	display: block;
-	// width: 200px;
 	margin: 10px 0px;
 }
 
 .btn-link {
 	border: 0;
 	background-color: transparent;
-	// text-decoration: underline;
 	transition: 0.5s;
 }
 .btn-link:hover {

@@ -1,7 +1,6 @@
 import { logout, setAuthMode } from "../store/actions/user.actions"
 import { useIsLoggedInUser } from "./useIsLoggedInUser"
 
-
 export function useFooterActions(){
     const { loggedInUser } = useIsLoggedInUser()
     

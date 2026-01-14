@@ -11,6 +11,7 @@ export function useHomeHero({ isMobile, isTablet }) {
         style: [],
         purpose: []
     })
+    
     const isStep1Valid = isTablet ? 
         Boolean(formData.gender && formData.age) :
         Boolean(formData.gender && formData.age && formData.mood.length > 0)

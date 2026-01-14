@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react"
 
-
 export function useDropdownController({ withPosition = false } = {}){
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const buttonRef = useRef()

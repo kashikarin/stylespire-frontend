@@ -1,6 +1,4 @@
 import { userService } from "../../services/user.service";
-import { SET_LOADING } from "../reducers/favorites.reducer";
-// import { CLOSE_STYLEME_MODAL, OPEN_STYLEME_MODAL } from "../reducers/system.reducer";
 import { SET_AUTH_MODE, SET_LOGGEDINUSER, SET_USER_LOADING } from "../reducers/user.reducer";
 import { store } from "../store";
 

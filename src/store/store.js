@@ -4,7 +4,6 @@ import { compose } from 'redux'
 import { favoriteReducer } from './reducers/favorites.reducer'
 import { boardReducer } from './reducers/board.reducer'
 
-
 const rootReducer = combineReducers({
   userModule: UserReducer,
   favoriteModule: favoriteReducer,

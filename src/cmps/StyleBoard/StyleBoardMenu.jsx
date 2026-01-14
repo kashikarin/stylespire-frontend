@@ -3,7 +3,6 @@ import { useDropdownController } from "../../hooks/useDropdownController"
 
 
 export function StyleBoardMenu({ onSaveClick, onSwitchClick, isMobile }){
-    
     const {
         close,
         toggle,
@@ -110,6 +109,5 @@ export function StyleBoardMenu({ onSaveClick, onSwitchClick, isMobile }){
                 </div>
             )}
         </div>
-        
     )
 }

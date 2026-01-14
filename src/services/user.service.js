@@ -76,31 +76,12 @@ async function update(user) {
   return updatedUser
 }
 
-
-function _saveLocalUser(user) {
-  
-  if (!user?._id || !user?.fullname) return
-
-  user = {
-    _id: user._id,
-    fullname: user.fullname,
-    email: user.email,
-    createdAt: user.createdAt,
-  }
-  sessionStorage.setItem('loggedInUser', JSON.stringify(user))
-  return user
-}
-
 function _clearLocalUser() {
   sessionStorage.removeItem('loggedInUser')
 }
 
 function _saveAccessToken(token) {
   localStorage.setItem('accessToken', token)
-}
-
-function _getAccessToken() {
-  return localStorage.getItem('accessToken')
 }
 
 function _clearAccessToken(){

@@ -91,7 +91,6 @@ This approach keeps components lean while allowing complex behavior to evolve in
 - `useDemoLogin()`
 
 **Inspiration & Search**
-- `useForm()`
 - `useUnsplash()`
 - `useWeather()`
 - `useResults()`
@@ -123,7 +122,6 @@ This approach keeps components lean while allowing complex behavior to evolve in
 - `useLockBodyScroll()`
 - `useHeaderActions()`
 - `useFooterActions()`
-- `useEffectUpdate()`
 
 **Key principles:**
 - UI components are focused on presentation, with business logic extracted into hooks  

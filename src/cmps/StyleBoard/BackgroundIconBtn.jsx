@@ -1,5 +1,4 @@
 import { ReactSVG } from "react-svg"
-import { BackgroundBar } from "./BackgroundBar"
 
 export function BackgroundIconBtn({ handleClick, isMobile }){
     return (
