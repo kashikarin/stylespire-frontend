@@ -117,7 +117,7 @@ export function BoardOptionsColumn({ onSave, board }) {
                             "Save" :
                             "Save and continue"
                     }
-                    value={title}
+                    value={board?.title || 'Untitled Board'}
                     onChange={(e) => setTitle(e.target.value)}
                     onSubmit={handleSubmit}
                     onCancel={closeForm}
