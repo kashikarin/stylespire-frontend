@@ -1,16 +1,16 @@
 import { useBackgroundRemoval } from "../../hooks/useBackgroundRemoval"
 
 export function FavsSidebar({favorites}){
-    const { processingIds, failedIds } = useBackgroundRemoval(favorites)
+    const { getProcessedImage, processingIds, failedIds } = useBackgroundRemoval(favorites)
 
     return(
         <div className="space-y-3 mx-auto">
             {favorites.map(fav => {
-                const isProcessed = !!fav.processedImage
+                const processedImage = getProcessedImage(fav._id)
+                const isProcessed = Boolean(processedImage)
                 const isProcessing = processingIds.has(fav._id)
                 const isFailed = failedIds.has(fav._id)
-
-                const imgSrc = fav.processedImage || fav.image.url
+                const imgSrc = processedImage || fav.image.url
 
                 return (
                     <div 
