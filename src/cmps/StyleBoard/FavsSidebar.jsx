@@ -1,20 +1,16 @@
 import { useBackgroundRemoval } from "../../hooks/useBackgroundRemoval"
-import { FavProcessingOverlay } from "./FavProcessingOverlay"
 
 export function FavsSidebar({favorites}){
-    const {
-        getProcessedImage,
-        processingIds,
-        failedIds
-    } = useBackgroundRemoval(favorites)
+    const { processingIds, failedIds } = useBackgroundRemoval(favorites)
 
     return(
         <div className="space-y-3 mx-auto">
             {favorites.map(fav => {
-                const processedImage = getProcessedImage(fav._id)
-                const isProcessed = Boolean(processedImage)
+                const isProcessed = !!fav.processedImage
                 const isProcessing = processingIds.has(fav._id)
                 const isFailed = failedIds.has(fav._id)
+
+                const imgSrc = fav.processedImage || fav.image.url
 
                 return (
                     <div 
@@ -29,21 +25,20 @@ export function FavsSidebar({favorites}){
                             `}
                             draggable={isProcessed}
                             onDragStart={e => {
-                                if (!isProcessed) {
-                                    e.preventDefault()
-                                    return
-                                }
-                                e.dataTransfer.setData('image-src', processedImage)
+                                if (!isProcessed) return
+                                e.dataTransfer.setData('image-src', imgSrc)
 
                                 const img = e.currentTarget
                                 e.dataTransfer.setDragImage(img, img.width / 2, img.height / 2)
                             }}
                         />
-                        {!isProcessed && <FavProcessingOverlay 
-                            isProcessing={isProcessing}
-                            isFailed={isFailed}
-
-                        />}
+                        {!isProcessed && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/30 text-white text-sm font-medium">
+                                {isProcessing && 'Processing image...'}
+                                {!isProcessing && !isFailed && 'Pending processing'}
+                                {isFailed && 'Processing failed'}
+                            </div>
+                        )}
                     </div>)
             }   
             )}

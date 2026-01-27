@@ -24,12 +24,15 @@ export function Home(){
     return(
         <div 
             className="
-                max-h-[calc(100svh-80px)] 
-                overflow-hidden
+                min-h-[calc(100dvh-80px-64px)]
+                normal:max-h-[calc(100vh-80px)] 
+                overflow-y-auto normal:overflow-hidden
                 [&::-webkit-scrollbar]:hidden 
                 flex 
                 normal:items-center 
                 py-2 narrow:py-4 px-4
+                pb-[calc(64px+env(safe-area-inset-bottom))]
+                normal:pb-0
             " 
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
